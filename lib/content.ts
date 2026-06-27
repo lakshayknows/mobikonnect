@@ -32,7 +32,7 @@ export const site = {
 
 export const nav = [
   { label: "What We Do", href: "/what-we-do" },
-  { label: "Work", href: "/case-studies" },
+  { label: "Case Studies", href: "/case-studies" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;

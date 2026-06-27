@@ -29,13 +29,13 @@ export function SectionHeader({
           )}
         >
           {index && <span className="eyebrow text-coral">{index}</span>}
-          <span className="h-px w-8 bg-ink/20" />
+          <span className="h-px w-8 bg-cream-line" />
           <span className="eyebrow">{eyebrow}</span>
         </div>
       </Reveal>
       <h2
         className={cn(
-          "display text-huge mt-5 max-w-[18ch]",
+          "display text-giant mt-5 max-w-[20ch] uppercase tracking-[-0.02em]",
           align === "center" && "mx-auto",
           titleClassName,
         )}

@@ -9,7 +9,7 @@
 
 @layer base {
   * {
-    @apply border-ink/10;
+    @apply border-cream-line;
   }
 
   html {
@@ -30,13 +30,13 @@
   }
 
   body {
-    @apply bg-white text-ink font-sans antialiased;
+    @apply bg-ink text-cream font-sans antialiased;
     overflow-x: hidden;
   }
 
   ::selection {
     background: #d05e62;
-    color: #ffffff;
+    color: #f8ebd3;
   }
 
   /* Custom scrollbar */
@@ -44,10 +44,10 @@
     width: 9px;
   }
   ::-webkit-scrollbar-track {
-    background: #eef2f8;
+    background: #1d1d1d;
   }
   ::-webkit-scrollbar-thumb {
-    background: #a9b8d6;
+    background: #3a3a3a;
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -71,12 +71,12 @@
   }
 
   .eyebrow {
-    @apply font-display text-xs sm:text-sm uppercase tracking-label text-ink/60;
+    @apply font-display text-xs sm:text-sm uppercase tracking-label text-cream-dim;
   }
 
   /* Outlined "stroke" text used for big editorial type */
   .text-stroke {
-    -webkit-text-stroke: 1.4px rgba(0, 41, 112, 0.5);
+    -webkit-text-stroke: 1.4px rgba(248, 235, 211, 0.55);
     color: transparent;
   }
 
@@ -97,7 +97,7 @@
 
   /* How We Work — background "HOW WE WORK" text */
   .hww-bg-text {
-    color: rgba(0, 41, 112, 0.13);
+    color: rgba(248, 235, 211, 0.15);
     font-family: var(--font-display), sans-serif;
     font-size: clamp(1.5rem, 4.5vw, 3rem);
     font-weight: 800;
@@ -127,3 +127,16 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+}
+

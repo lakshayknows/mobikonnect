@@ -9,12 +9,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Paytm-style palette: deep navy text on white, bright-blue panels, red accent.
-        // `ink` is the neutral text/UI navy; `cream` is kept for the blue panels' light text.
+        // Spec-driven brand palette (matched to the MobiKonnect logo)
         ink: {
-          DEFAULT: "#002970", // deep navy — primary text & headings
-          deep: "#001B4D", // darkest — emphasis / hovers
-          soft: "#20336B", // muted navy — softer text
+          DEFAULT: "#262626", // site-wide frame color
+          deep: "#1d1d1d",
+          soft: "#2f2f2f",
         },
         blue: {
           DEFAULT: "#0999D5", // hero curved frame color (bright blue panels)

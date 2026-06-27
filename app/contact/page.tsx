@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
-import Contact from "@/components/sections/Contact";
+import ContactForm from "@/components/sections/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -17,7 +17,7 @@ export default function ContactPage() {
         highlight={["next", "experience."]}
         intro="Book a demo, request a proposal, or just tell us what you want your audience to feel."
       />
-      <Contact />
+      <ContactForm />
     </>
   );
 }

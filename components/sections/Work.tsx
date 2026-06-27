@@ -18,7 +18,7 @@ export default function Work() {
           highlight={["conversations."]}
         />
         <Reveal delay={0.1}>
-          <p className="max-w-sm text-ink/65">
+          <p className="max-w-sm text-cream-dim">
             From scanning Oreos to shouting at Panasonic — a few of the ideas
             we&apos;ve shipped for India&apos;s biggest brands.
           </p>
@@ -26,7 +26,7 @@ export default function Work() {
       </div>
 
       <div className="mt-16 grid gap-5 lg:grid-cols-2">
-        {work.map((c, i) => {
+        {work.slice(0, 6).map((c, i) => {
           const isCoral = c.accent === "coral";
           return (
             <motion.article
@@ -69,15 +69,15 @@ export default function Work() {
               </div>
 
               <div className="relative">
-                <p className="text-sm uppercase tracking-label text-ink/55">{c.brand}</p>
+                <p className="text-sm uppercase tracking-label text-cream-dim">{c.brand}</p>
                 <h3 className="display mt-2 text-3xl sm:text-4xl">{c.title}</h3>
-                <p className="mt-4 max-w-md text-ink/65">{c.summary}</p>
+                <p className="mt-4 max-w-md text-cream-dim">{c.summary}</p>
 
-                <div className="mt-7 flex gap-10 border-t border-ink/10 pt-5">
+                <div className="mt-7 flex gap-10 border-t border-cream-line pt-5">
                   {c.metrics.map((m) => (
                     <div key={m.label}>
-                      <div className="display text-2xl text-ink sm:text-3xl">{m.value}</div>
-                      <div className="mt-1 text-xs text-ink/65">{m.label}</div>
+                      <div className="display text-2xl text-cream sm:text-3xl">{m.value}</div>
+                      <div className="mt-1 text-xs text-cream-dim">{m.label}</div>
                     </div>
                   ))}
                 </div>
@@ -86,6 +86,17 @@ export default function Work() {
           );
         })}
       </div>
+
+      <Reveal delay={0.1} className="mt-12 flex justify-center">
+        <a
+          href="/case-studies"
+          data-cursor="hover"
+          className="group inline-flex items-center gap-2 rounded-pill border border-cream/40 px-7 py-4 text-sm font-medium text-cream transition-colors duration-300 hover:border-cream"
+        >
+          All case studies
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </a>
+      </Reveal>
     </section>
   );
 }

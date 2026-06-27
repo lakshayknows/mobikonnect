@@ -16,12 +16,12 @@ export default function About() {
         <Reveal>
           <div className="flex items-center gap-3">
             <span className="eyebrow text-coral">01</span>
-            <span className="h-px w-8 bg-ink/20" />
+            <span className="h-px w-8 bg-cream-line" />
             <span className="eyebrow">About the platform</span>
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="max-w-xs text-sm text-ink/65 lg:text-right">
+          <p className="max-w-xs text-sm text-cream-dim lg:text-right">
             {site.legal} — engineering customer engagement for India&apos;s
             biggest brands for 20+ years.
           </p>
@@ -35,15 +35,15 @@ export default function About() {
         />
       </h2>
 
-      <div className="mt-20 grid gap-px overflow-hidden rounded-frame border border-ink/10 bg-ink/10 sm:grid-cols-3">
+      <div className="mt-20 grid gap-px overflow-hidden rounded-frame border border-cream-line bg-cream-line sm:grid-cols-3">
         {pillars.map((p, i) => (
           <Reveal
             key={p.k}
             delay={i * 0.1}
-            className="bg-white p-8 transition-colors duration-500 hover:bg-ink/[0.03] sm:p-10"
+            className="bg-ink p-8 transition-colors duration-500 hover:bg-ink-soft sm:p-10"
           >
             <span className="display text-lg text-coral">{p.k}</span>
-            <p className="mt-3 text-ink/65">{p.v}</p>
+            <p className="mt-3 text-cream-dim">{p.v}</p>
           </Reveal>
         ))}
       </div>

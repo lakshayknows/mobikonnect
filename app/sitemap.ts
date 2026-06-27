@@ -5,14 +5,9 @@ const base = "https://mobikonnect.com";
 
 const routes = [
   "",
-  "/solutions",
-  "/industries",
-  "/services",
-  "/technology",
+  "/what-we-do",
   "/case-studies",
-  "/resources",
   "/about",
-  "/careers",
   "/contact",
 ];
 

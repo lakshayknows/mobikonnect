@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { CaseCard } from "@/components/ui/Cards";
-import Contact from "@/components/sections/Contact";
 import { caseStudies } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -26,7 +25,6 @@ export default function CaseStudiesPage() {
           ))}
         </div>
       </section>
-      <Contact />
     </>
   );
 }

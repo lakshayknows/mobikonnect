@@ -3,7 +3,7 @@ import About from "@/components/sections/About";
 import Stats from "@/components/sections/Stats";
 import Expertise from "@/components/sections/Expertise";
 import Technology from "@/components/sections/Technology";
-import Process from "@/components/sections/Process";
+import HowWeWork from "@/components/sections/HowWeWork";
 import WhyBrands from "@/components/sections/WhyBrands";
 import Work from "@/components/sections/Work";
 import Clients from "@/components/sections/Clients";
@@ -17,7 +17,7 @@ export default function Home() {
       <Stats />
       <Expertise />
       <Technology />
-      <Process />
+      <HowWeWork />
       <WhyBrands />
       <Work />
       <Clients />

@@ -30,13 +30,13 @@
   }
 
   body {
-    @apply bg-cream text-ink font-sans antialiased;
+    @apply bg-white text-ink font-sans antialiased;
     overflow-x: hidden;
   }
 
   ::selection {
     background: #d05e62;
-    color: #f8ebd3;
+    color: #ffffff;
   }
 
   /* Custom scrollbar */
@@ -44,10 +44,10 @@
     width: 9px;
   }
   ::-webkit-scrollbar-track {
-    background: #ece0c8;
+    background: #eef2f8;
   }
   ::-webkit-scrollbar-thumb {
-    background: #cbbda0;
+    background: #a9b8d6;
     border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
@@ -76,7 +76,7 @@
 
   /* Outlined "stroke" text used for big editorial type */
   .text-stroke {
-    -webkit-text-stroke: 1.4px rgba(38, 38, 38, 0.55);
+    -webkit-text-stroke: 1.4px rgba(0, 41, 112, 0.5);
     color: transparent;
   }
 
@@ -97,7 +97,7 @@
 
   /* How We Work — background "HOW WE WORK" text */
   .hww-bg-text {
-    color: rgba(38, 38, 38, 0.15);
+    color: rgba(0, 41, 112, 0.13);
     font-family: var(--font-display), sans-serif;
     font-size: clamp(1.5rem, 4.5vw, 3rem);
     font-weight: 800;

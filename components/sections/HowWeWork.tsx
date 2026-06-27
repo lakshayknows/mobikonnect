@@ -182,7 +182,7 @@ export default function HowWeWork() {
       style={{ height: "500vh" }}
     >
       {/* Sticky viewport — fills screen, clips content */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-cream">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-white">
         {/* ── Intro Card (always behind) ── */}
         <div className="absolute inset-x-0 w-full top-6 sm:top-8 bottom-3 sm:bottom-4 flex flex-col z-[2]">
           {/* Header — sits above Content Card top edge */}

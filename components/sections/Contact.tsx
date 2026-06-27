@@ -13,8 +13,8 @@ export default function Contact() {
         className="frame relative overflow-hidden p-8 sm:p-14 lg:p-20"
         style={{
           backgroundImage:
-            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.16) 0%, rgba(248,235,211,0) 55%), radial-gradient(80% 120% at 0% 100%, rgba(208,94,98,0.16) 0%, rgba(248,235,211,0) 55%)",
-          border: "1px solid rgba(38,38,38,0.12)",
+            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.16) 0%, rgba(255,255,255,0) 55%), radial-gradient(80% 120% at 0% 100%, rgba(208,94,98,0.16) 0%, rgba(255,255,255,0) 55%)",
+          border: "1px solid rgba(0,41,112,0.12)",
         }}
       >
         <motion.div

@@ -38,8 +38,8 @@ export default function MagneticButton({
 
   const styles = {
     coral: "bg-coral text-cream hover:bg-coral-deep",
-    cream: "bg-cream text-ink hover:bg-white",
-    outline: "border border-cream/30 text-cream hover:border-cream/70",
+    cream: "bg-ink text-cream hover:bg-ink-deep",
+    outline: "border border-ink/25 text-ink hover:border-ink/60",
   }[variant];
 
   return (

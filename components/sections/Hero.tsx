@@ -62,7 +62,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 rounded-pill border border-cream/30 bg-cream/10 px-4 py-2 text-xs text-cream backdrop-blur-sm"
           >
             <Sparkles className="h-3.5 w-3.5" />
-            Consumer promotions · Loyalty · Contests
+            Experiential · Loyalty · Engagement Technology
           </motion.span>
           <motion.span
             initial={{ opacity: 0 }}
@@ -78,10 +78,10 @@ export default function Hero() {
         <motion.div style={{ y: contentY }} className="relative z-10 py-10">
           <h1 className="display text-mega text-cream">
             <span className="block overflow-hidden">
-              <RevealText text="We breathe" />
+              <RevealText text="Engage. Reward." />
             </span>
             <span className="block overflow-hidden">
-              <RevealText text="& live mobile." delay={0.15} />
+              <RevealText text="Retain. Grow." delay={0.15} />
             </span>
           </h1>
           <motion.p

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
@@ -26,40 +27,40 @@ export default function Navbar() {
             className={cn(
               "mt-4 flex items-center justify-between rounded-pill px-4 py-2.5 transition-all duration-500 ease-out-expo sm:px-5",
               scrolled
-                ? "border border-cream-line bg-ink/70 backdrop-blur-xl"
+                ? "border border-ink/10 bg-cream/70 backdrop-blur-xl"
                 : "border border-transparent bg-transparent",
             )}
           >
-            <a href="#top" aria-label="Mobikonnect home" data-cursor="hover">
+            <Link href="/" aria-label="Mobikonnect home" data-cursor="hover">
               <Logo />
-            </a>
+            </Link>
 
             <nav className="hidden items-center gap-1 lg:flex">
               {nav.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   data-cursor="hover"
-                  className="rounded-pill px-4 py-2 text-sm text-cream-dim transition-colors duration-300 hover:text-cream"
+                  className="rounded-pill px-4 py-2 text-sm text-ink/65 transition-colors duration-300 hover:text-ink"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
 
             <div className="flex items-center gap-2">
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 data-cursor="hover"
                 className="hidden items-center gap-1.5 rounded-pill bg-coral px-5 py-2.5 text-sm font-medium text-cream transition-colors duration-300 hover:bg-coral-deep sm:inline-flex"
               >
                 Let&apos;s talk
                 <ArrowUpRight className="h-4 w-4" />
-              </a>
+              </Link>
               <button
                 onClick={() => setOpen(true)}
                 aria-label="Open menu"
-                className="grid h-11 w-11 place-items-center rounded-pill border border-cream-line text-cream lg:hidden"
+                className="grid h-11 w-11 place-items-center rounded-pill border border-ink/15 text-ink lg:hidden"
               >
                 <Menu className="h-5 w-5" />
               </button>
@@ -75,31 +76,34 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[60] bg-ink-deep/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-[60] bg-cream/95 backdrop-blur-xl lg:hidden"
           >
             <div className="gutter flex items-center justify-between pt-6">
               <Logo />
               <button
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="grid h-11 w-11 place-items-center rounded-pill border border-cream-line text-cream"
+                className="grid h-11 w-11 place-items-center rounded-pill border border-ink/15 text-ink"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <nav className="gutter mt-12 flex flex-col gap-1">
               {nav.map((item, i) => (
-                <motion.a
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                  className="display border-b border-cream-line py-5 text-4xl text-cream"
                 >
-                  {item.label}
-                </motion.a>
+                  <Link
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className="display block border-b border-ink/10 py-5 text-4xl text-ink"
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
               ))}
             </nav>
             <div className="gutter mt-12">

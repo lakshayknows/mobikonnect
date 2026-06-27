@@ -29,7 +29,7 @@ export function SectionHeader({
           )}
         >
           {index && <span className="eyebrow text-coral">{index}</span>}
-          <span className="h-px w-8 bg-cream-line" />
+          <span className="h-px w-8 bg-ink/20" />
           <span className="eyebrow">{eyebrow}</span>
         </div>
       </Reveal>

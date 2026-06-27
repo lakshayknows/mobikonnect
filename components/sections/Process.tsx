@@ -35,14 +35,14 @@ export default function Process() {
           <div>
             <div className="flex items-center gap-3">
               <span className="eyebrow text-coral">04</span>
-              <span className="h-px w-8 bg-cream-line" />
+              <span className="h-px w-8 bg-ink/20" />
               <span className="eyebrow">How we work</span>
             </div>
             <h2 className="display mt-5 text-huge max-w-[16ch]">
               End-to-end, under one roof.
             </h2>
           </div>
-          <span className="hidden text-sm text-cream-dim lg:block">
+          <span className="hidden text-sm text-ink/65 lg:block">
             Scroll → conceptualization to disbursement
           </span>
         </div>
@@ -51,19 +51,19 @@ export default function Process() {
           {process.map((step) => (
             <article
               key={step.no}
-              className="group relative flex h-[360px] w-[78vw] shrink-0 flex-col justify-between rounded-card border border-cream-line bg-ink-soft/40 p-8 transition-colors duration-500 hover:border-blue/50 sm:w-[400px]"
+              className="group relative flex h-[360px] w-[78vw] shrink-0 flex-col justify-between rounded-card border border-ink/10 bg-white p-8 transition-colors duration-500 hover:border-blue/50 sm:w-[400px]"
             >
               <div className="flex items-start justify-between">
-                <span className="display text-7xl text-cream-faint transition-colors duration-500 group-hover:text-blue">
+                <span className="display text-7xl text-ink/30 transition-colors duration-500 group-hover:text-blue">
                   {step.no}
                 </span>
-                <span className="text-xs text-cream-faint">
+                <span className="text-xs text-ink/40">
                   Step {step.no} / {process.length.toString().padStart(2, "0")}
                 </span>
               </div>
               <div>
                 <h3 className="display text-2xl">{step.title}</h3>
-                <p className="mt-3 text-cream-dim">{step.desc}</p>
+                <p className="mt-3 text-ink/65">{step.desc}</p>
               </div>
             </article>
           ))}

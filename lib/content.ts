@@ -127,6 +127,38 @@ export const process = [
   { no: "07", title: "Gift Disbursement", desc: "Last-mile delivery, tracked end to end." },
 ] as const;
 
+export type HowWeWorkStep = {
+  title: string;
+  desc: string;
+  label: string;
+  bg: string;
+  dot: string;
+};
+
+export const howWeWork: HowWeWorkStep[] = [
+  {
+    title: "CONCEPTUALIZE",
+    desc: "Strategy, mechanic and the big creative idea — paired with the right tech stack, reward logic, and gratification design.",
+    label: "1st",
+    bg: "#36678C",
+    dot: "#FFA704",
+  },
+  {
+    title: "BUILD",
+    desc: "Application development, microsites and engagement journeys — while sourcing rewards at scale and on budget.",
+    label: "2nd",
+    bg: "#FFA704",
+    dot: "#C95933",
+  },
+  {
+    title: "DELIVER",
+    desc: "Auditable winner selection, managed end to end — with last-mile gift disbursement, tracked from warehouse to doorstep.",
+    label: "3rd",
+    bg: "#C95933",
+    dot: "#FFA704",
+  },
+];
+
 export type Benefit = { no: string; title: string; desc: string };
 
 export const benefits: Benefit[] = [

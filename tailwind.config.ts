@@ -30,6 +30,11 @@ const config: Config = {
           faint: "rgba(248,235,211,0.4)",
           line: "rgba(248,235,211,0.14)",
         },
+        hww: {
+          blue: "#36678C",
+          amber: "#FFA704",
+          rust: "#C95933",
+        },
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

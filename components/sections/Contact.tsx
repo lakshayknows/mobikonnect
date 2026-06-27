@@ -13,8 +13,8 @@ export default function Contact() {
         className="frame relative overflow-hidden p-8 sm:p-14 lg:p-20"
         style={{
           backgroundImage:
-            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.18) 0%, rgba(38,38,38,0) 55%), radial-gradient(80% 120% at 0% 100%, rgba(208,94,98,0.18) 0%, rgba(38,38,38,0) 55%)",
-          border: "1px solid rgba(248,235,211,0.10)",
+            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.16) 0%, rgba(248,235,211,0) 55%), radial-gradient(80% 120% at 0% 100%, rgba(208,94,98,0.16) 0%, rgba(248,235,211,0) 55%)",
+          border: "1px solid rgba(38,38,38,0.12)",
         }}
       >
         <motion.div
@@ -27,7 +27,7 @@ export default function Contact() {
         <Reveal>
           <div className="flex items-center gap-3">
             <span className="eyebrow text-coral">07</span>
-            <span className="h-px w-8 bg-cream-line" />
+            <span className="h-px w-8 bg-ink/20" />
             <span className="eyebrow">Let&apos;s talk</span>
           </div>
         </Reveal>
@@ -37,19 +37,19 @@ export default function Contact() {
         </h2>
 
         <Reveal delay={0.2}>
-          <p className="mt-8 max-w-md text-cream-dim">
-            Got a brief, a brand or a big idea? Tell us what you want consumers
-            to feel — we&apos;ll engineer the campaign that gets them there.
+          <p className="mt-8 max-w-md text-ink/65">
+            Got a brief, a brand or a big idea? Tell us what you want your
+            audience to feel — we&apos;ll engineer the experience that gets them there.
           </p>
         </Reveal>
 
-        <div className="relative mt-12 flex flex-col gap-10 border-t border-cream-line pt-10 lg:flex-row lg:items-end lg:justify-between">
+        <div className="relative mt-12 flex flex-col gap-10 border-t border-ink/10 pt-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="eyebrow">Email us</p>
             <a
               href={`mailto:${site.email}`}
               data-cursor="hover"
-              className="display link-underline mt-3 block text-3xl text-cream sm:text-5xl"
+              className="display link-underline mt-3 block text-3xl text-ink sm:text-5xl"
             >
               {site.email}
             </a>
@@ -62,7 +62,7 @@ export default function Contact() {
                       key={p}
                       href={`tel:${p.replace(/\s/g, "")}`}
                       data-cursor="hover"
-                      className="block text-cream-dim transition-colors hover:text-cream"
+                      className="block text-ink/65 transition-colors hover:text-ink"
                     >
                       {p}
                     </a>
@@ -74,7 +74,7 @@ export default function Contact() {
                 <a
                   href={`https://${site.domain}`}
                   data-cursor="hover"
-                  className="mt-2 block text-cream-dim transition-colors hover:text-cream"
+                  className="mt-2 block text-ink/65 transition-colors hover:text-ink"
                 >
                   {site.domain}
                 </a>

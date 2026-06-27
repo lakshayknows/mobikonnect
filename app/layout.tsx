@@ -21,28 +21,32 @@ const karla = Karla({
 });
 
 const url = "https://mobikonnect.com";
+const title = "Mobikonnect — Experiential Marketing & Customer Engagement Technology";
 const description =
-  "Mobikonnect is a full-service mobile marketing & advertising agency engineering consumer promotions, loyalty programs, partnerships and contests for India's biggest brands.";
+  "Mobikonnect is India's experiential marketing & customer engagement technology platform. We create measurable consumer, channel-partner and employee engagement experiences — promotions, loyalty, gamification and martech — powered by technology.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(url),
   title: {
-    default: "Mobikonnect — We breathe & live mobile",
+    default: title,
     template: "%s · Mobikonnect",
   },
   description,
   keywords: [
-    "mobile marketing",
-    "advertising agency",
+    "experiential marketing",
+    "customer engagement platform",
     "consumer promotions",
+    "trade promotions",
     "loyalty programs",
-    "contests",
-    "sweepstakes",
+    "rewards & gratification",
+    "gamification",
+    "martech",
+    "WhatsApp & IVR campaigns",
     "Mobikonnect",
     "Parv Communications",
   ],
   openGraph: {
-    title: "Mobikonnect — We breathe & live mobile",
+    title,
     description,
     url,
     siteName: "Mobikonnect",
@@ -50,13 +54,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mobikonnect — We breathe & live mobile",
+    title,
     description,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#262626",
+  themeColor: "#F8EBD3",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

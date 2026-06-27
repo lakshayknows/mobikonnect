@@ -41,9 +41,9 @@ export default function Hero() {
         <motion.div
           style={{ y: yShapeB }}
           aria-hidden
-          className="pointer-events-none absolute right-6 top-24 hidden lg:block"
+          className="pointer-events-none absolute right-10 top-1/2 -mt-16 hidden lg:block"
         >
-          <Monogram className="h-40 w-40 opacity-90 drop-shadow-2xl animate-float" />
+          <Monogram className="h-32 w-32 opacity-90 drop-shadow-2xl animate-float" />
         </motion.div>
         <motion.div
           style={{ y: yShapeB }}
@@ -78,10 +78,16 @@ export default function Hero() {
         <motion.div style={{ y: contentY }} className="relative z-10 py-10">
           <h1 className="display text-mega text-cream">
             <span className="block overflow-hidden">
-              <RevealText text="Engage. Reward." />
+              <RevealText text="Engage." />
             </span>
             <span className="block overflow-hidden">
-              <RevealText text="Retain. Grow." delay={0.15} />
+              <RevealText text="Reward." delay={0.1} />
+            </span>
+            <span className="block overflow-hidden">
+              <RevealText text="Retain." delay={0.2} />
+            </span>
+            <span className="block overflow-hidden">
+              <RevealText text="Grow." delay={0.3} />
             </span>
           </h1>
           <motion.p

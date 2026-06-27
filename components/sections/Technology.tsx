@@ -25,8 +25,8 @@ export default function Technology() {
         className="frame relative bg-white p-7 sm:p-12 lg:p-16"
         style={{
           backgroundImage:
-            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.10) 0%, rgba(248,235,211,0) 55%)",
-          border: "1px solid rgba(38,38,38,0.10)",
+            "radial-gradient(90% 120% at 100% 0%, rgba(9,153,213,0.10) 0%, rgba(255,255,255,0) 55%)",
+          border: "1px solid rgba(0,41,112,0.10)",
         }}
       >
         <SectionHeader

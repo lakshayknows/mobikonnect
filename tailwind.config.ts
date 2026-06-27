@@ -9,23 +9,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Spec-driven brand palette (matched to the MobiKonnect logo)
+        // Paytm-style palette: deep navy text on white, bright-blue panels, red accent.
+        // `ink` is the neutral text/UI navy; `cream` is kept for the blue panels' light text.
         ink: {
-          DEFAULT: "#262626", // site-wide frame color
-          deep: "#1d1d1d",
-          soft: "#2f2f2f",
+          DEFAULT: "#002970", // deep navy — primary text & headings
+          deep: "#001B4D", // darkest — emphasis / hovers
+          soft: "#20336B", // muted navy — softer text
         },
         blue: {
-          DEFAULT: "#0999D5", // hero curved frame color
+          DEFAULT: "#0999D5", // hero curved frame color (bright blue panels)
           deep: "#0a7bac",
           dark: "#06547a",
         },
         coral: {
-          DEFAULT: "#D05E62", // accent color
+          DEFAULT: "#D05E62", // red accent color
           deep: "#b84a4e",
         },
         cream: {
-          DEFAULT: "#F8EBD3", // font color
+          DEFAULT: "#F8EBD3", // light text used on the colored panels
           dim: "rgba(248,235,211,0.66)",
           faint: "rgba(248,235,211,0.4)",
           line: "rgba(248,235,211,0.14)",
@@ -53,7 +54,7 @@ const config: Config = {
       },
       fontSize: {
         // fluid display scale
-        mega: ["clamp(3rem, 11vw, 12rem)", { lineHeight: "0.92", letterSpacing: "-0.02em" }],
+        mega: ["clamp(2.5rem, 9vw, 8.5rem)", { lineHeight: "0.95", letterSpacing: "-0.02em" }],
         giant: ["clamp(2.5rem, 7vw, 6.5rem)", { lineHeight: "0.95", letterSpacing: "-0.02em" }],
         huge: ["clamp(2rem, 5vw, 4.25rem)", { lineHeight: "1.02", letterSpacing: "-0.015em" }],
         big: ["clamp(1.5rem, 3vw, 2.5rem)", { lineHeight: "1.1", letterSpacing: "-0.01em" }],

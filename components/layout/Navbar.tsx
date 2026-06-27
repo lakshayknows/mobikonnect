@@ -27,7 +27,7 @@ export default function Navbar() {
             className={cn(
               "mt-4 flex items-center justify-between rounded-pill px-4 py-2.5 transition-all duration-500 ease-out-expo sm:px-5",
               scrolled
-                ? "border border-ink/10 bg-cream/70 backdrop-blur-xl"
+                ? "border border-ink/10 bg-white/70 backdrop-blur-xl"
                 : "border border-transparent bg-transparent",
             )}
           >
@@ -76,7 +76,7 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[60] bg-cream/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-[60] bg-white/95 backdrop-blur-xl lg:hidden"
           >
             <div className="gutter flex items-center justify-between pt-6">
               <Logo />

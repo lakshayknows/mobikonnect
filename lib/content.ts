@@ -398,6 +398,8 @@ export type CaseStudy = {
   results: string[];
   metrics: { value: string; label: string }[];
   accent: "blue" | "coral";
+  /** Optional real campaign media (gif/video) — overrides the placeholder hero panel when present. */
+  media?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -406,6 +408,7 @@ export const caseStudies: CaseStudy[] = [
     brand: "Cadbury Perk",
     title: "Play & Win",
     category: "Gamified Consumer Promotion",
+    media: "/case-studies/perk-play-and-win.mp4",
     summary:
       "A 90-day obstacle-dodging game joined by missed call or microsite, with leaderboard scoring and a ₹10 lakh mega prize.",
     challenge:
@@ -426,6 +429,7 @@ export const caseStudies: CaseStudy[] = [
     brand: "Dabur",
     title: "Dant Rakshak Sampling",
     category: "Missed-call Sampling",
+    media: "/case-studies/dabur-dant-rakshak.mp4",
     summary:
       "A 45-day sampling drive: a missed call triggered an SMS link to claim a free Dant Rakshak sample, building a first-party database.",
     challenge: "Drive trial of a new oral-care product at national scale with verified fulfilment.",

@@ -49,22 +49,45 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
         <p className="mt-4 text-lg uppercase tracking-label text-cream-dim">{study.brand}</p>
       </header>
 
-      {/* Placeholder hero media — swap for real photo/video later */}
+      {/* Hero media — real campaign asset when available, placeholder otherwise */}
       <section className="gutter pb-16">
-        <div
-          className="frame relative flex aspect-[16/7] items-center justify-center"
-          style={{
-            backgroundImage:
-              study.accent === "coral"
-                ? "linear-gradient(135deg, #D05E62 0%, #b84a4e 100%)"
-                : "linear-gradient(135deg, #0999D5 0%, #0a7bac 100%)",
-          }}
-        >
-          <div className="noise pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
-          <span className="display text-cream/80 text-sm uppercase tracking-label">
-            Campaign film — coming soon
-          </span>
-        </div>
+        {study.media ? (
+          <div className="frame relative aspect-[16/7] overflow-hidden bg-ink-soft">
+            {study.media.endsWith(".mp4") ? (
+              <video
+                src={study.media}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- animated GIF, next/image would freeze it
+              <img
+                src={study.media}
+                alt={`${study.brand} — ${study.title} campaign showcase`}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
+        ) : (
+          <div
+            className="frame relative flex aspect-[16/7] items-center justify-center"
+            style={{
+              backgroundImage:
+                study.accent === "coral"
+                  ? "linear-gradient(135deg, #D05E62 0%, #b84a4e 100%)"
+                  : "linear-gradient(135deg, #0999D5 0%, #0a7bac 100%)",
+            }}
+          >
+            <div className="noise pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
+            <span className="display text-cream/80 text-sm uppercase tracking-label">
+              Campaign film — coming soon
+            </span>
+          </div>
+        )}
       </section>
 
       {/* Metrics */}

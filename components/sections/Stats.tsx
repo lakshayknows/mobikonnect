@@ -18,10 +18,10 @@ export default function Stats() {
         <Reveal>
           <p className="eyebrow text-cream/80">By the numbers</p>
         </Reveal>
-        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
+        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-6 lg:grid-cols-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08} className="relative">
-              <div className="display whitespace-nowrap text-[clamp(1.85rem,3.6vw,3rem)] leading-none text-cream">
+              <div className="display break-words text-[clamp(1.5rem,5vw,3rem)] leading-tight text-cream sm:whitespace-nowrap">
                 <Counter
                   value={s.value}
                   prefix={s.prefix}

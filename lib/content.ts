@@ -10,7 +10,13 @@ export const site = {
   name: "Mobikonnect",
   legal: "Parv Communications Pvt. Ltd.",
   domain: "mobikonnect.com",
-  email: "team@mobikonnect.com",
+  email: "Sales@mobikonnect.com",
+  linkedin: "https://www.linkedin.com/company/mobikonnect/mycompany/",
+  socials: {
+    facebook: "https://www.facebook.com/MobiKonnect",
+    instagram: "https://www.instagram.com/mobikonnect/",
+    twitter: "https://twitter.com/Mobikonnect",
+  },
   // NOTE: phone numbers in the source deck were not machine-readable — update before launch.
   phones: ["+91 99000 77997", "+91 95004 47777"],
   positioning:
@@ -25,12 +31,8 @@ export const site = {
 } as const;
 
 export const nav = [
-  { label: "Solutions", href: "/solutions" },
-  { label: "Industries", href: "/industries" },
-  { label: "Services", href: "/services" },
-  { label: "Technology", href: "/technology" },
+  { label: "What We Do", href: "/what-we-do" },
   { label: "Case Studies", href: "/case-studies" },
-  { label: "Resources", href: "/resources" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ] as const;
@@ -332,22 +334,22 @@ export const howWeWork: HowWeWorkStep[] = [
     title: "ENGAGE",
     desc: "Strategy, mechanic and the big creative idea — paired with the right tech stack, reward logic, and gratification design.",
     label: "1st",
-    bg: "#36678C",
-    dot: "#FFA704",
+    bg: "#0999D5",
+    dot: "#D05E62",
   },
   {
     title: "REWARD",
     desc: "Application development, microsites and engagement journeys — while sourcing rewards at scale and on budget.",
     label: "2nd",
-    bg: "#FFA704",
-    dot: "#C95933",
+    bg: "#0a7bac",
+    dot: "#F8EBD3",
   },
   {
     title: "RETAIN",
     desc: "Auditable winner selection, managed end to end — with last-mile gift disbursement and loyalty that brings audiences back.",
     label: "3rd",
-    bg: "#C95933",
-    dot: "#FFA704",
+    bg: "#06547a",
+    dot: "#D05E62",
   },
 ];
 
@@ -396,99 +398,29 @@ export type CaseStudy = {
   results: string[];
   metrics: { value: string; label: string }[];
   accent: "blue" | "coral";
+  /** Optional real campaign media (gif/video) — overrides the placeholder hero panel when present. */
+  media?: string;
 };
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: "cadbury-oreo-pokemon",
-    brand: "Cadbury Oreo",
-    title: "Pokémon Collect Quest",
+    slug: "perk-play-and-win",
+    brand: "Cadbury Perk",
+    title: "Play & Win",
     category: "Gamified Consumer Promotion",
+    media: "/case-studies/perk-play-and-win.mp4",
     summary:
-      "Shoppers scanned cookies on a microsite to collect 16 Pokémon characters — unlocking a trip to Japan and more.",
+      "A 90-day obstacle-dodging game joined by missed call or microsite, with leaderboard scoring and a ₹10 lakh mega prize.",
     challenge:
-      "Drive trial and repeat purchase among young shoppers in a crowded biscuit category.",
-    objective: "Turn each pack into a reason to come back and collect.",
+      "Drive mass engagement and repeat purchase for Perk with a low-friction, high-reach game.",
+    objective: "Turn every pack into entry to a game worth playing daily.",
     solution:
-      "A QR-led microsite game where scanning packs revealed collectible characters, gamifying repeat purchase toward a mega prize.",
-    techUsed: ["QR platform", "Microsite / PWA", "Reward engine"],
-    results: ["High repeat-scan rate", "Strong organic sharing", "Mega-prize trip awarded"],
+      "Players joined via a missed call or microsite to play an obstacle-dodging game; leaderboard scores decided the winners.",
+    techUsed: ["Missed-call platform", "Microsite", "Leaderboard"],
+    results: ["₹10 lakh mega prize", "1,200 voucher winners", "90-day campaign"],
     metrics: [
-      { value: "16", label: "Characters to collect" },
-      { value: "Japan", label: "Mega prize trip" },
-    ],
-    accent: "blue",
-  },
-  {
-    slug: "mcdonalds-collect-quest",
-    brand: "McDonald's",
-    title: "Collect Quest",
-    category: "App-led Loyalty",
-    summary:
-      "A one-month, app-native collect-and-win journey, simplified to a few taps — driving repeat footfall.",
-    challenge: "Convert app installs into repeat restaurant visits within a tight window.",
-    objective: "Reward frequency and make returning effortless.",
-    solution:
-      "An in-app collect-and-win mechanic reducing entry to a few taps, with instant rewards driving the next visit.",
-    techUsed: ["Mobile app", "Loyalty engine", "Reward platform"],
-    results: ["35,000+ customers engaged", "Lift in repeat footfall", "One-month sprint"],
-    metrics: [
-      { value: "35,000+", label: "Customers engaged" },
-      { value: "1 month", label: "Campaign duration" },
-    ],
-    accent: "coral",
-  },
-  {
-    slug: "perk-take-it-light",
-    brand: "Perk",
-    title: "Take It Light",
-    category: "Missed-call Gamification",
-    summary:
-      "A missed call unlocked a bespoke microsite game collecting Perk chocolates — crowning a ₹10 lac mega winner.",
-    challenge: "Reach a wide, feature-phone audience with a low-friction entry.",
-    objective: "Maximise participation with a zero-cost first step.",
-    solution:
-      "A missed call triggered a personalised microsite game, blending voice reach with a gamified collect mechanic.",
-    techUsed: ["Missed-call platform", "Microsite", "Randomizer"],
-    results: ["1.25L+ entries", "1,601 winners", "₹10 lac mega winner"],
-    metrics: [
-      { value: "1.25L+", label: "Entries" },
-      { value: "1,601", label: "Winners" },
-    ],
-    accent: "blue",
-  },
-  {
-    slug: "itc-race-2-vegas",
-    brand: "ITC · Dream Ride",
-    title: "Race 2 Vegas",
-    category: "Gaming Engagement",
-    summary: "A thrilling racing game with a simplified entry flow — the grand prize a trip to Vegas.",
-    challenge: "Stand out with an engagement format that rewards skill and time-on-experience.",
-    objective: "Drive deep, repeatable play toward an aspirational prize.",
-    solution: "A browser racing game with leaderboard mechanics and a streamlined entry path.",
-    techUsed: ["HTML5 game", "Leaderboard", "Reward engine"],
-    results: ["50,000+ players", "High session depth", "Grand Vegas trip awarded"],
-    metrics: [
-      { value: "50,000+", label: "Players" },
-      { value: "Vegas", label: "Mega prize" },
-    ],
-    accent: "coral",
-  },
-  {
-    slug: "panasonic-shout-to-win",
-    brand: "Panasonic",
-    title: "Shout To Win",
-    category: "Voice + OBD",
-    summary:
-      "Callers shouted “PANASONIC” to score a live decibel reading — the day's loudest won daily prizes. Managed end to end.",
-    challenge: "Create a memorable, shareable voice experience for a product launch.",
-    objective: "Turn a phone call into a playful, competitive moment.",
-    solution: "A voice/OBD platform measured caller decibels in real time and ranked daily winners.",
-    techUsed: ["Voice platform", "OBD / IVR", "Analytics dashboard"],
-    results: ["17,500 valid entries", "Daily winners", "End-to-end managed"],
-    metrics: [
-      { value: "17,500", label: "Valid entries" },
-      { value: "Daily", label: "Winners" },
+      { value: "₹10 lakh", label: "Mega prize" },
+      { value: "1,200", label: "Winners" },
     ],
     accent: "blue",
   },
@@ -497,17 +429,360 @@ export const caseStudies: CaseStudy[] = [
     brand: "Dabur",
     title: "Dant Rakshak Sampling",
     category: "Missed-call Sampling",
+    media: "/case-studies/dabur-dant-rakshak.mp4",
     summary:
-      "A missed call exchanged old toothpaste for a Dant Rakshak sample, delivered within 15 days across India.",
-    challenge: "Drive switching trial at national scale with verified fulfilment.",
+      "A 45-day sampling drive: a missed call triggered an SMS link to claim a free Dant Rakshak sample, building a first-party database.",
+    challenge: "Drive trial of a new oral-care product at national scale with verified fulfilment.",
     objective: "Put a sample in hand and capture first-party data.",
     solution:
-      "A missed-call sampling flow with address capture and tracked last-mile delivery across India.",
-    techUsed: ["Missed-call platform", "Database management", "Fulfilment / logistics"],
-    results: ["15L missed calls", "90,000 samples shipped", "15-day delivery"],
+      "A missed-call number sent an SMS link for sample registration and delivery, with the responding database captured.",
+    techUsed: ["Missed-call gateway", "SMS delivery", "Fulfilment"],
+    results: ["2.5 lakh missed calls", "1,00,000 samples distributed", "First-party database built"],
     metrics: [
-      { value: "15L", label: "Missed calls" },
-      { value: "90,000", label: "Samples shipped" },
+      { value: "2.5L", label: "Missed calls" },
+      { value: "1,00,000", label: "Samples" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "shri-lal-mahal-festival-dhamaka",
+    brand: "Shri Lal Mahal",
+    title: "Festival Dhamaka",
+    category: "Code-based Promotion",
+    summary:
+      "A 45-day festive rice-brand promotion with Mobikwik: scratch-card codes texted in for cash rewards, with a Swift Dzire grand prize.",
+    challenge: "Lift festive-season visibility and sales for the rice brand.",
+    objective: "Reward purchase with instant cash and an aspirational grand prize.",
+    solution:
+      "Consumers texted scratch-card codes to redeem Mobikwik cash, entering a draw for a Maruti Swift Dzire.",
+    techUsed: ["SMS redemption", "Mobikwik wallet"],
+    results: ["Swift Dzire grand prize", "Mobikwik cash rewards", "Higher brand visibility"],
+    metrics: [
+      { value: "Swift Dzire", label: "Grand prize" },
+      { value: "45 days", label: "Duration" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "panasonic-tambola",
+    brand: "Panasonic",
+    title: "Mahaphoneutsav Tambola",
+    category: "Loyalty Game",
+    summary:
+      "A weekly Tambola game where every product purchase earned a ticket for Sunday games — sustaining engagement across the campaign.",
+    challenge: "Sustain repeat purchase and weekly engagement around a product range.",
+    objective: "Make each purchase a ticket to a recurring, live game.",
+    solution:
+      "Buyers registered tickets per purchase and joined weekly Sunday Tambola games for prizes.",
+    techUsed: ["Phone registration", "Game platform"],
+    results: ["10,000+ registered users", "₹8.5 lakh in prizes", "Weekly live games"],
+    metrics: [
+      { value: "10,000+", label: "Registered users" },
+      { value: "₹8.5L", label: "Total prizes" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "mirinda-mobikwik-cashback",
+    brand: "Mirinda",
+    title: "Mobikwik Cashback Offer",
+    category: "Cashback Promotion",
+    summary:
+      "A 90-day beverage promotion: label codes redeemed for ₹10–₹30 Mobikwik wallet cashback, at massive scale.",
+    challenge: "Drive volume and repeat purchase across a wide beverage audience.",
+    objective: "Reward every purchase with instant, low-friction cashback.",
+    solution:
+      "Consumers redeemed under-the-label codes for Mobikwik wallet cashback via a voucher platform.",
+    techUsed: ["Voucher platform", "Wallet integration"],
+    results: ["40 lakh+ participants", "₹10 crore in gift vouchers", "90-day campaign"],
+    metrics: [
+      { value: "40L+", label: "Participants" },
+      { value: "₹10 cr", label: "Vouchers" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "britannia-bread-better",
+    brand: "Britannia",
+    title: "Bread Better toh Offer Better",
+    category: "Code-based Promotion",
+    summary:
+      "A 30-day bread promotion: unique pack codes entered for a daily draw of 50 gold coins, with ₹10 Paytm cashback for everyone.",
+    challenge: "Grow bread sales with a daily reason to buy.",
+    objective: "Guarantee a reward for all while dangling a daily gold prize.",
+    solution:
+      "Consumers entered pack codes for assured ₹10 Paytm cashback and a daily draw for gold coins.",
+    techUsed: ["Code entry", "Paytm integration"],
+    results: ["25% growth in sales", "Daily gold-coin winners", "₹10 cashback for all"],
+    metrics: [
+      { value: "25%", label: "Sales growth" },
+      { value: "30 days", label: "Duration" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "mattel-toy-blast",
+    brand: "Mattel",
+    title: "Toy Blast",
+    category: "Code-based Promotion",
+    summary:
+      "A 60-day toy campaign: packaging codes submitted for daily hampers and a Volkswagen Polo grand prize — winner of two Gold Awards at ACEF 2020.",
+    challenge: "Boost toy sales and stand out with an award-worthy mechanic.",
+    objective: "Reward purchase daily while building toward a flagship prize.",
+    solution:
+      "Consumers submitted packaging codes for daily gift hampers and a grand-prize car draw.",
+    techUsed: ["Code entry", "Cashback redemption"],
+    results: ["Volkswagen Polo grand prize", "Daily ₹9,999 hampers", "2 Gold Awards · ACEF 2020"],
+    metrics: [
+      { value: "VW Polo", label: "Grand prize" },
+      { value: "2 Gold", label: "ACEF 2020 awards" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "panasonic-shout-to-win",
+    brand: "Panasonic",
+    title: "Shout To Win",
+    category: "Voice Engagement",
+    summary:
+      "A 60-day in-store campaign: a missed call triggered a callback where participants shouted “Panasonic” — the loudest each day won.",
+    challenge: "Create a memorable, shareable in-store moment across multi-brand outlets.",
+    objective: "Turn a store visit into a playful, competitive moment.",
+    solution:
+      "A missed call triggered a callback that captured the shout; the loudest entrant each day won a hamper.",
+    techUsed: ["Missed-call & callback", "Voice platform"],
+    results: ["Near-universal store-visitor participation", "Daily gift hampers", "60-day campaign"],
+    metrics: [
+      { value: "Daily", label: "Winners" },
+      { value: "60 days", label: "Duration" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "fortune-vivo-hba1c",
+    brand: "Fortune Vivo",
+    title: "HbA1c Test",
+    category: "Health Activation",
+    summary:
+      "A 60-day health promotion across Delhi NCR and Mumbai with Healthians: product codes redeemed for free HbA1c diabetes tests.",
+    challenge: "Build relevance for a health-positioned oil through tangible benefit.",
+    objective: "Convert purchase into a meaningful health action.",
+    solution:
+      "Consumers redeemed product codes for free HbA1c tests via a Healthians partnership.",
+    techUsed: ["Code redemption", "Partner integration"],
+    results: ["4,000+ HbA1c tests conducted", "Delhi NCR & Mumbai", "Healthians partnership"],
+    metrics: [
+      { value: "4,000+", label: "Health tests" },
+      { value: "2 metros", label: "Regions" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "royal-stag-biggest-fan",
+    brand: "Royal Stag",
+    title: "Are You the Biggest Fan?",
+    category: "Voice + IVR Quiz",
+    summary:
+      "A concert promotion in Delhi and Mumbai: a missed call led to an IVR quiz of three artist questions, with tickets via lucky draw.",
+    challenge: "Drive concert buzz and reward genuine fans.",
+    objective: "Qualify the most engaged fans for free tickets.",
+    solution:
+      "A missed call opened an IVR quiz; correct entrants went into a lucky draw for concert tickets.",
+    techUsed: ["Missed-call gateway", "IVR quiz"],
+    results: ["10,000+ users registered", "500 free concert tickets", "Delhi & Mumbai"],
+    metrics: [
+      { value: "10,000+", label: "Registrations" },
+      { value: "500", label: "Concert tickets" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "britannia-khao-world-cup-jao",
+    brand: "Britannia",
+    title: "Khao World Cup Jao",
+    category: "SMS Engagement",
+    summary:
+      "A 2019 Cricket World Cup campaign: pack codes texted in accumulated “runs”, with centuries earning vouchers and World Cup tickets.",
+    challenge: "Ride World Cup fever to drive repeat purchase at huge scale.",
+    objective: "Reward accumulation and gratify with cricket-themed prizes.",
+    solution:
+      "Consumers texted pack codes to build “runs”; milestones unlocked vouchers, with tickets and durables as top prizes.",
+    techUsed: ["SMS code submission", "Reward engine"],
+    results: ["2.7 million registered users", "120 World Cup tickets", "TVs & motorcycles awarded"],
+    metrics: [
+      { value: "2.7M", label: "Registered users" },
+      { value: "120", label: "World Cup tickets" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "oreo-red-velvet-launch",
+    brand: "OREO",
+    title: "Red Velvet India Launch",
+    category: "Retailer Activation",
+    summary:
+      "A metro retailer launch: retailers registered on a microsite to receive automated, personalised animated videos to share.",
+    challenge: "Land a new variant with retailer advocacy in metro markets.",
+    objective: "Turn retailers into amplifiers at launch.",
+    solution:
+      "Retailers registered on a microsite that auto-generated personalised animated videos for social sharing.",
+    techUsed: ["Microsite portal", "Personalised video"],
+    results: ["3,500+ retailers registered", "Personalised video at scale", "Metro rollout"],
+    metrics: [
+      { value: "3,500+", label: "Retailers" },
+      { value: "Metros", label: "Coverage" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "emami-gold-rush",
+    brand: "Emami Fair and Handsome",
+    title: "Gold Rush",
+    category: "Retailer Loyalty",
+    summary:
+      "A 60-day retailer-exclusive promotion: scratch-card codes from product boxes texted in for gold and silver coin rewards.",
+    challenge: "Secure retailer push and shelf priority for the brand.",
+    objective: "Reward the trade for stocking and selling.",
+    solution:
+      "Retailers texted scratch-card codes from boxes to win gold and silver coins.",
+    techUsed: ["SMS entry", "Reward fulfilment"],
+    results: ["24,700+ retailers registered", "200 gold + 600 silver coins", "60-day campaign"],
+    metrics: [
+      { value: "24,700+", label: "Retailers" },
+      { value: "800", label: "Coin winners" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "maggi-pazzta-trips",
+    brand: "Nestlé Maggi",
+    title: "Pazzta — Trip to Italy & Spain",
+    category: "SMS Engagement",
+    summary:
+      "Two consecutive 60-day campaigns: batch codes from packs texted in for all-expenses-paid trips to Italy and Spain, plus merchandise.",
+    challenge: "Drive trial and repeat for Pazzta with aspirational travel.",
+    objective: "Make pasta packs a passport to Europe.",
+    solution:
+      "Consumers texted batch codes to enter for international trips and merchandise; the concept was relaunched on its success.",
+    techUsed: ["SMS gateway", "Reward engine"],
+    results: ["All-expenses trips to Italy & Spain", "Relaunched on success", "Merchandise prizes"],
+    metrics: [
+      { value: "Italy & Spain", label: "Mega prizes" },
+      { value: "2 × 60 days", label: "Campaigns" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "mahindra-bolero-super-stars",
+    brand: "Mahindra",
+    title: "Bolero Super Stars Award Programme 2019",
+    category: "Rural Recognition",
+    summary:
+      "A rural recognition programme (starting in Rajasthan) selecting standout tractor owners via survey data — honoured at village, block and state levels.",
+    challenge: "Deepen loyalty among rural Bolero owners in remote regions.",
+    objective: "Recognise and celebrate exemplary owners at scale.",
+    solution:
+      "Pre-filled survey data identified award-worthy owners, recognised across three tiers, with JWT and PwC as partners.",
+    techUsed: ["Survey systems", "Data analytics"],
+    results: ["Village-to-state recognition", "Partnered with JWT & PwC", "Stronger customer loyalty"],
+    metrics: [
+      { value: "3 tiers", label: "Recognition levels" },
+      { value: "Rajasthan+", label: "Rollout" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "jack-and-jones-inflight",
+    brand: "Jack & Jones",
+    title: "Inflight Promotion",
+    category: "WhatsApp Engagement",
+    summary:
+      "A 30-day in-flight magazine campaign: readers messaged a promoted WhatsApp number to receive a ₹500 discount coupon.",
+    challenge: "Convert a captive, premium in-flight audience into store visits.",
+    objective: "Bridge a print touchpoint to a digital reward.",
+    solution:
+      "A magazine ad prompted a WhatsApp message that delivered a ₹500 discount coupon.",
+    techUsed: ["WhatsApp messaging", "Digital vouchers"],
+    results: ["~10,000 users targeted", "₹500 discount coupons", "30-day campaign"],
+    metrics: [
+      { value: "~10,000", label: "Users targeted" },
+      { value: "₹500", label: "Coupon value" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "kohinoor-asli-bharosa",
+    brand: "Kohinoor Rice",
+    title: "Asli Bharose Ka Asli Tyohaar",
+    category: "Code-based Promotion",
+    summary:
+      "A 60-day Gujarat-focused loyalty campaign: pack codes texted in for auditor-selected wins including ₹1 lakh solitaire pendants and daily gold coins.",
+    challenge: "Build festive trust and loyalty in a key regional market.",
+    objective: "Reward purchase with credible, audited prizes.",
+    solution:
+      "Consumers texted pack codes; an external auditor selected winners of solitaire pendants and daily gold coins.",
+    techUsed: ["SMS code submission", "Audited draws"],
+    results: ["15,000+ registered participants", "₹1 lakh solitaire pendants", "Daily gold coins"],
+    metrics: [
+      { value: "15,000+", label: "Participants" },
+      { value: "₹1 lakh", label: "Top prize" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "nescafe-buy-and-fly",
+    brand: "Nescafé",
+    title: "Buy and Fly Bonanza",
+    category: "SMS Engagement",
+    summary:
+      "A 60-day pan-India campaign: 200g pack codes texted to an external auditor for trips to Thailand and Paris, plus iPhones, TVs and more.",
+    challenge: "Drive volume on larger packs nationwide.",
+    objective: "Reward bigger baskets with aspirational travel.",
+    solution:
+      "Consumers texted 200g pack codes to an audited draw for international trips and premium gadgets.",
+    techUsed: ["SMS redemption", "External audit"],
+    results: ["8 lakh+ registered users", "Trips to Thailand & Paris", "iPhones, TVs & gold coins"],
+    metrics: [
+      { value: "8L+", label: "Registered users" },
+      { value: "Thailand & Paris", label: "Mega trips" },
+    ],
+    accent: "coral",
+  },
+  {
+    slug: "fortune-selfie-with-akshay",
+    brand: "Fortune Sunflower Oil",
+    title: "Selfie With Akshay",
+    category: "WhatsApp Activation",
+    summary:
+      "A 30-day Kolkata campaign: consumers sent a selfie with the product via WhatsApp for a chance to meet Akshay Kumar.",
+    challenge: "Spark regional engagement with star power.",
+    objective: "Turn purchase into shareable, celebrity-led participation.",
+    solution:
+      "Consumers WhatsApp'd a selfie with the product to enter for a meet-and-greet with the star.",
+    techUsed: ["WhatsApp entry", "Verification"],
+    results: ["3,500 registered participants", "Meet-and-greet with the star", "Kolkata focus"],
+    metrics: [
+      { value: "3,500", label: "Participants" },
+      { value: "30 days", label: "Duration" },
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "bournvita-breakfast-in-paris",
+    brand: "Cadbury Bournvita",
+    title: "Breakfast in Paris",
+    category: "SMS Engagement",
+    summary:
+      "A 60-day pan-India campaign: pack codes texted to an external auditor for a trip to Paris, with daily TVS Jupiter scooter giveaways.",
+    challenge: "Drive household repeat purchase at national scale.",
+    objective: "Reward daily with a flagship travel grand prize.",
+    solution:
+      "Consumers texted pack codes to an audited draw for a Paris trip, with daily scooter winners along the way.",
+    techUsed: ["SMS redemption", "External audit"],
+    results: ["1.2 million+ registered users", "Trip to Paris grand prize", "Daily TVS Jupiter scooters"],
+    metrics: [
+      { value: "1.2M+", label: "Registered users" },
+      { value: "Paris", label: "Grand prize" },
     ],
     accent: "coral",
   },
@@ -571,3 +846,103 @@ export const clients = [
   "Fena",
   "Perk",
 ] as const;
+
+/* ───────────────────────── About page ───────────────────────── */
+
+export const aboutPage = {
+  eyebrow: "About Mobikonnect",
+  title: "We engineer engagement people remember — and act on.",
+  highlight: ["engagement", "act"],
+  intro:
+    "For 20+ years we've helped India's biggest brands turn audiences into participants — blending experiential marketing with engagement technology built end to end, in-house.",
+  /** Long paragraph rendered with the gradient scroll-reveal. */
+  story:
+    "Mobikonnect is India's experiential marketing and customer engagement technology platform. We design and run measurable campaigns that engage, reward and retain consumers, channel partners and employees. From the first creative idea to the last gift delivered, we build the mechanic, the martech and the rewards in one place — so every interaction is trackable, every winner is auditable, and every rupee ties back to ROI. We don't just launch promotions. We build experiences people remember, powered by technology that proves it worked.",
+  values: [
+    {
+      title: "Experiences",
+      desc: "Engagement people remember — and act on — across physical and digital touchpoints.",
+    },
+    {
+      title: "Technology",
+      desc: "Omnichannel martech built in-house, end to end — voice, WhatsApp, QR, video and AI.",
+    },
+    {
+      title: "Measurable",
+      desc: "Every interaction tracked to participation, redemption and ROI — no black boxes.",
+    },
+    {
+      title: "Ownership",
+      desc: "One team from mechanic to fulfilment — strategy, build, rewards and last-mile delivery.",
+    },
+  ],
+  /** About-specific proof points (independent of the homepage stats). */
+  milestones: [
+    { value: "20+", label: "Years engineering engagement" },
+    { value: "100+", label: "Brands & campaigns delivered" },
+    { value: "15L+", label: "Participants reached in a single campaign" },
+    { value: "End-to-end", label: "Strategy · martech · rewards · fulfilment" },
+  ],
+} as const;
+
+/* ───────────────────────── Founders ───────────────────────── */
+
+export type Founder = {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+};
+
+export const founders: Founder[] = [
+  {
+    name: "Abhishek Khurana",
+    role: "Co-Founder",
+    bio: "A commerce graduate with a management degree and 18+ years across strategic alliances, brand partnerships and enterprise sales — he leads how Mobikonnect builds and scales engagement programs for India's biggest brands.",
+    image: "/team/founder-1.jpg",
+  },
+  {
+    name: "Shubhranshu Ahuja",
+    role: "Co-Founder",
+    bio: "An IMT MBA who has worked with Dabur, Godfrey Phillips, Nestlé, Johnson & Johnson and ITC — he shapes the CRM, loyalty and consumer-engagement platforms at the core of every campaign.",
+    image: "/team/founder-2.jpg",
+  },
+];
+
+/* ───────────────────────── Team photos (about gallery) ───────────────────────── */
+
+export const teamPhotos: string[] = Array.from(
+  { length: 31 },
+  (_, i) => `/team/team-${String(i + 1).padStart(2, "0")}.jpg`,
+);
+
+/* ───────────────────────── FAQs (folded into About) ───────────────────────── */
+
+export type Faq = { q: string; a: string };
+
+export const faqs: Faq[] = [
+  {
+    q: "What exactly does Mobikonnect do?",
+    a: "We design and run experiential marketing and customer-engagement campaigns — promotions, loyalty, gamification and activations — powered by engagement technology we build in-house. From the first idea to the last gift delivered, it's one team, end to end.",
+  },
+  {
+    q: "Who do your campaigns engage?",
+    a: "Consumers, channel partners (dealers, retailers, distributors), influencers and tradespeople, and employees. We tailor the mechanic and reward economics to each audience.",
+  },
+  {
+    q: "Do you only handle the technology, or the whole campaign?",
+    a: "The whole campaign. Strategy and creative, the martech platform, reward sourcing and fulfilment, winner declaration and last-mile delivery — all under one roof, fully measurable.",
+  },
+  {
+    q: "How do you measure results?",
+    a: "Every campaign ships with live dashboards. We track participation, redemption and ROI in real time — no black boxes, and winner selection is auditable.",
+  },
+  {
+    q: "Which channels can a campaign run across?",
+    a: "Voice and IVR, WhatsApp, SMS, QR and unique codes, microsites and apps, interactive video, AR/WebAR — wired to a reward engine and analytics so the experience is omnichannel.",
+  },
+  {
+    q: "How do we get started?",
+    a: "Tell us the business outcome you're after — more repeat purchase, a stronger launch, rewarded partners, motivated teams. We'll engineer the experience that gets you there.",
+  },
+];

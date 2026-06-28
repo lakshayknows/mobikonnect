@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logoImg from "@/logo.png";
+import logoHorizontal from "@/assets/image.png";
 import { cn } from "@/lib/cn";
 
 /**
@@ -18,14 +19,14 @@ export function Monogram({ className }: { className?: string }) {
   );
 }
 
-/** Full lockup: Displays the Mobikonnect brand logo image. */
+/** Full lockup: Displays the Mobikonnect horizontal brand logo image. */
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("relative flex items-center select-none", className)}>
+    <div className={cn("relative flex h-10 items-center select-none", className)}>
       <Image
-        src={logoImg}
+        src={logoHorizontal}
         alt="Mobikonnect logo"
-        className="h-10 w-auto object-contain"
+        className="h-full w-auto object-contain"
         priority
       />
     </div>

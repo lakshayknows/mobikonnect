@@ -182,7 +182,7 @@ export default function HowWeWork() {
       style={{ height: "500vh" }}
     >
       {/* Sticky viewport — fills screen, clips content */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-white">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-ink">
         {/* ── Intro Card (always behind) ── */}
         <div className="absolute inset-x-0 w-full top-6 sm:top-8 bottom-3 sm:bottom-4 flex flex-col z-[2]">
           {/* Header — sits above Content Card top edge */}
@@ -192,19 +192,19 @@ export default function HowWeWork() {
 
           {/* Content Card — margins applied directly here */}
           <div
-            className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 relative z-10 border border-ink/10"
-            style={{ backgroundColor: "#ffffff" }}
+            className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 relative z-10"
+            style={{ backgroundColor: "#2f2f2f" }}
           >
             {/* Noise texture overlay */}
             <div className="noise pointer-events-none absolute inset-0 rounded-[30px] opacity-[0.04] mix-blend-overlay" />
 
             <div className="relative z-10">
               {/* Decorative corner dots */}
-              <div className="absolute top-6 left-6 h-3 w-3 rounded-full bg-ink/25" />
-              <div className="absolute top-6 right-6 h-3 w-3 rounded-full bg-ink/25" />
+              <div className="absolute top-6 left-6 h-3 w-3 rounded-full bg-cream/40" />
+              <div className="absolute top-6 right-6 h-3 w-3 rounded-full bg-cream/40" />
 
               <h2
-                className="font-display font-extrabold text-ink uppercase leading-[0.92] tracking-tight"
+                className="font-display font-extrabold text-cream uppercase leading-[0.92] tracking-tight"
                 style={{ fontSize: "clamp(2.2rem, 7.5vw, 7rem)" }}
               >
                 BEST CAMPAIGNS<br />

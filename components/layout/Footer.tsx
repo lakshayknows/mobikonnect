@@ -1,69 +1,109 @@
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
 import { nav, site } from "@/lib/content";
+import { RevealText } from "@/components/ui/Reveal";
+import MagneticButton from "@/components/ui/MagneticButton";
+
+const socials = [
+  { label: "Instagram", href: site.socials.instagram },
+  { label: "Facebook", href: site.socials.facebook },
+  { label: "Twitter", href: site.socials.twitter },
+  { label: "LinkedIn", href: site.linkedin },
+];
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="gutter pb-10">
-      <div className="rounded-frame border border-ink/10 bg-white p-8 sm:p-12">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-sm">
-            <Logo />
-            <p className="mt-5 text-ink/65">{site.tagline}</p>
-            <p className="mt-2 text-sm text-ink/45">
-              India&apos;s experiential marketing &amp; customer engagement technology platform.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
-            <div>
-              <p className="eyebrow">Explore</p>
-              <ul className="mt-4 space-y-2.5">
-                {nav.map((n) => (
-                  <li key={n.href}>
-                    <Link
-                      href={n.href}
-                      data-cursor="hover"
-                      className="text-sm text-ink/65 transition-colors hover:text-ink"
-                    >
-                      {n.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <p className="eyebrow">Contact</p>
-              <ul className="mt-4 space-y-2.5 text-sm text-ink/65">
-                <li>
-                  <a href={`mailto:${site.email}`} className="transition-colors hover:text-ink">
-                    {site.email}
-                  </a>
-                </li>
-                {site.phones.map((p) => (
-                  <li key={p}>
-                    <a href={`tel:${p.replace(/\s/g, "")}`} className="transition-colors hover:text-ink">
-                      {p}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <p className="eyebrow">Online</p>
-              <ul className="mt-4 space-y-2.5 text-sm text-ink/65">
-                <li>
-                  <a href={`https://${site.domain}`} className="transition-colors hover:text-ink">
-                    {site.domain}
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <div className="rounded-frame border border-cream-line bg-ink-soft/30 px-7 py-14 sm:px-12 sm:py-20">
+        {/* Oversized CTA */}
+        <div className="text-center">
+          <p className="eyebrow text-coral">Let&apos;s talk</p>
+          <h2 className="display text-giant lg:text-mega mt-5 mx-auto max-w-[14ch]">
+            <RevealText
+              text="Let's build something people remember."
+              highlight={["remember."]}
+            />
+          </h2>
+          <div className="mt-10 flex justify-center">
+            <MagneticButton href={`mailto:${site.email}`} variant="coral">
+              {site.email}
+            </MagneticButton>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-ink/10 pt-6 text-sm text-ink/45 sm:flex-row sm:items-center sm:justify-between">
+        {/* Link columns */}
+        <div className="mt-20 grid grid-cols-2 gap-10 border-t border-cream-line pt-12 sm:grid-cols-4">
+          <div className="col-span-2 sm:col-span-1">
+            <p className="text-cream-dim">{site.tagline}</p>
+            <p className="mt-2 max-w-xs text-sm text-cream-faint">
+              India&apos;s experiential marketing &amp; customer engagement
+              technology platform.
+            </p>
+          </div>
+
+          <div>
+            <p className="eyebrow">Explore</p>
+            <ul className="mt-4 space-y-2.5">
+              {nav.map((n) => (
+                <li key={n.href}>
+                  <Link
+                    href={n.href}
+                    data-cursor="hover"
+                    className="text-sm text-cream-dim transition-colors hover:text-cream"
+                  >
+                    {n.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow">Contact</p>
+            <ul className="mt-4 space-y-2.5 text-sm text-cream-dim">
+              <li>
+                <a
+                  href={`mailto:${site.email}`}
+                  className="transition-colors hover:text-cream"
+                >
+                  {site.email}
+                </a>
+              </li>
+              {site.phones.map((p) => (
+                <li key={p}>
+                  <a
+                    href={`tel:${p.replace(/\s/g, "")}`}
+                    className="transition-colors hover:text-cream"
+                  >
+                    {p}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow">Social</p>
+            <ul className="mt-4 space-y-2.5 text-sm text-cream-dim">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cursor="hover"
+                    className="transition-colors hover:text-cream"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="mt-12 flex flex-col gap-4 border-t border-cream-line pt-6 text-sm text-cream-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {site.legal}. All rights reserved.
           </p>

@@ -3,6 +3,7 @@ import { Montserrat, Karla } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Cursor from "@/components/layout/Cursor";
+import Splash from "@/components/layout/Splash";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -60,13 +61,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
+  themeColor: "#262626",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${karla.variable}`}>
       <body>
+        <Splash />
         <Cursor />
         <SmoothScroll>
           <Navbar />

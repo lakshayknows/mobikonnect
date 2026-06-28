@@ -2,8 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
-import { Monogram } from "@/components/ui/Logo";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { RevealText } from "@/components/ui/Reveal";
 import { Marquee } from "@/components/ui/Marquee";
 import { clients, site } from "@/lib/content";
@@ -40,30 +39,14 @@ export default function Hero() {
         />
         <motion.div
           style={{ y: yShapeB }}
-          aria-hidden
-          className="pointer-events-none absolute right-10 top-1/2 -mt-16 hidden lg:block"
-        >
-          <Monogram className="h-32 w-32 opacity-90 drop-shadow-2xl animate-float" />
-        </motion.div>
-        <motion.div
-          style={{ y: yShapeB }}
           className="pointer-events-none absolute bottom-28 right-14 hidden h-24 w-24 rounded-full border border-cream/40 lg:block animate-spin-slow"
         />
 
         {/* top row */}
         <motion.div
           style={{ opacity: fade }}
-          className="relative z-10 flex items-center justify-between"
+          className="relative z-10 flex items-center justify-end"
         >
-          <motion.span
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease, delay: 0.1 }}
-            className="inline-flex items-center gap-2 rounded-pill border border-cream/30 bg-cream/10 px-4 py-2 text-xs text-cream backdrop-blur-sm"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Experiential · Loyalty · Engagement Technology
-          </motion.span>
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -106,7 +89,7 @@ export default function Hero() {
             className="mt-10 flex flex-wrap items-center gap-3"
           >
             <a
-              href="#contact"
+              href="/contact"
               data-cursor="hover"
               className="group inline-flex items-center gap-2 rounded-pill bg-cream px-7 py-4 text-sm font-medium text-ink transition-colors duration-300 hover:bg-white"
             >

@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
 import { TagCloud } from "@/components/ui/Cards";
 import { Reveal } from "@/components/ui/Reveal";
-import Contact from "@/components/sections/Contact";
 import { caseStudies } from "@/lib/content";
 
 export function generateStaticParams() {
@@ -37,42 +36,67 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           <Link
             href="/case-studies"
             data-cursor="hover"
-            className="inline-flex items-center gap-2 text-sm text-ink/60 transition-colors hover:text-ink"
+            className="inline-flex items-center gap-2 text-sm text-cream-dim transition-colors hover:text-cream"
           >
             <ArrowLeft className="h-4 w-4" />
             All case studies
           </Link>
         </Reveal>
         <p className="eyebrow mt-8">{study.category}</p>
-        <h1 className="display mt-4 text-giant max-w-[16ch]">{study.title}</h1>
-        <p className="mt-4 text-lg uppercase tracking-label text-ink/55">{study.brand}</p>
+        <h1 className="display mt-4 text-giant lg:text-mega max-w-[16ch] uppercase tracking-[-0.02em]">
+          {study.title}
+        </h1>
+        <p className="mt-4 text-lg uppercase tracking-label text-cream-dim">{study.brand}</p>
       </header>
 
-      {/* Placeholder hero media — swap for real photo/video later */}
+      {/* Hero media — real campaign asset when available, placeholder otherwise */}
       <section className="gutter pb-16">
-        <div
-          className="frame relative flex aspect-[16/7] items-center justify-center"
-          style={{
-            backgroundImage:
-              study.accent === "coral"
-                ? "linear-gradient(135deg, #D05E62 0%, #b84a4e 100%)"
-                : "linear-gradient(135deg, #0999D5 0%, #0a7bac 100%)",
-          }}
-        >
-          <div className="noise pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
-          <span className="display text-cream/80 text-sm uppercase tracking-label">
-            Campaign film — coming soon
-          </span>
-        </div>
+        {study.media ? (
+          <div className="frame relative aspect-[16/7] overflow-hidden bg-ink-soft">
+            {study.media.endsWith(".mp4") ? (
+              <video
+                src={study.media}
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- animated GIF, next/image would freeze it
+              <img
+                src={study.media}
+                alt={`${study.brand} — ${study.title} campaign showcase`}
+                className="h-full w-full object-cover"
+              />
+            )}
+          </div>
+        ) : (
+          <div
+            className="frame relative flex aspect-[16/7] items-center justify-center"
+            style={{
+              backgroundImage:
+                study.accent === "coral"
+                  ? "linear-gradient(135deg, #D05E62 0%, #b84a4e 100%)"
+                  : "linear-gradient(135deg, #0999D5 0%, #0a7bac 100%)",
+            }}
+          >
+            <div className="noise pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
+            <span className="display text-cream/80 text-sm uppercase tracking-label">
+              Campaign film — coming soon
+            </span>
+          </div>
+        )}
       </section>
 
       {/* Metrics */}
       <section className="gutter pb-16">
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
           {study.metrics.map((m) => (
-            <div key={m.label} className="rounded-card border border-ink/10 bg-white p-6">
+            <div key={m.label} className="rounded-card border border-cream-line bg-ink-soft/40 p-6">
               <div className="display text-3xl sm:text-4xl">{m.value}</div>
-              <div className="mt-2 text-sm text-ink/65">{m.label}</div>
+              <div className="mt-2 text-sm text-cream-dim">{m.label}</div>
             </div>
           ))}
         </div>
@@ -80,11 +104,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* Challenge / Objective / Solution */}
       <section className="gutter pb-16">
-        <div className="grid gap-px overflow-hidden rounded-frame border border-ink/10 bg-ink/10 lg:grid-cols-3">
+        <div className="grid gap-px overflow-hidden rounded-frame border border-cream-line bg-cream-line lg:grid-cols-3">
           {blocks.map((b) => (
-            <div key={b.label} className="bg-white p-8 sm:p-10">
+            <div key={b.label} className="bg-ink p-8 sm:p-10">
               <p className="eyebrow text-coral">{b.label}</p>
-              <p className="mt-4 text-ink/75">{b.body}</p>
+              <p className="mt-4 text-cream-dim">{b.body}</p>
             </div>
           ))}
         </div>
@@ -103,7 +127,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             <p className="eyebrow">Results</p>
             <ul className="mt-6 space-y-3">
               {study.results.map((r) => (
-                <li key={r} className="flex items-start gap-3 text-ink/75">
+                <li key={r} className="flex items-start gap-3 text-cream-dim">
                   <Check className="mt-0.5 h-5 w-5 shrink-0 text-coral" />
                   {r}
                 </li>
@@ -112,8 +136,6 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </div>
         </div>
       </section>
-
-      <Contact />
     </>
   );
 }

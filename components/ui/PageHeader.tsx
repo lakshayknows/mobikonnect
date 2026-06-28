@@ -16,19 +16,20 @@ export function PageHeader({
   intro?: string;
 }) {
   return (
-    <header className="gutter pt-36 pb-12 sm:pt-44 sm:pb-16">
+    <header className="gutter pt-36 pb-12 text-center sm:pt-44 sm:pb-16">
       <Reveal>
-        <div className="flex items-center gap-3">
-          <span className="h-px w-8 bg-ink/20" />
+        <div className="flex items-center justify-center gap-3">
+          <span className="h-px w-8 bg-cream-line" />
           <span className="eyebrow">{eyebrow}</span>
+          <span className="h-px w-8 bg-cream-line" />
         </div>
       </Reveal>
-      <h1 className="display text-giant mt-6 max-w-[16ch]">
+      <h1 className="display text-giant lg:text-mega mt-6 max-w-[18ch] mx-auto uppercase tracking-[-0.02em]">
         <RevealText text={title} highlight={highlight} />
       </h1>
       {intro && (
         <Reveal delay={0.15}>
-          <p className="mt-8 max-w-2xl text-lg text-ink/65">{intro}</p>
+          <p className="mt-8 max-w-2xl mx-auto text-lg text-cream-dim">{intro}</p>
         </Reveal>
       )}
     </header>

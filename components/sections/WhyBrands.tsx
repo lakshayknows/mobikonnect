@@ -17,7 +17,7 @@ export default function WhyBrands() {
             highlight={["your", "brand."]}
           />
           <Reveal delay={0.15}>
-            <p className="mt-6 max-w-sm text-ink/65">
+            <p className="mt-6 max-w-sm text-cream-dim">
               Every experience we run is engineered to do five things for the
               brands we partner with.
             </p>
@@ -32,16 +32,16 @@ export default function WhyBrands() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "0px 0px -12% 0px" }}
               transition={{ duration: 0.7, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="group grid grid-cols-[auto_1fr] gap-6 border-t border-ink/10 py-8 last:border-b sm:gap-10"
+              className="group grid grid-cols-[auto_1fr] gap-6 border-t border-cream-line py-8 last:border-b sm:gap-10"
             >
-              <span className="display text-3xl text-ink/35 transition-colors duration-500 group-hover:text-coral sm:text-4xl">
+              <span className="display text-3xl text-cream-faint transition-colors duration-500 group-hover:text-coral sm:text-4xl">
                 {b.no}
               </span>
               <div>
                 <h3 className="display text-2xl transition-transform duration-500 group-hover:translate-x-1 sm:text-3xl">
                   {b.title}
                 </h3>
-                <p className="mt-3 max-w-xl text-ink/65">{b.desc}</p>
+                <p className="mt-3 max-w-xl text-cream-dim">{b.desc}</p>
               </div>
             </motion.li>
           ))}

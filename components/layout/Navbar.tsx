@@ -15,13 +15,8 @@ export default function Navbar() {
       <header className="fixed inset-x-0 top-0 z-50">
         <div className="gutter">
           <div className="mt-5 flex items-center justify-between sm:mt-6">
-            <Link
-              href="/"
-              aria-label="Mobikonnect home"
-              data-cursor="hover"
-              className="inline-flex items-center rounded-xl bg-cream px-2.5 py-1.5 shadow-lg ring-1 ring-black/5 transition-transform duration-300 hover:scale-[1.03] sm:px-3.5 sm:py-2"
-            >
-              <Logo className="h-8 sm:h-12" />
+            <Link href="/" aria-label="Mobikonnect home" data-cursor="hover">
+              <Logo className="h-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-14" />
             </Link>
 
             <div className="flex items-center gap-4 sm:gap-6">

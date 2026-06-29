@@ -34,7 +34,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
       <header className="gutter pt-36 pb-12 sm:pt-44">
         <Reveal>
           <Link
-            href="/case-studies"
+            href="/CaseStudies"
             data-cursor="hover"
             className="inline-flex items-center gap-2 text-sm text-cream-dim transition-colors hover:text-cream"
           >

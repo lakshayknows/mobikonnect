@@ -94,7 +94,7 @@ export function CaseCard({ study, index = 0 }: { study: CaseStudy; index?: numbe
       whileHover={{ y: -6 }}
     >
       <Link
-        href={`/case-studies/${study.slug}`}
+        href={`/CaseStudies/${study.slug}`}
         data-cursor="hover"
         className={cn(
           "group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-frame border p-8 transition-colors duration-500 sm:p-10",

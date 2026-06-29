@@ -18,7 +18,7 @@ export default function Footer() {
         {/* Oversized CTA */}
         <div className="text-center">
           <p className="eyebrow text-coral">Let&apos;s talk</p>
-          <h2 className="display text-giant lg:text-mega mt-5 mx-auto max-w-[14ch]">
+          <h2 className="display text-[clamp(2rem,7vw,6.5rem)] mt-5 mx-auto max-w-[14ch] break-words">
             <RevealText
               text="Let's build something people remember."
               highlight={["remember."]}
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${site.email}`}
-                  className="transition-colors hover:text-cream"
+                  className="break-all transition-colors hover:text-cream"
                 >
                   {site.email}
                 </a>

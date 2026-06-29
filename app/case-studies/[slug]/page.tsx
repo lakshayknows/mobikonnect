@@ -43,7 +43,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
           </Link>
         </Reveal>
         <p className="eyebrow mt-8">{study.category}</p>
-        <h1 className="display mt-4 text-giant lg:text-mega max-w-[16ch] uppercase tracking-[-0.02em]">
+        <h1 className="display mt-4 text-[clamp(2rem,7vw,7rem)] max-w-[16ch] break-words uppercase tracking-[-0.02em]">
           {study.title}
         </h1>
         <p className="mt-4 text-lg uppercase tracking-label text-cream-dim">{study.brand}</p>

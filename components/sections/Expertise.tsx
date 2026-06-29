@@ -31,7 +31,7 @@ export default function Expertise() {
               whileHover={{ y: -6 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               data-cursor="hover"
-              className="group relative flex h-full min-h-[300px] flex-col justify-between rounded-card border border-cream-line bg-ink-soft/40 p-7 transition-colors duration-500 hover:border-coral/50 hover:bg-ink-soft"
+              className="group relative flex h-full min-h-[300px] flex-col justify-between rounded-card border border-cream-line bg-ink-soft/40 p-7 transition-colors duration-300 hover:border-coral hover:bg-coral/[0.08]"
             >
               <div className="flex items-start justify-between">
                 <span className="display text-sm text-cream-faint">{e.no}</span>

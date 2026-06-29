@@ -35,7 +35,7 @@ export function SectionHeader({
       </Reveal>
       <h2
         className={cn(
-          "display text-giant mt-5 max-w-[20ch] uppercase tracking-[-0.02em]",
+          "display text-[clamp(1.9rem,6vw,6.5rem)] mt-5 max-w-[20ch] break-words uppercase tracking-[-0.02em]",
           align === "center" && "mx-auto",
           titleClassName,
         )}

@@ -24,7 +24,7 @@ export function PageHeader({
           <span className="h-px w-8 bg-cream-line" />
         </div>
       </Reveal>
-      <h1 className="display text-giant lg:text-mega mt-6 max-w-[18ch] mx-auto uppercase tracking-[-0.02em]">
+      <h1 className="display text-[clamp(2rem,7vw,7rem)] mt-6 max-w-[18ch] mx-auto break-words uppercase tracking-[-0.02em]">
         <RevealText text={title} highlight={highlight} />
       </h1>
       {intro && (

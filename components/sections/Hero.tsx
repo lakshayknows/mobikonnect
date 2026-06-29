@@ -77,7 +77,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease, delay: 0.6 }}
-              className="max-w-xl text-sm text-cream/90 sm:text-base lg:ml-auto lg:text-justify"
+              className="max-w-xl text-base text-cream/90 sm:text-lg lg:ml-auto lg:text-justify"
             >
               {site.intro}
             </motion.p>

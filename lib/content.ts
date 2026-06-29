@@ -17,8 +17,8 @@ export const site = {
     instagram: "https://www.instagram.com/mobikonnect/",
     twitter: "https://twitter.com/Mobikonnect",
   },
-  // NOTE: phone numbers in the source deck were not machine-readable — update before launch.
-  phones: ["+91 99000 77997", "+91 95004 47777"],
+  address: "E-109, LGF, Amar Colony, Lajpat Nagar 4, New Delhi 24",
+  phones: ["7210-123-123", "9910-171-197", "9560-44-6667"],
   positioning:
     "Experiential Marketing · Consumer Promotions · Loyalty · Rewards · Customer Engagement Platform",
   tagline: "Engage. Reward. Retain. Grow.",

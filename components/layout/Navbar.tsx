@@ -16,7 +16,7 @@ export default function Navbar() {
         <div className="gutter">
           <div className="mt-5 flex items-center justify-between sm:mt-6">
             <Link href="/" aria-label="Mobikonnect home" data-cursor="hover">
-              <Logo className="h-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-14" />
+              <Logo className="h-14 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)] sm:h-20" />
             </Link>
 
             <div className="flex items-center gap-4 sm:gap-6">

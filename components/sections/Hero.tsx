@@ -46,7 +46,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="hidden max-w-[22ch] text-right text-sm text-cream/80 sm:block"
+            className="hidden text-right text-sm text-cream/80 sm:block"
           >
             {site.legal}
           </motion.span>
@@ -58,16 +58,16 @@ export default function Hero() {
           className="relative z-10 flex flex-col gap-8 py-2 sm:py-4 lg:flex-row lg:items-end lg:justify-between lg:gap-12"
         >
           <h1 className="display text-cream text-[clamp(2.75rem,min(10vw,15vh),8.5rem)] leading-[0.92] tracking-[-0.02em]">
-            <span className="block overflow-hidden">
+            <span className="block">
               <RevealText text="Engage." />
             </span>
-            <span className="block overflow-hidden">
+            <span className="block">
               <RevealText text="Reward." delay={0.1} />
             </span>
-            <span className="block overflow-hidden">
+            <span className="block">
               <RevealText text="Retain." delay={0.2} />
             </span>
-            <span className="block overflow-hidden">
+            <span className="block">
               <RevealText text="Grow." delay={0.3} />
             </span>
           </h1>

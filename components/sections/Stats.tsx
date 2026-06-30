@@ -6,7 +6,7 @@ import { stats } from "@/lib/content";
 
 export default function Stats() {
   return (
-    <section className="gutter pb-24 sm:pb-32">
+    <section className="gutter pb-14 sm:pb-20">
       <div
         className="frame relative bg-coral p-8 sm:p-12 lg:p-16"
         style={{

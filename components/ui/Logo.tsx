@@ -22,7 +22,7 @@ export function Monogram({ className }: { className?: string }) {
 /** Full lockup: Displays the Mobikonnect horizontal brand logo image. */
 export function Logo({ className }: { className?: string }) {
   return (
-    <div className={cn("relative flex h-10 items-center select-none", className)}>
+    <div className={cn("relative flex items-center select-none", className)}>
       <Image
         src={logoHorizontal}
         alt="Mobikonnect logo"

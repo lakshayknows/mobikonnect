@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 
 export default function Expertise() {
   return (
-    <section id="expertise" className="gutter py-24 sm:py-32">
+    <section id="expertise" className="gutter py-14 sm:py-20">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeader
           index="02"

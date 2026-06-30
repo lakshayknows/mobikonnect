@@ -62,6 +62,10 @@ export default function Footer() {
             <p className="eyebrow">Contact</p>
             <ul className="mt-4 space-y-2.5 text-sm text-cream-dim">
               <li>
+                <span className="block font-medium text-cream">{site.legal}</span>
+                <span className="mt-1 block max-w-[28ch] text-cream-faint leading-normal">{site.address}</span>
+              </li>
+              <li className="pt-1.5">
                 <a
                   href={`mailto:${site.email}`}
                   className="whitespace-nowrap transition-colors hover:text-cream"
@@ -79,7 +83,6 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
-              <li className="max-w-[28ch] pt-1 text-cream-faint">{site.address}</li>
             </ul>
           </div>
 

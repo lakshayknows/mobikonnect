@@ -13,7 +13,7 @@ export default function PhotoReveal() {
   const rowB = teamPhotos.slice(half);
 
   return (
-    <section className="overflow-hidden py-20 sm:py-28">
+    <section className="overflow-hidden py-24 sm:py-32">
       <div className="gutter mb-8 text-center sm:mb-10">
         <p className="eyebrow text-coral">Behind the campaigns</p>
         <h2 className="display mt-3 text-big sm:text-huge">

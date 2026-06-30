@@ -9,7 +9,11 @@ import type { CaseStudy } from "@/lib/content";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-/** Numbered feature card with optional bulleted sub-points — mirrors the homepage Expertise card. */
+/**
+ * Numbered feature card with optional bulleted sub-points. Mirrors the homepage
+ * "Selected work" cards: alternating blue/coral gradient tint with a soft glow
+ * that intensifies on hover.
+ */
 export function PillarCard({
   no,
   title,
@@ -23,26 +27,50 @@ export function PillarCard({
   points?: string[];
   index?: number;
 }) {
+  const isCoral = index % 2 === 1;
   return (
-    <Reveal delay={(index % 3) * 0.07}>
+    <Reveal delay={(index % 3) * 0.07} className="h-full">
       <motion.article
         whileHover={{ y: -6 }}
         transition={{ duration: 0.4, ease }}
         data-cursor="hover"
-        className="group relative flex h-full min-h-[260px] flex-col justify-between rounded-card border border-cream-line bg-ink-soft/40 p-7 transition-colors duration-500 hover:border-coral/50 hover:bg-ink-soft"
+        className={cn(
+          "group relative flex h-full min-h-[260px] flex-col justify-between overflow-hidden rounded-card border p-7 transition-colors duration-500",
+          isCoral
+            ? "border-coral/25 bg-coral/[0.07] hover:border-coral/60"
+            : "border-blue/25 bg-blue/[0.07] hover:border-blue/60",
+        )}
       >
-        <div className="flex items-start justify-between">
-          <span className="display text-sm text-cream-faint">{no}</span>
-          <ArrowUpRight className="h-5 w-5 text-cream-faint transition-all duration-300 group-hover:rotate-45 group-hover:text-coral" />
+        <div
+          className={cn(
+            "pointer-events-none absolute -right-20 -top-20 h-48 w-48 rounded-full opacity-40 blur-3xl transition-opacity duration-500 group-hover:opacity-100",
+            isCoral ? "bg-coral/20" : "bg-blue/20",
+          )}
+        />
+        <div className="relative flex items-start justify-between">
+          <span className={cn("display text-sm", isCoral ? "text-coral" : "text-blue")}>
+            {no}
+          </span>
+          <ArrowUpRight
+            className={cn(
+              "h-5 w-5 transition-all duration-300 group-hover:rotate-45",
+              isCoral ? "text-coral" : "text-blue",
+            )}
+          />
         </div>
-        <div>
+        <div className="relative">
           <h3 className="display text-xl leading-tight">{title}</h3>
           <p className="mt-3 text-sm text-cream-dim">{blurb}</p>
           {points && points.length > 0 && (
             <ul className="mt-5 space-y-1.5 border-t border-cream-line pt-4">
               {points.map((p) => (
                 <li key={p} className="flex items-start gap-2 text-xs text-cream-dim">
-                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-coral" />
+                  <span
+                    className={cn(
+                      "mt-1.5 h-1 w-1 shrink-0 rounded-full",
+                      isCoral ? "bg-coral" : "bg-blue",
+                    )}
+                  />
                   {p}
                 </li>
               ))}
@@ -66,7 +94,7 @@ export function CaseCard({ study, index = 0 }: { study: CaseStudy; index?: numbe
       whileHover={{ y: -6 }}
     >
       <Link
-        href={`/case-studies/${study.slug}`}
+        href={`/CaseStudies/${study.slug}`}
         data-cursor="hover"
         className={cn(
           "group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-frame border p-8 transition-colors duration-500 sm:p-10",
@@ -127,7 +155,7 @@ export function TagCloud({ items }: { items: readonly string[] }) {
           viewport={{ once: true, margin: "0px 0px -8% 0px" }}
           transition={{ duration: 0.5, delay: (i % 8) * 0.04, ease }}
           data-cursor="hover"
-          className="rounded-pill border border-cream-line bg-ink-soft/40 px-5 py-2.5 text-sm text-cream/80 transition-colors duration-300 hover:border-coral/50 hover:text-cream"
+          className="rounded-pill border border-cream-line bg-ink-soft/40 px-5 py-2.5 text-sm text-cream/80 transition-colors duration-300 hover:border-coral hover:bg-coral/10 hover:text-cream"
         >
           {item}
         </motion.span>

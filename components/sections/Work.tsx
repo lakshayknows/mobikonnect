@@ -89,7 +89,7 @@ export default function Work() {
 
       <Reveal delay={0.1} className="mt-12 flex justify-center">
         <a
-          href="/case-studies"
+          href="/CaseStudies"
           data-cursor="hover"
           className="group inline-flex items-center gap-2 rounded-pill border border-cream/40 px-7 py-4 text-sm font-medium text-cream transition-colors duration-300 hover:border-cream"
         >

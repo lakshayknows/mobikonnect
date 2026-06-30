@@ -18,7 +18,7 @@ export default function Footer() {
         {/* Oversized CTA */}
         <div className="text-center">
           <p className="eyebrow text-coral">Let&apos;s talk</p>
-          <h2 className="display text-giant lg:text-mega mt-5 mx-auto max-w-[14ch]">
+          <h2 className="display text-[clamp(2rem,7vw,6.5rem)] mt-5 mx-auto max-w-[14ch] break-words">
             <RevealText
               text="Let's build something people remember."
               highlight={["remember."]}
@@ -32,8 +32,8 @@ export default function Footer() {
         </div>
 
         {/* Link columns */}
-        <div className="mt-20 grid grid-cols-2 gap-10 border-t border-cream-line pt-12 sm:grid-cols-4">
-          <div className="col-span-2 sm:col-span-1">
+        <div className="mt-20 grid grid-cols-1 gap-8 border-t border-cream-line pt-12 sm:grid-cols-4 sm:gap-10">
+          <div className="sm:col-span-1">
             <p className="text-cream-dim">{site.tagline}</p>
             <p className="mt-2 max-w-xs text-sm text-cream-faint">
               India&apos;s experiential marketing &amp; customer engagement
@@ -64,7 +64,7 @@ export default function Footer() {
               <li>
                 <a
                   href={`mailto:${site.email}`}
-                  className="transition-colors hover:text-cream"
+                  className="whitespace-nowrap transition-colors hover:text-cream"
                 >
                   {site.email}
                 </a>
@@ -72,13 +72,14 @@ export default function Footer() {
               {site.phones.map((p) => (
                 <li key={p}>
                   <a
-                    href={`tel:${p.replace(/\s/g, "")}`}
-                    className="transition-colors hover:text-cream"
+                    href={`tel:+91${p.replace(/\D/g, "")}`}
+                    className="whitespace-nowrap transition-colors hover:text-cream"
                   >
                     {p}
                   </a>
                 </li>
               ))}
+              <li className="max-w-[28ch] pt-1 text-cream-faint">{site.address}</li>
             </ul>
           </div>
 

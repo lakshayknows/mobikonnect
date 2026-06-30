@@ -1,7 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import { howWeWork } from "@/lib/content";
 
 /**
@@ -57,8 +63,8 @@ function StepCard({
           style={{ backgroundColor: step.dot }}
         />
 
-        {/* Content area — max-w-full on mobile, max-w-[80%] on larger screens to keep text clear of peek zone */}
-        <div className="relative z-10 flex-1 flex flex-col justify-end max-w-full sm:max-w-[80%] overflow-x-hidden">
+        {/* Content area — centered on mobile to avoid empty space, bottom-anchored on larger screens */}
+        <div className="relative z-10 flex-1 flex flex-col justify-center sm:justify-end max-w-full sm:max-w-[80%] overflow-x-hidden">
           {/* Giant title — Montserrat ExtraBold, uppercase, size adjusted dynamically to never overflow/clip */}
           <h3
             className="font-display font-extrabold uppercase leading-[0.85] tracking-tight text-cream"
@@ -79,7 +85,7 @@ function StepCard({
         <span
           className="absolute bottom-4 right-6 sm:right-10 font-display font-extrabold not-italic leading-none pointer-events-none select-none"
           style={{
-            fontSize: "clamp(5rem, 16vw, 14rem)",
+            fontSize: "clamp(8rem, 34vw, 14rem)",
             color: "rgba(248,235,211,0.12)",
           }}
         >
@@ -128,48 +134,58 @@ function StepCard({
   );
 }
 
+const SHOWN = "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+// Desktop: collapsed at the right edge → wipes left. Mobile: collapsed at the
+// bottom edge → wipes upward (bottom-to-top).
+const HIDDEN_DESKTOP = "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)";
+const HIDDEN_MOBILE = "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)";
+
 export default function HowWeWork() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
 
-  // Card 1 (CONCEPTUALIZE): Starts fully hidden, reveals from 0.05 to 0.35
+  // Smooth the raw scroll value so the clip-path reveals glide instead of
+  // tracking every scroll tick.
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 28,
+    restDelta: 0.0005,
+  });
+
+  const hidden = isMobile ? HIDDEN_MOBILE : HIDDEN_DESKTOP;
+
+  // Card 1: reveals from 0.05 to 0.35
   const clipPath0 = useTransform(
-    scrollYProgress,
+    progress,
     [0.0, 0.05, 0.35, 1.0],
-    [
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-    ]
+    [hidden, hidden, SHOWN, SHOWN],
   );
 
-  // Card 2 (BUILD): Fully hidden until Card 1 is revealed, reveals from 0.38 to 0.68
+  // Card 2: reveals from 0.38 to 0.68
   const clipPath1 = useTransform(
-    scrollYProgress,
+    progress,
     [0.0, 0.38, 0.68, 1.0],
-    [
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-    ]
+    [hidden, hidden, SHOWN, SHOWN],
   );
 
-  // Card 3 (DELIVER): Fully hidden until Card 2 is revealed, reveals from 0.71 to 0.98
+  // Card 3: reveals from 0.71 to 0.98
   const clipPath2 = useTransform(
-    scrollYProgress,
+    progress,
     [0.0, 0.71, 0.98, 1.0],
-    [
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)"
-    ]
+    [hidden, hidden, SHOWN, SHOWN],
   );
 
   const clipPaths = [clipPath0, clipPath1, clipPath2];
@@ -192,7 +208,7 @@ export default function HowWeWork() {
 
           {/* Content Card — margins applied directly here */}
           <div
-            className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-end p-8 sm:p-12 lg:p-16 relative z-10"
+            className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-center sm:justify-end p-8 sm:p-12 lg:p-16 relative z-10"
             style={{ backgroundColor: "#2f2f2f" }}
           >
             {/* Noise texture overlay */}

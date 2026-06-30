@@ -25,7 +25,7 @@ export default function AboutPage() {
       />
 
       {/* Gradient scroll-reveal story */}
-      <section className="gutter py-20 sm:py-28">
+      <section className="gutter py-24 sm:py-32">
         <TextGradientScroll
           text={aboutPage.story}
           type="letter"
@@ -35,7 +35,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values + milestones */}
-      <section className="gutter py-20 sm:py-28">
+      <section className="gutter py-24 sm:py-32">
         <SectionHeader
           index="·"
           eyebrow="What we stand for"

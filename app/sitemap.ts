@@ -6,8 +6,8 @@ const base = "https://mobikonnect.com";
 const routes = [
   "",
   "/what-we-do",
-  "/case-studies",
-  "/about",
+  "/CaseStudies",
+  "/About",
   "/contact",
 ];
 
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   const studies: MetadataRoute.Sitemap = caseStudies.map((c) => ({
-    url: `${base}/case-studies/${c.slug}`,
+    url: `${base}/CaseStudies/${c.slug}`,
     lastModified,
     changeFrequency: "monthly",
     priority: 0.6,

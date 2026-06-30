@@ -16,6 +16,8 @@ const nextConfig = {
       // (No /about rule: redirect source matching is case-insensitive, so it
       // would match /About itself and loop. The rewrite below handles /About.)
       { source: "/case-studies", destination: "/CaseStudies", permanent: true },
+      // Redirect for old printed QR code URL path
+      { source: "/CaseStudies.aspx", destination: "/CaseStudies", permanent: true },
     ];
   },
   async rewrites() {

@@ -20,7 +20,7 @@ const icons = [Mic, Gift, QrCode, Trophy, Video, BarChart3, Database, Shuffle];
 
 export default function Technology() {
   return (
-    <section id="technology" className="gutter py-24 sm:py-32">
+    <section id="technology" className="gutter py-14 sm:py-20">
       <div
         className="frame relative bg-ink-soft/50 p-7 sm:p-12 lg:p-16"
         style={{

@@ -11,7 +11,7 @@ const pillars = [
 
 export default function About() {
   return (
-    <section id="about" className="gutter py-24 sm:py-32 lg:py-40">
+    <section id="about" className="gutter py-14 sm:py-20 lg:py-24">
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <Reveal>
           <div className="flex items-center gap-3">

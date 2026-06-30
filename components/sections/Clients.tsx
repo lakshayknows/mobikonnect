@@ -6,7 +6,7 @@ import { clients } from "@/lib/content";
 
 export default function Clients() {
   return (
-    <section id="clients" className="gutter py-24 sm:py-32">
+    <section id="clients" className="gutter py-14 sm:py-20">
       <div
         className="frame relative bg-blue py-14 sm:py-20"
         style={{

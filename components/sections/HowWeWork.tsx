@@ -50,8 +50,10 @@ function StepCard({
         className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-between p-8 sm:p-12 lg:p-16 relative z-10"
         style={{ backgroundColor: step.bg }}
       >
-        {/* Noise texture overlay */}
-        <div className="noise pointer-events-none absolute inset-0 rounded-[30px] opacity-[0.04] mix-blend-overlay" />
+        {/* Noise texture overlay — decorative only, dropped on mobile since
+            clip-path animation + mix-blend-overlay compositing is expensive
+            on low-power mobile GPUs */}
+        <div className="noise hidden sm:block pointer-events-none absolute inset-0 rounded-[30px] opacity-[0.04] mix-blend-overlay" />
 
         {/* Corner accent dots */}
         <div
@@ -158,12 +160,16 @@ export default function HowWeWork() {
   });
 
   // Smooth the raw scroll value so the clip-path reveals glide instead of
-  // tracking every scroll tick.
-  const progress = useSpring(scrollYProgress, {
+  // tracking every scroll tick. Skipped on mobile: Lenis already smooths the
+  // underlying scroll globally, and stacking this spring on top of it lags
+  // behind fast touch flicks enough that the last card can't catch up before
+  // the section unpins.
+  const springProgress = useSpring(scrollYProgress, {
     stiffness: 90,
     damping: 28,
     restDelta: 0.0005,
   });
+  const progress = isMobile ? scrollYProgress : springProgress;
 
   const hidden = isMobile ? HIDDEN_MOBILE : HIDDEN_DESKTOP;
 
@@ -181,10 +187,11 @@ export default function HowWeWork() {
     [hidden, hidden, SHOWN, SHOWN],
   );
 
-  // Card 3: reveals from 0.71 to 0.98
+  // Card 3: reveals from 0.71 to 0.90 (wider settle buffer than the other
+  // cards' tails so it reliably finishes before the section unpins)
   const clipPath2 = useTransform(
     progress,
-    [0.0, 0.71, 0.98, 1.0],
+    [0.0, 0.71, 0.90, 1.0],
     [hidden, hidden, SHOWN, SHOWN],
   );
 
@@ -195,10 +202,10 @@ export default function HowWeWork() {
       id="process"
       ref={sectionRef}
       className="relative"
-      style={{ height: "500vh" }}
+      style={{ height: isMobile ? "350svh" : "500svh" }}
     >
       {/* Sticky viewport — fills screen, clips content */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-ink">
+      <div className="sticky top-0 h-[100svh] w-full overflow-hidden bg-ink">
         {/* ── Intro Card (always behind) ── */}
         <div className="absolute inset-x-0 w-full top-6 sm:top-8 bottom-3 sm:bottom-4 flex flex-col z-[2]">
           {/* Header — sits above Content Card top edge */}
@@ -211,8 +218,8 @@ export default function HowWeWork() {
             className="flex-1 mx-2 sm:mx-4 lg:mx-6 rounded-[30px] overflow-hidden flex flex-col justify-center sm:justify-end p-8 sm:p-12 lg:p-16 relative z-10"
             style={{ backgroundColor: "#2f2f2f" }}
           >
-            {/* Noise texture overlay */}
-            <div className="noise pointer-events-none absolute inset-0 rounded-[30px] opacity-[0.04] mix-blend-overlay" />
+            {/* Noise texture overlay — decorative only, dropped on mobile */}
+            <div className="noise hidden sm:block pointer-events-none absolute inset-0 rounded-[30px] opacity-[0.04] mix-blend-overlay" />
 
             <div className="relative z-10">
               {/* Decorative corner dots */}

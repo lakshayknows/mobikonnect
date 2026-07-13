@@ -38,19 +38,21 @@ export const nav = [
 ] as const;
 
 export type Stat = {
-  value: number;
+  value?: number;
   prefix?: string;
   suffix?: string;
   /** "in" formats with Indian digit grouping (e.g. 5,00,000) */
   format?: "in" | "plain";
+  /** Static display text used instead of an animated counter (e.g. "Millions") */
+  text?: string;
   label: string;
 };
 
 export const stats: Stat[] = [
-  { value: 20, suffix: "+", label: "Years engineering engagement" },
-  { value: 500000, suffix: "+", format: "in", label: "Entries in a single campaign" },
-  { value: 50, prefix: "₹", suffix: "L+", label: "Rewards pool disbursed" },
-  { value: 90000, suffix: "+", format: "in", label: "Free samples delivered" },
+  { value: 100, suffix: "+", label: "Brands" },
+  { value: 15, suffix: "+", label: "Years" },
+  { value: 1000, suffix: "+", label: "Campaigns" },
+  { text: "Millions", label: "Consumers engaged" },
 ];
 
 /* ───────────────────────── Services — the 6 pillars ───────────────────────── */
@@ -878,10 +880,10 @@ export const aboutPage = {
   ],
   /** About-specific proof points (independent of the homepage stats). */
   milestones: [
-    { value: "20+", label: "Years engineering engagement" },
-    { value: "100+", label: "Brands & campaigns delivered" },
-    { value: "15L+", label: "Participants reached in a single campaign" },
-    { value: "End-to-end", label: "Strategy · martech · rewards · fulfilment" },
+    { value: "100+", label: "Brands" },
+    { value: "15+", label: "Years" },
+    { value: "1,000+", label: "Campaigns" },
+    { value: "Millions", label: "Consumers engaged" },
   ],
 } as const;
 

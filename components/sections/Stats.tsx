@@ -22,12 +22,14 @@ export default function Stats() {
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08} className="relative">
               <div className="display break-words text-[clamp(1.5rem,5vw,3rem)] leading-tight text-cream sm:whitespace-nowrap">
-                <Counter
-                  value={s.value}
-                  prefix={s.prefix}
-                  suffix={s.suffix}
-                  format={s.format}
-                />
+                {s.text ?? (
+                  <Counter
+                    value={s.value!}
+                    prefix={s.prefix}
+                    suffix={s.suffix}
+                    format={s.format}
+                  />
+                )}
               </div>
               <p className="mt-3 max-w-[20ch] text-sm text-cream/85">{s.label}</p>
             </Reveal>

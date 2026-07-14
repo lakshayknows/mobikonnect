@@ -1,4 +1,5 @@
 import { Reveal, RevealText } from "@/components/ui/Reveal";
+import MagneticButton from "@/components/ui/MagneticButton";
 
 /**
  * Shared top-of-page header: indexed eyebrow + a big masked headline reveal +
@@ -9,11 +10,13 @@ export function PageHeader({
   title,
   highlight,
   intro,
+  cta,
 }: {
   eyebrow: string;
   title: string;
   highlight?: string[];
   intro?: string;
+  cta?: { label: string; href: string };
 }) {
   return (
     <header className="gutter pt-36 pb-12 text-center sm:pt-44 sm:pb-16">
@@ -30,6 +33,15 @@ export function PageHeader({
       {intro && (
         <Reveal delay={0.15}>
           <p className="mt-8 max-w-2xl mx-auto text-lg text-cream-dim">{intro}</p>
+        </Reveal>
+      )}
+      {cta && (
+        <Reveal delay={0.25}>
+          <div className="mt-10 flex justify-center">
+            <MagneticButton href={cta.href} variant="coral">
+              {cta.label}
+            </MagneticButton>
+          </div>
         </Reveal>
       )}
     </header>

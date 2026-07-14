@@ -17,6 +17,15 @@ export const metadata: Metadata = {
     "Experiential marketing and engagement technology, end to end — promotions, loyalty, activations and a martech platform built in-house, mapped to the business outcomes that matter.",
 };
 
+const servicePageHrefs: Record<string, string> = {
+  "Consumer Promotions": "/consumer-promotions",
+  "Trade Promotions": "/trade-promotions",
+  "Loyalty Programs": "/loyalty-programs",
+  "Experiential Marketing": "/experiential-marketing",
+  "Customer Engagement": "/customer-engagement",
+  "Martech & Engagement Technology": "/martech-platform",
+};
+
 export default function WhatWeDoPage() {
   return (
     <>
@@ -44,7 +53,7 @@ export default function WhatWeDoPage() {
               blurb={s.blurb}
               points={s.points}
               index={i}
-              href={s.title === "Consumer Promotions" ? "/consumer-promotions" : undefined}
+              href={servicePageHrefs[s.title]}
             />
           ))}
         </div>

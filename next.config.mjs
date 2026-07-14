@@ -18,6 +18,7 @@ const nextConfig = {
       { source: "/case-studies", destination: "/CaseStudies", permanent: true },
       // Redirect for old printed QR code URL path
       { source: "/CaseStudies.aspx", destination: "/CaseStudies", permanent: true },
+      { source: "/About.aspx", destination: "/About", permanent: true },
     ];
   },
   async rewrites() {

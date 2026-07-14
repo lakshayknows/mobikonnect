@@ -6,6 +6,7 @@ const base = "https://mobikonnect.com";
 const routes = [
   "",
   "/what-we-do",
+  "/consumer-promotions",
   "/CaseStudies",
   "/About",
   "/contact",

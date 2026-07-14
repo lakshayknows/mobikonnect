@@ -948,3 +948,98 @@ export const faqs: Faq[] = [
     a: "Tell us the business outcome you're after — more repeat purchase, a stronger launch, rewarded partners, motivated teams. We'll engineer the experience that gets you there.",
   },
 ];
+
+/* ───────────────────────── Consumer Promotions — landing page ───────────────────────── */
+
+export const consumerPromotionsPage = {
+  eyebrow: "Consumer Promotions",
+  title: "Consumer Promotion Agency in India",
+  highlight: ["Agency", "India"],
+  intro:
+    "Mobikonnect is a Consumer Promotion Agency in India helping brands turn shoppers into participants — through Scratch & Win, Scan & Win, WhatsApp and QR promotions, instant cashback and consumer reward programs, engineered and run end to end.",
+  solutions: [
+    {
+      no: "01",
+      title: "Scratch & Win Campaigns",
+      desc: "Physical and digital scratch cards that reveal instant prizes — printed, in-app or on pack, with fraud-proof, auditable odds.",
+    },
+    {
+      no: "02",
+      title: "Scan & Win Promotions",
+      desc: "QR and barcode scans on-pack or in-store that unlock instant rewards, entries and gratification in one tap.",
+    },
+    {
+      no: "03",
+      title: "Purchase & Win Campaigns",
+      desc: "Every receipt or invoice becomes an entry — verified via upload, QR or missed call, at retail or e-commerce scale.",
+    },
+    {
+      no: "04",
+      title: "WhatsApp Promotions",
+      desc: "Conversational campaigns that run entirely inside WhatsApp — entry, verification and reward delivery without an app download.",
+    },
+    {
+      no: "05",
+      title: "Cashback & Reward Programs",
+      desc: "Instant cashback, vouchers and gift disbursement that make gratification feel immediate and almost like cash.",
+    },
+    {
+      no: "06",
+      title: "QR Code Campaigns",
+      desc: "Dynamic, secure QR codes on packaging and collateral that connect every scan to a trackable, fraud-proof campaign.",
+    },
+  ],
+  whyChoose: [
+    {
+      no: "01",
+      title: "Gratification-led Mechanics",
+      desc: "Win-and-earn campaigns designed for gratification, not just participation — rewards with an almost-cash perception that shoppers act on immediately.",
+    },
+    {
+      no: "02",
+      title: "Fraud-proof & Auditable",
+      desc: "Secure QR, unique codes and randomiser logic mean every scratch, scan and draw is verifiable and audit-ready.",
+    },
+    {
+      no: "03",
+      title: "Omnichannel Reach",
+      desc: "Scratch & Win, Scan & Win, WhatsApp, QR, IVR and web — we run the mechanic wherever your consumer already is.",
+    },
+    {
+      no: "04",
+      title: "Reward Fulfilment, End to End",
+      desc: "From reward sourcing to last-mile gift disbursement, one team owns the entire journey — no handoffs, no black boxes.",
+    },
+    {
+      no: "05",
+      title: "Measurable Sales Lift",
+      desc: "Every entry, redemption and rupee is tracked to participation and ROI — so you know exactly what the promotion delivered.",
+    },
+  ],
+  faqs: [
+    {
+      q: "What is a consumer promotion campaign?",
+      a: "A consumer promotion is a marketing mechanic — like Scratch & Win, Scan & Win or Cashback — that rewards shoppers directly for purchase, participation or engagement, driving trial, repeat purchase and brand recall.",
+    },
+    {
+      q: "What types of consumer promotions does Mobikonnect run?",
+      a: "We run Scratch & Win, Scan & Win, Purchase & Win, WhatsApp Promotions, QR Code Campaigns, Instant Cashback, Lucky Draws, Digital Coupon Campaigns and Referral Programs — tailored to your category and audience.",
+    },
+    {
+      q: "How do you ensure winner selection is fair and auditable?",
+      a: "Every campaign runs on auditable randomiser logic with a documented, verifiable process — from entry to winner declaration to gift disbursement — so results hold up to audit and legal scrutiny.",
+    },
+    {
+      q: "Can consumer promotions run on WhatsApp and QR codes?",
+      a: "Yes — WhatsApp Promotions and QR Code Campaigns are two of our most-used mechanics, letting consumers enter, verify purchase and receive rewards without downloading an app.",
+    },
+    {
+      q: "Which industries do you run consumer promotions for?",
+      a: "FMCG, consumer durables, automobile, paints, retail, banking, telecom and more — the mechanic and reward economics are tailored to each category.",
+    },
+    {
+      q: "How is reward fulfilment handled?",
+      a: "We manage reward sourcing and last-mile gift disbursement ourselves — tracked end to end so every winner actually receives their reward, on time.",
+    },
+  ],
+} as const;

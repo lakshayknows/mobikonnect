@@ -44,6 +44,7 @@ export default function WhatWeDoPage() {
               blurb={s.blurb}
               points={s.points}
               index={i}
+              href={s.title === "Consumer Promotions" ? "/consumer-promotions" : undefined}
             />
           ))}
         </div>

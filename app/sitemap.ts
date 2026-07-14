@@ -12,6 +12,8 @@ const routes = [
   "/experiential-marketing",
   "/customer-engagement",
   "/martech-platform",
+  "/influencer-marketing",
+  "/employee-engagement",
   "/CaseStudies",
   "/About",
   "/contact",

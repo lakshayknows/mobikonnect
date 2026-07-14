@@ -1145,7 +1145,7 @@ export const martechPlatformPage = {
     { label: "Trade Promotions", href: "/trade-promotions" },
     { label: "Loyalty Programs", href: "/loyalty-programs" },
     { label: "Customer Engagement", href: "/customer-engagement" },
-    { label: "Employee Engagement", href: "/what-we-do" },
+    { label: "Employee Engagement", href: "/employee-engagement" },
   ],
   faqs: [
     {
@@ -1169,6 +1169,149 @@ export const martechPlatformPage = {
       a: "Yes — the platform is built on enterprise-grade security and a scalable architecture designed to handle high-volume, nationwide campaigns without compromising performance.",
     },
   ],
+} as const;
+
+/* ───────────────────────── Influencer & Creator Marketing — landing page ───────────────────────── */
+
+export const influencerMarketingPage = {
+  eyebrow: "Influencer & Creator",
+  title: "Influencer Marketing That Delivers More Than Just Reach",
+  highlight: ["More", "Reach"],
+  intro:
+    "Influencer marketing is no longer just about likes and views — it's about driving awareness, engagement, leads and sales. Mobikonnect helps brands collaborate with the right creators across Instagram, YouTube, Facebook and emerging platforms — managing creator discovery, campaign execution and performance tracking end to end.",
+  cta: { label: "Launch Your Influencer Campaign", href: "/contact" },
+  metaTitle: "Influencer Marketing Agency India | Creator & UGC Campaigns | Mobikonnect",
+  metaDescription:
+    "Drive brand awareness and sales with influencer marketing, creator collaborations, UGC campaigns, regional influencers and performance-driven social media campaigns by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Influencer Campaign Management", desc: "End-to-end campaign management, from creator discovery and briefing to content approval and reporting." },
+    { no: "02", title: "Micro & Nano Influencer Campaigns", desc: "High-engagement creators at scale, for authentic reach inside niche communities." },
+    { no: "03", title: "Celebrity Collaborations", desc: "Larger-than-life partnerships that give a launch or campaign national visibility." },
+    { no: "04", title: "Regional Influencer Marketing", desc: "Creators who speak directly to regional and vernacular audiences, in their own language." },
+    { no: "05", title: "Product Reviews & Unboxing", desc: "Authentic, trust-building content that shows the product in real use, not a studio shoot." },
+    { no: "06", title: "User Generated Content (UGC)", desc: "Consumer and creator content repurposed into always-on brand content." },
+    { no: "07", title: "Brand Ambassador Programs", desc: "Long-term creator partnerships that build sustained brand association, not a one-off post." },
+    { no: "08", title: "Affiliate & Performance Campaigns", desc: "Creator partnerships tied directly to trackable sales, leads or app installs." },
+  ],
+  whyChoose: [
+    { no: "01", title: "Curated Network of Creators", desc: "Access to a vetted network of creators across categories, not a cold outreach list." },
+    { no: "02", title: "Category-specific Influencer Selection", desc: "Creators matched to your category and audience, not just follower count." },
+    { no: "03", title: "Pan-India and Regional Reach", desc: "Metro, tier-2 and regional-language creators, covering audiences national campaigns miss." },
+    { no: "04", title: "End-to-end Campaign Management", desc: "Discovery, briefing, content approval and reporting — managed by one team." },
+    { no: "05", title: "Authentic UGC Creation", desc: "Content that reads as real, not scripted — because it usually is." },
+    { no: "06", title: "Performance Tracking & ROI Reporting", desc: "Every campaign is tracked to reach, engagement and the business outcome it drove." },
+    { no: "07", title: "Campaign Compliance & Brand Safety", desc: "Content and creator vetting that keeps every collaboration brand-safe and disclosure-compliant." },
+    { no: "08", title: "Sales-focused Influencer Strategy", desc: "Campaigns designed to drive awareness, leads and sales — not just impressions." },
+  ],
+  platforms: [
+    "Instagram",
+    "YouTube",
+    "Facebook",
+    "LinkedIn",
+    "X (Twitter)",
+    "Snapchat",
+    "Moj",
+    "Josh",
+    "ShareChat",
+  ],
+  industries: [
+    "FMCG",
+    "Beauty & Personal Care",
+    "Fashion & Lifestyle",
+    "Consumer Durables",
+    "Electronics",
+    "Food & Beverage",
+    "Retail & E-commerce",
+    "Fintech",
+    "Healthcare",
+  ],
+  howItWorks: {
+    steps: ["Identify", "Collaborate", "Create", "Amplify", "Measure"],
+    desc: "We identify the right creators, manage content production, execute campaigns, and provide detailed performance reports to measure impact and ROI.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Experiential Marketing", href: "/experiential-marketing" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Martech Platform", href: "/martech-platform" },
+  ],
+  faqs: [
+    { q: "How do you select influencers for a campaign?", a: "Creators are matched to your category, audience and campaign goal — not just follower count — from a vetted, curated network." },
+    { q: "Do you work with micro and regional influencers?", a: "Yes — from nano and micro creators to celebrities, including regional and vernacular-language influencers across India." },
+    { q: "Can campaign performance be tracked?", a: "Yes — every campaign is tracked to reach, engagement and business outcomes like leads, installs or sales." },
+    { q: "Who owns the content created by influencers?", a: "Usage rights are negotiated per campaign, so brands can repurpose UGC as always-on content where agreed." },
+    { q: "Can influencer campaigns drive sales and lead generation?", a: "Yes — affiliate links, coupon codes and QR/WhatsApp journeys connect influencer content directly to trackable sales and leads." },
+  ],
+  finalCtaTitle: "Ready to Build Authentic Influencer Campaigns?",
+  finalCtaDesc:
+    "Whether you're launching a new product, increasing brand awareness or driving conversions, Mobikonnect helps you create influencer campaigns that deliver measurable business results.",
+  finalCtaLabel: "Speak with Our Influencer Marketing Experts",
+} as const;
+
+/* ───────────────────────── Employee Engagement — landing page ───────────────────────── */
+
+export const employeeEngagementPage = {
+  eyebrow: "Employee Engagement",
+  title: "Employee Engagement Solutions That Inspire Performance",
+  highlight: ["Inspire", "Performance"],
+  intro:
+    "Your employees are your biggest brand ambassadors. Mobikonnect helps organizations design employee engagement programs that celebrate achievements, encourage healthy competition, improve sales performance and strengthen workplace culture — from sales incentives and recognition to referral campaigns and digital rewards.",
+  cta: { label: "Talk to Our Employee Engagement Experts", href: "/contact" },
+  metaTitle: "Employee Engagement Solutions India | Rewards & Sales Incentive Programs | Mobikonnect",
+  metaDescription:
+    "Motivate employees with rewards, recognition, sales incentive programs, referral campaigns and engagement solutions powered by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Sales Incentive Programs", desc: "Target-linked incentive structures that turn quota into a game your sales force wants to win." },
+    { no: "02", title: "Employee Rewards & Recognition", desc: "Structured recognition that makes great work visible, not just appreciated in passing." },
+    { no: "03", title: "Sales Contests & Challenges", desc: "Leaderboard-driven contests that create healthy competition across teams and regions." },
+    { no: "04", title: "Referral Reward Programs", desc: "Reward employees for bringing in talent, customers or leads through their own network." },
+    { no: "05", title: "Milestone & Anniversary Rewards", desc: "Automated recognition for work anniversaries and career milestones, at scale." },
+    { no: "06", title: "Festival & Occasion Campaigns", desc: "Festive and occasion-based gratification that keeps culture warm across the year." },
+    { no: "07", title: "Learning & Achievement Rewards", desc: "Recognition tied to training completion and skill milestones, not just sales numbers." },
+    { no: "08", title: "Employee Gamification", desc: "Badges, leaderboards and progress mechanics that make performance tracking feel like play." },
+  ],
+  whyChoose: [
+    { no: "01", title: "End-to-end Employee Engagement Platform", desc: "Incentives, recognition, contests and rewards run from a single platform, not five disconnected tools." },
+    { no: "02", title: "Performance-based Reward Programs", desc: "Reward logic tied directly to the metrics that matter to your business." },
+    { no: "03", title: "Digital Rewards & Instant Redemption", desc: "Points, vouchers and gifts redeemable instantly through a digital catalogue." },
+    { no: "04", title: "Gamification & Leaderboards", desc: "Progress and competition mechanics that keep participation high across the year." },
+    { no: "05", title: "Real-time Dashboards", desc: "Live visibility into participation, redemption and performance for every team and region." },
+    { no: "06", title: "Mobile & WhatsApp-enabled Participation", desc: "Enrolment and redemption designed for how your field force and employees actually use their phones." },
+    { no: "07", title: "Seamless HRMS/CRM Integration", desc: "Connects cleanly with existing HRMS and CRM systems to sync performance and participation data." },
+    { no: "08", title: "Scalable for Teams Across India", desc: "Built to run engagement programs for distributed teams, field forces and franchise networks nationwide." },
+  ],
+  idealFor: [
+    "Sales Teams (DSRs & ISRs)",
+    "Field Force",
+    "Corporate Employees",
+    "Channel Sales Teams",
+    "Customer Support Teams",
+    "Dealers & Distributor Sales Staff",
+    "Franchise Networks",
+  ],
+  howItWorks: {
+    steps: ["Recognise", "Reward", "Motivate", "Perform", "Retain"],
+    desc: "We help organizations build engagement programs that encourage participation, reward excellence, and create a culture of continuous recognition.",
+  },
+  relatedSolutions: [
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Trade Promotions", href: "/trade-promotions" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Martech Platform", href: "/martech-platform" },
+  ],
+  faqs: [
+    { q: "Can the platform support large employee teams across multiple locations?", a: "Yes — built to scale across distributed teams, field forces, dealer networks and franchises nationwide." },
+    { q: "What types of rewards can employees redeem?", a: "Points, vouchers, gift cards, cashback and physical gifts — through a digital reward catalogue with instant redemption." },
+    { q: "Can employee engagement programs integrate with sales incentives?", a: "Yes — recognition, contests and sales incentive programs run on the same platform, tied to the same performance data." },
+    { q: "Does Mobikonnect support referral and recognition programs?", a: "Yes — referral rewards, milestone recognition and occasion-based gratification are all built into the platform." },
+    { q: "Can dashboards track individual and team performance?", a: "Yes — real-time dashboards report participation, redemption and performance at the individual, team and regional level." },
+  ],
+  finalCtaTitle: "Build a More Engaged and High-Performing Workforce",
+  finalCtaDesc:
+    "Whether you're rewarding top performers, motivating your field force, or recognizing employee milestones, Mobikonnect helps you create engagement programs that improve productivity, retention, and business performance.",
+  finalCtaLabel: "Speak with Our Employee Engagement Specialists",
 } as const;
 
 /* ───────────────────────── Trade Promotions — landing page ───────────────────────── */
@@ -1221,7 +1364,7 @@ export const tradePromotionsPage = {
     { label: "Retailer Meets", href: "/what-we-do" },
     { label: "Loyalty Programs", href: "/loyalty-programs" },
     { label: "Consumer Promotions", href: "/consumer-promotions" },
-    { label: "Employee Incentive Programs", href: "/what-we-do" },
+    { label: "Employee Incentive Programs", href: "/employee-engagement" },
   ],
   faqs: [
     { q: "How quickly can a trade promotion be launched?", a: "Pre-built scheme templates and reward logic mean most trade promotions can launch in weeks, not months." },
@@ -1294,7 +1437,7 @@ export const loyaltyProgramsPage = {
   relatedSolutions: [
     { label: "Consumer Promotions", href: "/consumer-promotions" },
     { label: "Trade Promotions", href: "/trade-promotions" },
-    { label: "Employee Engagement", href: "/what-we-do" },
+    { label: "Employee Engagement", href: "/employee-engagement" },
     { label: "Customer Engagement", href: "/customer-engagement" },
     { label: "Martech Platform", href: "/martech-platform" },
   ],
@@ -1362,7 +1505,7 @@ export const experientialMarketingPage = {
     { label: "Consumer Promotions", href: "/consumer-promotions" },
     { label: "Meet & Greet Events", href: "/what-we-do" },
     { label: "Customer Engagement", href: "/customer-engagement" },
-    { label: "Influencer Marketing", href: "/what-we-do" },
+    { label: "Influencer Marketing", href: "/influencer-marketing" },
     { label: "Loyalty Programs", href: "/loyalty-programs" },
   ],
   faqs: [
@@ -1430,7 +1573,7 @@ export const customerEngagementPage = {
     { label: "Loyalty Programs", href: "/loyalty-programs" },
     { label: "Experiential Marketing", href: "/experiential-marketing" },
     { label: "Martech Platform", href: "/martech-platform" },
-    { label: "Influencer Marketing", href: "/what-we-do" },
+    { label: "Influencer Marketing", href: "/influencer-marketing" },
   ],
   faqs: [
     { q: "What types of games and engagement campaigns can Mobikonnect build?", a: "Spin-the-wheel, quizzes, trivia, polls, surveys, refer-and-earn, instant-win games and digital contests — tailored to your brand, audience and channel." },

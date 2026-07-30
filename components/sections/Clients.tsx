@@ -16,10 +16,13 @@ export default function Clients() {
       >
         <div className="noise pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay" />
         <Reveal className="px-6 text-center sm:px-10">
-          <p className="eyebrow text-cream/80">Trusted by</p>
-          <h2 className="display mx-auto mt-4 max-w-[18ch] text-huge text-cream">
-            Brands you already know &amp; love.
+          <h2 className="display mx-auto max-w-[18ch] text-huge text-cream">
+            Trusted by Leading Brands Across India
           </h2>
+          <p className="mx-auto mt-4 max-w-[42ch] text-base text-cream/90 sm:text-lg">
+            20+ years of delivering technology-driven engagement campaigns for
+            India&apos;s leading brands.
+          </p>
         </Reveal>
 
         <div className="mt-14 flex flex-col gap-4">

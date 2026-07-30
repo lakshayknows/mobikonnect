@@ -5,24 +5,32 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { faqs } from "@/lib/content";
+import { faqs as defaultFaqs, type Faq } from "@/lib/content";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-export default function Faqs() {
+export default function Faqs({
+  items = defaultFaqs,
+  eyebrow = "FAQs",
+  title = "The questions we get most.",
+}: {
+  items?: readonly Faq[];
+  eyebrow?: string;
+  title?: string;
+}) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <section className="gutter py-24 sm:py-32">
       <SectionHeader
         index="·"
-        eyebrow="FAQs"
-        title="The questions we get most."
+        eyebrow={eyebrow}
+        title={title}
         align="center"
       />
 
       <div className="mx-auto mt-14 max-w-3xl sm:mt-20">
-        {faqs.map((f, i) => {
+        {items.map((f, i) => {
           const isOpen = open === i;
           return (
             <Reveal key={f.q} delay={i * 0.05}>

@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      // Blog cover art and in-post images uploaded to Vercel Blob.
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+    ],
+  },
   async redirects() {
     return [
       // Routes merged into /what-we-do during the 5-page IA consolidation.
@@ -18,6 +24,7 @@ const nextConfig = {
       { source: "/case-studies", destination: "/CaseStudies", permanent: true },
       // Redirect for old printed QR code URL path
       { source: "/CaseStudies.aspx", destination: "/CaseStudies", permanent: true },
+      { source: "/About.aspx", destination: "/About", permanent: true },
     ];
   },
   async rewrites() {

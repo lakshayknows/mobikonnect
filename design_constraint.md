@@ -90,9 +90,72 @@ New pages should be: `PageHeader` + composed existing patterns + a closing
 `Contact` section. Don't design a new section type to solve a problem one of
 the above already solves.
 
-## 6. Placeholder media is expected, not a bug
+## 6a. Blog surfaces reuse the case-study language
+
+The blog (`/blog`, `/blog/[slug]`) was deliberately built from existing
+patterns rather than a new visual system:
+
+- `BlogCard` in [components/ui/Cards.tsx](components/ui/Cards.tsx) is `CaseCard`
+  with the metrics row swapped for date + reading time. Same tinted panel,
+  corner glow, `whileHover={{ y: -6 }}` and 45°-rotating `ArrowUpRight`.
+- Post detail mirrors `app/(site)/case-studies/[slug]/page.tsx` — back-link,
+  eyebrow, oversized `display` h1, `frame` hero, closing CTA.
+- Long-form body copy is styled by `postBodyClass` in
+  [components/blog/PostBody.tsx](components/blog/PostBody.tsx), hand-built from
+  the existing tokens. **`@tailwindcss/typography` was deliberately not added** —
+  it would introduce a competing type scale. Extend `postBodyClass` instead.
+- Each post carries an `accent` of `blue` or `coral`, chosen in the editor, so
+  the grid keeps the site's two-colour alternation.
+
+## 6b. Placeholder media is expected, not a bug
 
 Case-study hero media, client logos, and interactive demo sections are
 intentionally placeholders (gradient panels, sample metrics) until real
 assets are supplied. Don't "fix" these by inventing fake-real content — flag
 them as pending asset integration instead.
+
+## 7. Admin surface — same tokens, denser scale, no motion chrome
+
+The blog CMS at `admin.mobikonnect.com` (`app/(admin)/`) is the first
+non-marketing surface in this codebase. It is a **data-entry UI**, so it follows
+a deliberately different set of rules from the public site:
+
+**Same:** every colour token (`ink` / `ink-soft` / `ink-deep` backgrounds,
+`cream` text and its dim/faint/line variants, `coral` for primary actions and
+active states, `blue` for informational states), Montserrat display + Karla
+body, `rounded-card`, `.eyebrow` labels, `border-cream-line` hairlines. No new
+colours, fonts or radii were introduced.
+
+**Different, on purpose:**
+
+- **No motion chrome.** The admin does not mount `SmoothScroll` (Lenis),
+  `Cursor`, `Navbar` or `Footer`, and does not use `Reveal` / `RevealText`.
+  Scroll-triggered reveals and a lagging custom cursor actively hurt a form-heavy
+  UI. This is why `app/layout.tsx` holds only `<html>`/`<body>` and the two route
+  groups — `(site)` and `(admin)` — render their own shells.
+- **Denser spacing.** Cards are `p-6`, rows `py-4`, inputs `py-2.5` — roughly
+  half the marketing rhythm. Do not apply `gutter` / `py-24` here.
+- **Smaller type.** Headings top out at `text-3xl`; body text is `text-sm`.
+  The fluid `mega`/`giant`/`huge` scale is not used.
+- **`rounded-lg` on inputs**, not `rounded-pill` — pills stay for buttons and
+  badges.
+
+Reuse `components/admin/ui.tsx` (Button, SubmitButton, Field, Input, Select,
+AdminCard, StatusBadge, EmptyState…) before adding a new admin primitive.
+
+**One deliberate exception:** the editing surface in
+`components/admin/RichTextEditor.tsx` imports `postBodyClass` from the public
+`PostBody` component, so authors compose in the exact type styles the published
+article uses. Keep those two in sync.
+
+## 8. Authorization lives in the data layer, never in middleware
+
+`middleware.ts` does host routing only — it maps `admin.mobikonnect.com` onto
+the `/admin` tree and 404s `/admin` on the public domain. It performs **no auth
+checks**, by design.
+
+Every admin page calls `requireSession()` and every server action calls
+`requireApiUser()` / `requireApiRole()` from [lib/auth.ts](lib/auth.ts). Server
+Actions are addressable POST endpoints, so a guard in a parent layout does not
+protect them — each action must check for itself. Do not "simplify" this by
+moving the check into middleware.

@@ -1,11 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Karla } from "next/font/google";
 import "./globals.css";
-import SmoothScroll from "@/components/layout/SmoothScroll";
-import Cursor from "@/components/layout/Cursor";
-import Splash from "@/components/layout/Splash";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -64,18 +59,15 @@ export const viewport: Viewport = {
   themeColor: "#262626",
 };
 
+/**
+ * Root layout holds only the document shell and font variables. The marketing
+ * chrome (smooth scroll, cursor, navbar, footer) lives in the (site) group and
+ * the admin shell in (admin) — they intentionally render different wrappers.
+ */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${karla.variable}`}>
-      <body>
-        <Splash />
-        <Cursor />
-        <SmoothScroll>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </SmoothScroll>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

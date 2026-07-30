@@ -33,24 +33,27 @@ export const site = {
 export const nav = [
   { label: "What We Do", href: "/what-we-do" },
   { label: "Case Studies", href: "/CaseStudies" },
+  { label: "Blog", href: "/blog" },
   { label: "About", href: "/About" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
 export type Stat = {
-  value: number;
+  value?: number;
   prefix?: string;
   suffix?: string;
   /** "in" formats with Indian digit grouping (e.g. 5,00,000) */
   format?: "in" | "plain";
+  /** Static display text used instead of an animated counter (e.g. "Millions") */
+  text?: string;
   label: string;
 };
 
 export const stats: Stat[] = [
-  { value: 20, suffix: "+", label: "Years engineering engagement" },
-  { value: 500000, suffix: "+", format: "in", label: "Entries in a single campaign" },
-  { value: 50, prefix: "₹", suffix: "L+", label: "Rewards pool disbursed" },
-  { value: 90000, suffix: "+", format: "in", label: "Free samples delivered" },
+  { value: 100, suffix: "+", label: "Brands" },
+  { value: 15, suffix: "+", label: "Years" },
+  { value: 1000, suffix: "+", label: "Campaigns" },
+  { text: "Millions", label: "Consumers engaged" },
 ];
 
 /* ───────────────────────── Services — the 6 pillars ───────────────────────── */
@@ -878,10 +881,10 @@ export const aboutPage = {
   ],
   /** About-specific proof points (independent of the homepage stats). */
   milestones: [
-    { value: "20+", label: "Years engineering engagement" },
-    { value: "100+", label: "Brands & campaigns delivered" },
-    { value: "15L+", label: "Participants reached in a single campaign" },
-    { value: "End-to-end", label: "Strategy · martech · rewards · fulfilment" },
+    { value: "100+", label: "Brands" },
+    { value: "15+", label: "Years" },
+    { value: "1,000+", label: "Campaigns" },
+    { value: "Millions", label: "Consumers engaged" },
   ],
 } as const;
 
@@ -946,3 +949,642 @@ export const faqs: Faq[] = [
     a: "Tell us the business outcome you're after — more repeat purchase, a stronger launch, rewarded partners, motivated teams. We'll engineer the experience that gets you there.",
   },
 ];
+
+/* ───────────────────────── Consumer Promotions — landing page ───────────────────────── */
+
+export const consumerPromotionsPage = {
+  eyebrow: "Consumer Promotions",
+  title: "Consumer Promotion Agency in India",
+  highlight: ["Agency", "India"],
+  intro:
+    "Mobikonnect is a Consumer Promotion Agency in India helping brands turn shoppers into participants — through Scratch & Win, Scan & Win, WhatsApp and QR promotions, instant cashback and consumer reward programs, engineered and run end to end.",
+  solutions: [
+    {
+      no: "01",
+      title: "Scratch & Win Campaigns",
+      desc: "Physical and digital scratch cards that reveal instant prizes — printed, in-app or on pack, with fraud-proof, auditable odds.",
+    },
+    {
+      no: "02",
+      title: "Scan & Win Promotions",
+      desc: "QR and barcode scans on-pack or in-store that unlock instant rewards, entries and gratification in one tap.",
+    },
+    {
+      no: "03",
+      title: "Purchase & Win Campaigns",
+      desc: "Every receipt or invoice becomes an entry — verified via upload, QR or missed call, at retail or e-commerce scale.",
+    },
+    {
+      no: "04",
+      title: "WhatsApp Promotions",
+      desc: "Conversational campaigns that run entirely inside WhatsApp — entry, verification and reward delivery without an app download.",
+    },
+    {
+      no: "05",
+      title: "Cashback & Reward Programs",
+      desc: "Instant cashback, vouchers and gift disbursement that make gratification feel immediate and almost like cash.",
+    },
+    {
+      no: "06",
+      title: "QR Code Campaigns",
+      desc: "Dynamic, secure QR codes on packaging and collateral that connect every scan to a trackable, fraud-proof campaign.",
+    },
+  ],
+  whyChoose: [
+    {
+      no: "01",
+      title: "Gratification-led Mechanics",
+      desc: "Win-and-earn campaigns designed for gratification, not just participation — rewards with an almost-cash perception that shoppers act on immediately.",
+    },
+    {
+      no: "02",
+      title: "Fraud-proof & Auditable",
+      desc: "Secure QR, unique codes and randomiser logic mean every scratch, scan and draw is verifiable and audit-ready.",
+    },
+    {
+      no: "03",
+      title: "Omnichannel Reach",
+      desc: "Scratch & Win, Scan & Win, WhatsApp, QR, IVR and web — we run the mechanic wherever your consumer already is.",
+    },
+    {
+      no: "04",
+      title: "Reward Fulfilment, End to End",
+      desc: "From reward sourcing to last-mile gift disbursement, one team owns the entire journey — no handoffs, no black boxes.",
+    },
+    {
+      no: "05",
+      title: "Measurable Sales Lift",
+      desc: "Every entry, redemption and rupee is tracked to participation and ROI — so you know exactly what the promotion delivered.",
+    },
+  ],
+  faqs: [
+    {
+      q: "What is a consumer promotion campaign?",
+      a: "A consumer promotion is a marketing mechanic — like Scratch & Win, Scan & Win or Cashback — that rewards shoppers directly for purchase, participation or engagement, driving trial, repeat purchase and brand recall.",
+    },
+    {
+      q: "What types of consumer promotions does Mobikonnect run?",
+      a: "We run Scratch & Win, Scan & Win, Purchase & Win, WhatsApp Promotions, QR Code Campaigns, Instant Cashback, Lucky Draws, Digital Coupon Campaigns and Referral Programs — tailored to your category and audience.",
+    },
+    {
+      q: "How do you ensure winner selection is fair and auditable?",
+      a: "Every campaign runs on auditable randomiser logic with a documented, verifiable process — from entry to winner declaration to gift disbursement — so results hold up to audit and legal scrutiny.",
+    },
+    {
+      q: "Can consumer promotions run on WhatsApp and QR codes?",
+      a: "Yes — WhatsApp Promotions and QR Code Campaigns are two of our most-used mechanics, letting consumers enter, verify purchase and receive rewards without downloading an app.",
+    },
+    {
+      q: "Which industries do you run consumer promotions for?",
+      a: "FMCG, consumer durables, automobile, paints, retail, banking, telecom and more — the mechanic and reward economics are tailored to each category.",
+    },
+    {
+      q: "How is reward fulfilment handled?",
+      a: "We manage reward sourcing and last-mile gift disbursement ourselves — tracked end to end so every winner actually receives their reward, on time.",
+    },
+  ],
+} as const;
+
+/* ───────────────────────── Martech Platform — landing page ───────────────────────── */
+
+export const martechPlatformPage = {
+  eyebrow: "Martech Platform",
+  title: "Marketing Technology Platform for Promotions, Loyalty & Customer Engagement",
+  highlight: ["Technology", "Engagement"],
+  intro:
+    "One platform, endless marketing possibilities. Mobikonnect's Marketing Technology Platform helps brands manage consumer promotions, trade schemes, loyalty programs, rewards, customer engagement and campaign analytics — connected to your existing CRM, ERP and DMS for complete visibility and control.",
+  cta: { label: "Request a Platform Demo", href: "/contact" },
+  capabilities: [
+    "Consumer Promotion Management",
+    "Trade Promotion Management",
+    "Loyalty Program Management",
+    "Rewards & Redemption Engine",
+    "WhatsApp Campaigns",
+    "QR Code Campaigns",
+    "SMS & IVR Campaigns",
+    "Campaign Analytics Dashboard",
+  ],
+  keyFeatures: [
+    "Omnichannel campaign management",
+    "WhatsApp Business API integration",
+    "QR code & unique code validation",
+    "Rewards & coupon management",
+    "Cashback automation",
+    "Real-time dashboards",
+    "Fraud detection & secure validation",
+    "Multi-language support",
+  ],
+  integrations: [
+    "SAP",
+    "Salesforce",
+    "Zoho CRM",
+    "Microsoft Dynamics",
+    "Oracle",
+    "ERP Systems",
+    "DMS Platforms",
+    "Payment Gateways",
+  ],
+  whyChoose: [
+    {
+      no: "01",
+      title: "One Platform for All Engagement Programs",
+      desc: "Promotions, loyalty, trade schemes, rewards and analytics run from a single integrated platform — not five different vendors.",
+    },
+    {
+      no: "02",
+      title: "Enterprise-grade Security",
+      desc: "Every campaign and reward transaction is handled with enterprise-grade security, encryption and access control.",
+    },
+    {
+      no: "03",
+      title: "Scalable Architecture",
+      desc: "Built to run pan-India, multi-language campaigns at volume without compromising speed or uptime.",
+    },
+    {
+      no: "04",
+      title: "API-first Integrations",
+      desc: "Connects cleanly with your existing CRM, ERP, DMS and payment gateways instead of forcing a rip-and-replace.",
+    },
+    {
+      no: "05",
+      title: "Real-time Analytics & Reporting",
+      desc: "Live dashboards on participation, redemption and ROI — so decisions are made on current data, not last month's report.",
+    },
+    {
+      no: "06",
+      title: "Faster Campaign Deployment",
+      desc: "Pre-built mechanics and reward logic mean campaigns launch in days, not months.",
+    },
+    {
+      no: "07",
+      title: "Pan-India Support",
+      desc: "Execution and support that reaches every market you run campaigns in, not just the metros.",
+    },
+    {
+      no: "08",
+      title: "End-to-end Implementation",
+      desc: "We don't just license the software — we implement, support and run it with you.",
+    },
+  ],
+  industries: [
+    "FMCG",
+    "Consumer Durables",
+    "Retail",
+    "Paints",
+    "Building Materials",
+    "Automotive",
+    "Telecom",
+    "BFSI",
+    "Electronics",
+  ],
+  howItWorks: {
+    steps: ["Configure", "Launch", "Engage", "Reward", "Analyse"],
+    desc: "Our platform simplifies campaign management, automates rewards and provides actionable insights to help brands make better marketing decisions.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Trade Promotions", href: "/trade-promotions" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Employee Engagement", href: "/employee-engagement" },
+  ],
+  faqs: [
+    {
+      q: "Can the platform integrate with our existing ERP and CRM?",
+      a: "Yes — the platform is built API-first and integrates with major ERP and CRM systems including SAP, Salesforce, Zoho CRM, Microsoft Dynamics and Oracle, along with DMS platforms and payment gateways.",
+    },
+    {
+      q: "Is the platform suitable for nationwide campaigns?",
+      a: "Yes — it's built for enterprise scale and runs pan-India campaigns across multiple languages, channels and geographies simultaneously.",
+    },
+    {
+      q: "Can multiple campaigns run simultaneously?",
+      a: "Yes — the platform is designed to manage multiple concurrent campaigns across promotions, loyalty, trade and engagement programs from a single dashboard.",
+    },
+    {
+      q: "Does Mobikonnect provide implementation and support?",
+      a: "Yes — every deployment includes end-to-end implementation and ongoing support, not just the software. We don't just license technology, we help you run it.",
+    },
+    {
+      q: "Is the platform secure and scalable?",
+      a: "Yes — the platform is built on enterprise-grade security and a scalable architecture designed to handle high-volume, nationwide campaigns without compromising performance.",
+    },
+  ],
+} as const;
+
+/* ───────────────────────── Influencer & Creator Marketing — landing page ───────────────────────── */
+
+export const influencerMarketingPage = {
+  eyebrow: "Influencer & Creator",
+  title: "Influencer Marketing That Delivers More Than Just Reach",
+  highlight: ["More", "Reach"],
+  intro:
+    "Influencer marketing is no longer just about likes and views — it's about driving awareness, engagement, leads and sales. Mobikonnect helps brands collaborate with the right creators across Instagram, YouTube, Facebook and emerging platforms — managing creator discovery, campaign execution and performance tracking end to end.",
+  cta: { label: "Launch Your Influencer Campaign", href: "/contact" },
+  metaTitle: "Influencer Marketing Agency India | Creator & UGC Campaigns | Mobikonnect",
+  metaDescription:
+    "Drive brand awareness and sales with influencer marketing, creator collaborations, UGC campaigns, regional influencers and performance-driven social media campaigns by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Influencer Campaign Management", desc: "End-to-end campaign management, from creator discovery and briefing to content approval and reporting." },
+    { no: "02", title: "Micro & Nano Influencer Campaigns", desc: "High-engagement creators at scale, for authentic reach inside niche communities." },
+    { no: "03", title: "Celebrity Collaborations", desc: "Larger-than-life partnerships that give a launch or campaign national visibility." },
+    { no: "04", title: "Regional Influencer Marketing", desc: "Creators who speak directly to regional and vernacular audiences, in their own language." },
+    { no: "05", title: "Product Reviews & Unboxing", desc: "Authentic, trust-building content that shows the product in real use, not a studio shoot." },
+    { no: "06", title: "User Generated Content (UGC)", desc: "Consumer and creator content repurposed into always-on brand content." },
+    { no: "07", title: "Brand Ambassador Programs", desc: "Long-term creator partnerships that build sustained brand association, not a one-off post." },
+    { no: "08", title: "Affiliate & Performance Campaigns", desc: "Creator partnerships tied directly to trackable sales, leads or app installs." },
+  ],
+  whyChoose: [
+    { no: "01", title: "Curated Network of Creators", desc: "Access to a vetted network of creators across categories, not a cold outreach list." },
+    { no: "02", title: "Category-specific Influencer Selection", desc: "Creators matched to your category and audience, not just follower count." },
+    { no: "03", title: "Pan-India and Regional Reach", desc: "Metro, tier-2 and regional-language creators, covering audiences national campaigns miss." },
+    { no: "04", title: "End-to-end Campaign Management", desc: "Discovery, briefing, content approval and reporting — managed by one team." },
+    { no: "05", title: "Authentic UGC Creation", desc: "Content that reads as real, not scripted — because it usually is." },
+    { no: "06", title: "Performance Tracking & ROI Reporting", desc: "Every campaign is tracked to reach, engagement and the business outcome it drove." },
+    { no: "07", title: "Campaign Compliance & Brand Safety", desc: "Content and creator vetting that keeps every collaboration brand-safe and disclosure-compliant." },
+    { no: "08", title: "Sales-focused Influencer Strategy", desc: "Campaigns designed to drive awareness, leads and sales — not just impressions." },
+  ],
+  platforms: [
+    "Instagram",
+    "YouTube",
+    "Facebook",
+    "LinkedIn",
+    "X (Twitter)",
+    "Snapchat",
+    "Moj",
+    "Josh",
+    "ShareChat",
+  ],
+  industries: [
+    "FMCG",
+    "Beauty & Personal Care",
+    "Fashion & Lifestyle",
+    "Consumer Durables",
+    "Electronics",
+    "Food & Beverage",
+    "Retail & E-commerce",
+    "Fintech",
+    "Healthcare",
+  ],
+  howItWorks: {
+    steps: ["Identify", "Collaborate", "Create", "Amplify", "Measure"],
+    desc: "We identify the right creators, manage content production, execute campaigns, and provide detailed performance reports to measure impact and ROI.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Experiential Marketing", href: "/experiential-marketing" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Martech Platform", href: "/martech-platform" },
+  ],
+  faqs: [
+    { q: "How do you select influencers for a campaign?", a: "Creators are matched to your category, audience and campaign goal — not just follower count — from a vetted, curated network." },
+    { q: "Do you work with micro and regional influencers?", a: "Yes — from nano and micro creators to celebrities, including regional and vernacular-language influencers across India." },
+    { q: "Can campaign performance be tracked?", a: "Yes — every campaign is tracked to reach, engagement and business outcomes like leads, installs or sales." },
+    { q: "Who owns the content created by influencers?", a: "Usage rights are negotiated per campaign, so brands can repurpose UGC as always-on content where agreed." },
+    { q: "Can influencer campaigns drive sales and lead generation?", a: "Yes — affiliate links, coupon codes and QR/WhatsApp journeys connect influencer content directly to trackable sales and leads." },
+  ],
+  finalCtaTitle: "Ready to Build Authentic Influencer Campaigns?",
+  finalCtaDesc:
+    "Whether you're launching a new product, increasing brand awareness or driving conversions, Mobikonnect helps you create influencer campaigns that deliver measurable business results.",
+  finalCtaLabel: "Speak with Our Influencer Marketing Experts",
+} as const;
+
+/* ───────────────────────── Employee Engagement — landing page ───────────────────────── */
+
+export const employeeEngagementPage = {
+  eyebrow: "Employee Engagement",
+  title: "Employee Engagement Solutions That Inspire Performance",
+  highlight: ["Inspire", "Performance"],
+  intro:
+    "Your employees are your biggest brand ambassadors. Mobikonnect helps organizations design employee engagement programs that celebrate achievements, encourage healthy competition, improve sales performance and strengthen workplace culture — from sales incentives and recognition to referral campaigns and digital rewards.",
+  cta: { label: "Talk to Our Employee Engagement Experts", href: "/contact" },
+  metaTitle: "Employee Engagement Solutions India | Rewards & Sales Incentive Programs | Mobikonnect",
+  metaDescription:
+    "Motivate employees with rewards, recognition, sales incentive programs, referral campaigns and engagement solutions powered by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Sales Incentive Programs", desc: "Target-linked incentive structures that turn quota into a game your sales force wants to win." },
+    { no: "02", title: "Employee Rewards & Recognition", desc: "Structured recognition that makes great work visible, not just appreciated in passing." },
+    { no: "03", title: "Sales Contests & Challenges", desc: "Leaderboard-driven contests that create healthy competition across teams and regions." },
+    { no: "04", title: "Referral Reward Programs", desc: "Reward employees for bringing in talent, customers or leads through their own network." },
+    { no: "05", title: "Milestone & Anniversary Rewards", desc: "Automated recognition for work anniversaries and career milestones, at scale." },
+    { no: "06", title: "Festival & Occasion Campaigns", desc: "Festive and occasion-based gratification that keeps culture warm across the year." },
+    { no: "07", title: "Learning & Achievement Rewards", desc: "Recognition tied to training completion and skill milestones, not just sales numbers." },
+    { no: "08", title: "Employee Gamification", desc: "Badges, leaderboards and progress mechanics that make performance tracking feel like play." },
+  ],
+  whyChoose: [
+    { no: "01", title: "End-to-end Employee Engagement Platform", desc: "Incentives, recognition, contests and rewards run from a single platform, not five disconnected tools." },
+    { no: "02", title: "Performance-based Reward Programs", desc: "Reward logic tied directly to the metrics that matter to your business." },
+    { no: "03", title: "Digital Rewards & Instant Redemption", desc: "Points, vouchers and gifts redeemable instantly through a digital catalogue." },
+    { no: "04", title: "Gamification & Leaderboards", desc: "Progress and competition mechanics that keep participation high across the year." },
+    { no: "05", title: "Real-time Dashboards", desc: "Live visibility into participation, redemption and performance for every team and region." },
+    { no: "06", title: "Mobile & WhatsApp-enabled Participation", desc: "Enrolment and redemption designed for how your field force and employees actually use their phones." },
+    { no: "07", title: "Seamless HRMS/CRM Integration", desc: "Connects cleanly with existing HRMS and CRM systems to sync performance and participation data." },
+    { no: "08", title: "Scalable for Teams Across India", desc: "Built to run engagement programs for distributed teams, field forces and franchise networks nationwide." },
+  ],
+  idealFor: [
+    "Sales Teams (DSRs & ISRs)",
+    "Field Force",
+    "Corporate Employees",
+    "Channel Sales Teams",
+    "Customer Support Teams",
+    "Dealers & Distributor Sales Staff",
+    "Franchise Networks",
+  ],
+  howItWorks: {
+    steps: ["Recognise", "Reward", "Motivate", "Perform", "Retain"],
+    desc: "We help organizations build engagement programs that encourage participation, reward excellence, and create a culture of continuous recognition.",
+  },
+  relatedSolutions: [
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Trade Promotions", href: "/trade-promotions" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Martech Platform", href: "/martech-platform" },
+  ],
+  faqs: [
+    { q: "Can the platform support large employee teams across multiple locations?", a: "Yes — built to scale across distributed teams, field forces, dealer networks and franchises nationwide." },
+    { q: "What types of rewards can employees redeem?", a: "Points, vouchers, gift cards, cashback and physical gifts — through a digital reward catalogue with instant redemption." },
+    { q: "Can employee engagement programs integrate with sales incentives?", a: "Yes — recognition, contests and sales incentive programs run on the same platform, tied to the same performance data." },
+    { q: "Does Mobikonnect support referral and recognition programs?", a: "Yes — referral rewards, milestone recognition and occasion-based gratification are all built into the platform." },
+    { q: "Can dashboards track individual and team performance?", a: "Yes — real-time dashboards report participation, redemption and performance at the individual, team and regional level." },
+  ],
+  finalCtaTitle: "Build a More Engaged and High-Performing Workforce",
+  finalCtaDesc:
+    "Whether you're rewarding top performers, motivating your field force, or recognizing employee milestones, Mobikonnect helps you create engagement programs that improve productivity, retention, and business performance.",
+  finalCtaLabel: "Speak with Our Employee Engagement Specialists",
+} as const;
+
+/* ───────────────────────── Trade Promotions — landing page ───────────────────────── */
+
+export const tradePromotionsPage = {
+  eyebrow: "Trade Promotions",
+  title: "Trade Promotion Agency in India",
+  highlight: ["Agency", "India"],
+  intro:
+    "Primary sales may fill distributor warehouses, but sustained growth comes from strong secondary sales. Mobikonnect helps brands design and execute trade promotion programs that motivate dealers, retailers, distributors and influencers to sell more, stay engaged and build long-term loyalty — from dealer incentives and retailer rewards to painter, plumber, electrician and mechanic loyalty initiatives.",
+  cta: { label: "Talk to Our Trade Promotion Experts", href: "/contact" },
+  metaTitle: "Trade Promotion Agency India | Dealer & Retailer Loyalty Programs | Mobikonnect",
+  metaDescription:
+    "Drive sell-out with dealer loyalty, retailer incentive programs, channel partner rewards, trade promotions and incentive management solutions by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Dealer Loyalty Programs", desc: "Point-based and tiered loyalty that rewards dealers for sell-out, not just stock-in." },
+    { no: "02", title: "Retailer Loyalty Programs", desc: "Incentive schemes that keep retailers pushing your brand at the point of sale." },
+    { no: "03", title: "Distributor Incentive Programs", desc: "Slab-wise incentive structures that reward distributors for hitting and exceeding targets." },
+    { no: "04", title: "Channel Partner Rewards", desc: "Multi-tier reward programs that engage every layer of your channel under one scheme." },
+    { no: "05", title: "Painter, Plumber & Mechanic Loyalty Programs", desc: "Tradesperson loyalty that builds recall at the point where buying decisions are actually influenced." },
+    { no: "06", title: "Sales Incentive Programs", desc: "Contest and incentive mechanics that turn targets into a game your sales force wants to win." },
+  ],
+  whyChoose: [
+    { no: "01", title: "End-to-end Trade Promotion Management", desc: "From scheme design to reward fulfilment, one team manages the entire trade promotion lifecycle." },
+    { no: "02", title: "Flexible Incentive Structures", desc: "Slab-wise, tier-based or flat incentives — reward logic that fits your channel structure." },
+    { no: "03", title: "Real-time Sales Tracking", desc: "Live visibility into scheme performance and sell-out as it happens, not at month-end." },
+    { no: "04", title: "Digital Rewards & Redemption", desc: "Points, vouchers and cashback redeemable digitally, with no manual reconciliation." },
+    { no: "05", title: "WhatsApp & Mobile-first Platform", desc: "Enrolment, tracking and redemption designed for how dealers and retailers actually use their phones." },
+    { no: "06", title: "Dealer & Retailer Engagement Dashboards", desc: "Partner-facing dashboards that keep your channel informed on standing, targets and rewards." },
+    { no: "07", title: "Nationwide Reward Fulfilment", desc: "Reward sourcing and last-mile delivery handled pan-India, tracked end to end." },
+    { no: "08", title: "ERP & DMS Integration", desc: "Connects cleanly with your existing ERP and DMS instead of running as a disconnected side system." },
+  ],
+  industries: [
+    "FMCG",
+    "Consumer Durables",
+    "Paints",
+    "Building Materials",
+    "Electricals",
+    "Plumbing",
+    "Automotive",
+    "Cement",
+    "Telecom",
+  ],
+  howItWorks: {
+    steps: ["Design", "Enrol", "Track", "Reward", "Analyse"],
+    desc: "We manage the complete lifecycle — from scheme design and participant onboarding to reward fulfilment and performance analytics.",
+  },
+  relatedSolutions: [
+    { label: "Dealer Meets", href: "/what-we-do" },
+    { label: "Retailer Meets", href: "/what-we-do" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Employee Incentive Programs", href: "/employee-engagement" },
+  ],
+  faqs: [
+    { q: "How quickly can a trade promotion be launched?", a: "Pre-built scheme templates and reward logic mean most trade promotions can launch in weeks, not months." },
+    { q: "Can the platform integrate with our DMS or ERP?", a: "Yes — the platform is API-first and integrates with major DMS and ERP systems to sync sell-out and redemption data." },
+    { q: "What reward options are available?", a: "Points, vouchers, gift cards, cashback and physical gifts — reward economics tailored to your channel and budget." },
+    { q: "Can we run different schemes for dealers and retailers?", a: "Yes — separate schemes, tiers and reward pools can run simultaneously for each channel tier under one platform." },
+    { q: "Can we launch a pilot in one region?", a: "Yes — schemes can be piloted in a single region or channel tier before a full national rollout." },
+  ],
+  finalCtaTitle: "Build a High-Performing Channel Network",
+  finalCtaDesc:
+    "Whether you're launching a seasonal incentive scheme or a year-long channel loyalty program, Mobikonnect helps you increase channel engagement, improve sell-out, and strengthen partner relationships.",
+  finalCtaLabel: "Speak with Our Trade Promotion Specialists",
+} as const;
+
+/* ───────────────────────── Loyalty Programs — landing page ───────────────────────── */
+
+export const loyaltyProgramsPage = {
+  eyebrow: "Loyalty Programs",
+  title: "Loyalty Program Solutions That Build Long-Term Customer & Channel Relationships",
+  highlight: ["Customer", "Relationships"],
+  intro:
+    "Acquiring customers is expensive — retaining them is where real business growth happens. Mobikonnect helps brands build customer, dealer and channel loyalty programs that encourage repeat purchases, increase engagement and strengthen long-term relationships, with points-based rewards, tiered memberships, digital redemption and real-time analytics in one platform.",
+  cta: { label: "Talk to Our Loyalty Experts", href: "/contact" },
+  metaTitle: "Loyalty Program Company India | Customer & Channel Loyalty Solutions | Mobikonnect",
+  metaDescription:
+    "Build customer, dealer and channel loyalty with points-based rewards, tier programs, digital redemption and loyalty management solutions by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Customer Loyalty Programs", desc: "Points, tiers and rewards that turn one-time buyers into repeat customers." },
+    { no: "02", title: "Dealer Loyalty Programs", desc: "Incentive structures that reward dealers for sell-out, not just stock-in." },
+    { no: "03", title: "Retailer Loyalty Programs", desc: "Point-of-sale loyalty that keeps retailers pushing your brand over the competition." },
+    { no: "04", title: "Channel Partner Loyalty", desc: "Multi-tier programs that engage distributors, retailers and influencers under one scheme." },
+    { no: "05", title: "Employee Rewards Programs", desc: "The same rewards engine, tuned for recognition and performance inside your own teams." },
+    { no: "06", title: "Points & Tier-Based Memberships", desc: "Structured earn-and-burn logic with tiers that reward your best customers and partners more." },
+  ],
+  keyFeatures: [
+    "Points-based earning and redemption",
+    "Tiered membership programs",
+    "Digital reward catalogue",
+    "Gift cards, vouchers & cashback",
+    "WhatsApp-enabled engagement",
+    "Real-time dashboards & analytics",
+    "Automated reward fulfilment",
+    "CRM & ERP integration",
+  ],
+  whyChoose: [
+    { no: "01", title: "One Platform for Customer and Channel Loyalty", desc: "Consumer, dealer and employee loyalty run from the same integrated platform — not separate tools stitched together." },
+    { no: "02", title: "Custom Programme Design", desc: "Points, tiers and reward logic designed around your business model, not a generic template." },
+    { no: "03", title: "Flexible Reward Structures", desc: "Cashback, vouchers, gifts or points — reward economics that flex to your budget and audience." },
+    { no: "04", title: "Nationwide Reward Fulfilment", desc: "Reward sourcing and last-mile delivery handled pan-India, tracked end to end." },
+    { no: "05", title: "Mobile-first Loyalty Experience", desc: "Enrolment, earning and redemption designed for how members actually use their phones." },
+    { no: "06", title: "Advanced Reporting & Analytics", desc: "Live dashboards on enrolment, redemption and retention — not a monthly export." },
+    { no: "07", title: "Secure and Scalable Technology", desc: "Built to handle high enrolment volumes securely, without slowing down redemption." },
+    { no: "08", title: "Fast Implementation", desc: "Pre-built program logic means your loyalty platform launches in weeks, not quarters." },
+  ],
+  industries: [
+    "FMCG",
+    "Consumer Durables",
+    "Paints",
+    "Building Materials",
+    "Electrical",
+    "Automotive",
+    "Telecom",
+    "Retail & E-commerce",
+    "BFSI",
+  ],
+  howItWorks: {
+    steps: ["Enroll", "Earn", "Engage", "Redeem", "Retain"],
+    desc: "We help you design, launch and manage loyalty programs that increase repeat purchases while providing actionable customer insights.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Trade Promotions", href: "/trade-promotions" },
+    { label: "Employee Engagement", href: "/employee-engagement" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Martech Platform", href: "/martech-platform" },
+  ],
+  faqs: [
+    { q: "What types of loyalty programs can Mobikonnect build?", a: "Customer, dealer, retailer, channel partner and employee loyalty programs — points-based, tiered or hybrid, tailored to your business model." },
+    { q: "Can the platform support dealers and customers together?", a: "Yes — the same platform runs consumer and channel loyalty simultaneously, with separate schemes, tiers and reward pools for each." },
+    { q: "Can loyalty points be redeemed instantly?", a: "Yes — points convert to vouchers, gift cards or cashback through a digital reward catalogue with instant redemption." },
+    { q: "Does the platform integrate with our CRM and ERP?", a: "Yes — the platform is API-first and integrates with major CRM and ERP systems to sync purchase, member and redemption data." },
+    { q: "How quickly can a loyalty program be launched?", a: "Pre-built program logic and reward catalogues mean most loyalty programs can launch in weeks, not quarters." },
+  ],
+  finalCtaTitle: "Ready to Build Customer Loyalty That Lasts?",
+  finalCtaDesc:
+    "Whether you're rewarding customers, dealers or channel partners, Mobikonnect helps you create loyalty programs that increase retention, drive repeat purchases and deliver measurable business growth.",
+  finalCtaLabel: "Speak with Our Loyalty Program Specialists",
+} as const;
+
+/* ───────────────────────── Experiential Marketing — landing page ───────────────────────── */
+
+export const experientialMarketingPage = {
+  eyebrow: "Experiential Marketing",
+  title: "Experiential Marketing That Creates Memorable Brand Experiences",
+  highlight: ["Memorable", "Experiences"],
+  intro:
+    "Consumers don't just buy products — they remember experiences. Mobikonnect is an Experiential Marketing Agency in India designing brand activations, product sampling, roadshows and retail experiences — backed by technology that captures consumer data and measures every campaign's ROI.",
+  cta: { label: "Plan Your Next Brand Activation", href: "/contact" },
+  metaTitle: "Experiential Marketing Agency India | Brand Activation & Roadshows | Mobikonnect",
+  metaDescription:
+    "Create memorable brand experiences with mall activations, roadshows, product sampling, retail promotions, campus campaigns and experiential marketing solutions by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Brand Activations", desc: "Immersive on-ground activations that put your brand directly in front of consumers, at city or national scale." },
+    { no: "02", title: "Mall Activations", desc: "High-footfall engagement inside the malls where your shoppers already spend their time." },
+    { no: "03", title: "Product Sampling Campaigns", desc: "Trial-driven sampling that puts the product directly in the consumer's hands." },
+    { no: "04", title: "Roadshows & Mobile Activations", desc: "Activations that travel to your audience — market to market, city to city." },
+    { no: "05", title: "Retail & In-store Promotions", desc: "Shopper-marketing moments at the point of purchase, where the buying decision is actually made." },
+    { no: "06", title: "College & Campus Activations", desc: "Campus-wide engagement that reaches a young, high-influence audience directly." },
+    { no: "07", title: "RWA & Community Activations", desc: "Neighbourhood-level activations that build trust and trial inside residential communities." },
+    { no: "08", title: "Meet & Greet Experiences", desc: "Celebrity and influencer meet-and-greet formats that turn footfall into a talked-about moment." },
+  ],
+  whyChoose: [
+    { no: "01", title: "End-to-end Campaign Execution", desc: "From concept and production to on-ground delivery, one team runs the entire activation." },
+    { no: "02", title: "Pan-India Activation Network", desc: "Execution capability that reaches every city, mall, campus and community you need." },
+    { no: "03", title: "Technology-enabled Consumer Engagement", desc: "Every activation is wired with digital mechanics, not just a stall and a banner." },
+    { no: "04", title: "QR & WhatsApp Lead Capture", desc: "Footfall converts into a compliant, structured data set captured on the spot." },
+    { no: "05", title: "Real-time Reporting & Analytics", desc: "Live visibility into footfall, participation and lead capture as the activation runs." },
+    { no: "06", title: "Experienced Promoter Management", desc: "Trained, managed on-ground teams that represent your brand consistently, everywhere." },
+    { no: "07", title: "Creative Concepts & Production", desc: "Activation concepts and production designed to be memorable, not generic." },
+    { no: "08", title: "Measurable Campaign ROI", desc: "Every activation is tracked to footfall, participation and lead conversion — not just attendance." },
+  ],
+  industries: [
+    "FMCG",
+    "Consumer Durables",
+    "Food & Beverage",
+    "Personal Care",
+    "Paints & Building Materials",
+    "Electronics",
+    "Automotive",
+    "Telecom",
+    "Retail",
+  ],
+  howItWorks: {
+    steps: ["Plan", "Activate", "Engage", "Capture", "Analyse"],
+    desc: "From concept creation and venue execution to lead capture and performance reporting, Mobikonnect manages every stage of your experiential campaign.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Meet & Greet Events", href: "/what-we-do" },
+    { label: "Customer Engagement", href: "/customer-engagement" },
+    { label: "Influencer Marketing", href: "/influencer-marketing" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+  ],
+  faqs: [
+    { q: "Can Mobikonnect execute activations across multiple cities?", a: "Yes — we run activations pan-India, across metros, tier-2 cities, malls, campuses and communities, with consistent execution and reporting." },
+    { q: "Do you provide promoters and event staff?", a: "Yes — trained, managed on-ground promoters and event staff are part of every activation we run." },
+    { q: "Can consumer data be captured digitally?", a: "Yes — QR and WhatsApp-based lead capture turn footfall into a compliant, structured first-party data set." },
+    { q: "How do you measure campaign success?", a: "Footfall, participation, lead capture and conversion are tracked in real time and reported per activation." },
+    { q: "Can activations be integrated with loyalty or consumer promotions?", a: "Yes — activations are often run alongside consumer promotion or loyalty mechanics for a combined on-ground and always-on engagement strategy." },
+  ],
+  finalCtaTitle: "Ready to Create Experiences That Drive Engagement?",
+  finalCtaDesc:
+    "Whether you're launching a new product, increasing brand awareness or driving product trials, Mobikonnect helps you create memorable brand experiences backed by measurable business outcomes.",
+  finalCtaLabel: "Speak with Our Experiential Marketing Experts",
+} as const;
+
+/* ───────────────────────── Customer Engagement — landing page ───────────────────────── */
+
+export const customerEngagementPage = {
+  eyebrow: "Customer Engagement",
+  title: "Customer Engagement Solutions That Keep Customers Coming Back",
+  highlight: ["Coming", "Back"],
+  intro:
+    "Today's customers expect more than one-way communication — they want experiences that are engaging, rewarding and interactive. Mobikonnect delivers Customer Engagement Solutions in India through gamification, contests, quizzes, surveys, referrals and reward-based campaigns that increase participation, strengthen loyalty and capture first-party consumer insights.",
+  cta: { label: "Talk to Our Engagement Experts", href: "/contact" },
+  metaTitle: "Customer Engagement Solutions India | Gamification & Interactive Campaigns | Mobikonnect",
+  metaDescription:
+    "Increase customer engagement with gamification, quizzes, spin-the-wheel, contests, surveys and interactive digital campaigns powered by Mobikonnect.",
+  solutions: [
+    { no: "01", title: "Gamification Campaigns", desc: "Game mechanics layered onto any campaign, turning participation into something people actually enjoy." },
+    { no: "02", title: "Spin the Wheel", desc: "Instant-gratification game mechanics that make engagement feel like play, not a form to fill." },
+    { no: "03", title: "Quiz & Trivia Campaigns", desc: "Fast, shareable formats that turn brand knowledge into a game worth playing." },
+    { no: "04", title: "Polls & Surveys", desc: "Structured feedback formats that capture insight while keeping participation high." },
+    { no: "05", title: "Refer & Earn Programs", desc: "Referral loops that turn engaged customers into acquisition channels." },
+    { no: "06", title: "Instant Win Games", desc: "Immediate gratification mechanics that reward participation the moment it happens." },
+    { no: "07", title: "Leaderboards & Challenges", desc: "Competition mechanics that keep audiences coming back to check their rank." },
+    { no: "08", title: "Digital Contest Campaigns", desc: "End-to-end contest management, from entry to auditable winner declaration." },
+  ],
+  whyChoose: [
+    { no: "01", title: "Mobile-first Engagement Platform", desc: "Every mechanic is designed and built for how consumers actually engage — on their phone, first." },
+    { no: "02", title: "WhatsApp, QR & Web-based Participation", desc: "Entry and participation wherever your audience already is — no app download required." },
+    { no: "03", title: "Custom Gamification Mechanics", desc: "Game design tailored to your brand and audience, not an off-the-shelf template." },
+    { no: "04", title: "Real-time Analytics & Dashboards", desc: "Live visibility into participation, completion and repeat-play as the campaign runs." },
+    { no: "05", title: "Reward & Loyalty Integration", desc: "Engagement mechanics connect directly into reward wallets and loyalty tiers." },
+    { no: "06", title: "First-party Data Collection", desc: "Every interaction builds a compliant, structured view of your audience." },
+    { no: "07", title: "Secure Campaign Management", desc: "Auditable entry, participation and winner-selection logic, built to hold up to scrutiny." },
+    { no: "08", title: "Fast Campaign Deployment", desc: "Pre-built mechanics mean engagement campaigns launch in days, not months." },
+  ],
+  industries: [
+    "FMCG",
+    "Consumer Durables",
+    "Food & Beverage",
+    "Personal Care",
+    "Retail & E-commerce",
+    "Telecom",
+    "BFSI",
+    "Automotive",
+    "Paints & Building Materials",
+  ],
+  howItWorks: {
+    steps: ["Engage", "Interact", "Reward", "Retain", "Analyse"],
+    desc: "We design interactive campaigns that encourage repeat participation while helping brands capture insights and improve customer retention.",
+  },
+  relatedSolutions: [
+    { label: "Consumer Promotions", href: "/consumer-promotions" },
+    { label: "Loyalty Programs", href: "/loyalty-programs" },
+    { label: "Experiential Marketing", href: "/experiential-marketing" },
+    { label: "Martech Platform", href: "/martech-platform" },
+    { label: "Influencer Marketing", href: "/influencer-marketing" },
+  ],
+  faqs: [
+    { q: "What types of games and engagement campaigns can Mobikonnect build?", a: "Spin-the-wheel, quizzes, trivia, polls, surveys, refer-and-earn, instant-win games and digital contests — tailored to your brand, audience and channel." },
+    { q: "Can campaigns run on WhatsApp and QR codes?", a: "Yes — most of our engagement mechanics run entirely on WhatsApp, QR or web, with no app download needed." },
+    { q: "Can customer engagement campaigns integrate with loyalty programs?", a: "Yes — engagement mechanics connect directly into reward wallets and loyalty tiers for a combined engagement-and-retention strategy." },
+    { q: "How is campaign performance measured?", a: "Participation, completion, repeat-play and referral rates are tracked live and reported per campaign." },
+    { q: "Can rewards be distributed instantly?", a: "Yes — instant-win and cashback mechanics are built for real-time reward disbursement at the moment of participation." },
+  ],
+  finalCtaTitle: "Ready to Engage Customers Beyond Their First Purchase?",
+  finalCtaDesc:
+    "Whether you're looking to increase participation, collect customer insights or improve retention, Mobikonnect helps you create interactive campaigns that keep your audience engaged.",
+  finalCtaLabel: "Speak with Our Customer Engagement Specialists",
+} as const;

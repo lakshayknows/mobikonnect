@@ -1,11 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
+import { CaseCard } from "@/components/ui/Cards";
 import { work } from "@/lib/content";
-import { cn } from "@/lib/cn";
 
 export default function Work() {
   return (
@@ -26,65 +25,9 @@ export default function Work() {
       </div>
 
       <div className="mt-16 grid gap-5 lg:grid-cols-2">
-        {work.slice(0, 6).map((c, i) => {
-          const isCoral = c.accent === "coral";
-          return (
-            <motion.article
-              key={c.brand + c.title}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-              transition={{ duration: 0.8, delay: (i % 2) * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -6 }}
-              data-cursor="hover"
-              className={cn(
-                "group relative flex min-h-[340px] flex-col justify-between overflow-hidden rounded-frame border p-8 sm:p-10",
-                "transition-colors duration-500",
-                isCoral
-                  ? "border-coral/25 bg-coral/[0.07] hover:border-coral/60"
-                  : "border-blue/25 bg-blue/[0.07] hover:border-blue/60",
-              )}
-            >
-              <div
-                className={cn(
-                  "pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full blur-3xl transition-opacity duration-500 group-hover:opacity-100",
-                  isCoral ? "bg-coral/20 opacity-40" : "bg-blue/20 opacity-40",
-                )}
-              />
-              <div className="relative flex items-start justify-between">
-                <span
-                  className={cn(
-                    "rounded-pill border px-3 py-1 text-xs",
-                    isCoral ? "border-coral/40 text-coral" : "border-blue/40 text-blue",
-                  )}
-                >
-                  {c.category}
-                </span>
-                <ArrowUpRight
-                  className={cn(
-                    "h-6 w-6 transition-all duration-300 group-hover:rotate-45",
-                    isCoral ? "text-coral" : "text-blue",
-                  )}
-                />
-              </div>
-
-              <div className="relative">
-                <p className="text-sm uppercase tracking-label text-cream-dim">{c.brand}</p>
-                <h3 className="display mt-2 text-3xl sm:text-4xl">{c.title}</h3>
-                <p className="mt-4 max-w-md text-cream-dim">{c.summary}</p>
-
-                <div className="mt-7 flex gap-10 border-t border-cream-line pt-5">
-                  {c.metrics.map((m) => (
-                    <div key={m.label}>
-                      <div className="display text-2xl text-cream sm:text-3xl">{m.value}</div>
-                      <div className="mt-1 text-xs text-cream-dim">{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.article>
-          );
-        })}
+        {work.slice(0, 6).map((c, i) => (
+          <CaseCard key={c.slug} study={c} index={i} />
+        ))}
       </div>
 
       <Reveal delay={0.1} className="mt-12 flex justify-center">

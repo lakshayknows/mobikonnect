@@ -50,7 +50,7 @@ export type EditorPost = {
   categoryId: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
-  seoKeywords: string | null;
+  seoKeywords?: string | null;
   ogImageUrl: string | null;
   featured: boolean;
   accent: "blue" | "coral";

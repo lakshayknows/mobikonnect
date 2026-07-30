@@ -43,6 +43,7 @@ export default async function EditPostPage({
         categoryId: post.categoryId,
         seoTitle: post.seoTitle,
         seoDescription: post.seoDescription,
+        seoKeywords: post.seoKeywords,
         ogImageUrl: post.ogImageUrl,
         featured: post.featured,
         accent: post.accent,

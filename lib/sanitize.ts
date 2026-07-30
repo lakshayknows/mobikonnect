@@ -1,4 +1,4 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtmlLib from "sanitize-html";
 
 /**
  * Post bodies arrive as HTML from the browser-side editor, so they are attacker
@@ -21,18 +21,26 @@ const ALLOWED_TAGS = [
 const ALLOWED_ATTR = ["href", "target", "rel", "src", "alt", "title", "width", "height", "class"];
 
 export function sanitizeHtml(dirty: string): string {
-  return DOMPurify.sanitize(dirty ?? "", {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR,
-    // Block javascript:/data: URLs; allow only real links and images.
-    ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|tel:|\/|#)/i,
-    FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form", "input"],
-    FORBID_ATTR: ["style", "onerror", "onload", "onclick", "srcset", "formaction"],
-    KEEP_CONTENT: true,
+  return sanitizeHtmlLib(dirty ?? "", {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: {
+      "*": ALLOWED_ATTR,
+    },
+    allowedSchemes: ["http", "https", "mailto", "tel"],
+    allowedSchemesByTag: {
+      a: ["http", "https", "mailto", "tel"],
+      img: ["http", "https", "data"],
+    },
+    disallowedTagsMode: "discard",
   });
 }
 
 /** Plain text fields (title, excerpt, alt) — strip markup entirely. */
 export function sanitizeText(dirty: string): string {
-  return DOMPurify.sanitize(dirty ?? "", { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }).trim();
+  return sanitizeHtmlLib(dirty ?? "", {
+    allowedTags: [],
+    allowedAttributes: {},
+    disallowedTagsMode: "discard",
+  }).trim();
 }
+

@@ -107,7 +107,86 @@ Deploy anywhere that runs Next.js (Vercel recommended).
 
 ---
 
-## 3. Brand palette quick reference
+## 3. Blog & admin CMS
+
+The marketing pages are still static and driven by `lib/content.ts`. The **blog**
+is different: posts live in Postgres and are authored through an admin portal, so
+the marketing team can publish without a deploy.
+
+| Surface | URL | Notes |
+| --- | --- | --- |
+| Blog index | `/blog` | Category + tag filters, pagination, featured post |
+| Post | `/blog/[slug]` | ISR (`revalidate = 60`) + on-demand revalidation on publish |
+| RSS | `/blog/rss.xml` | 50 most recent published posts |
+| Admin | `admin.mobikonnect.com` | `/admin` in local dev |
+
+### 3.1 One-time setup
+
+```bash
+vercel login
+vercel link
+
+vercel integration add neon --yes   # Postgres  → DATABASE_URL
+vercel integration add blob --yes   # Media     → BLOB_READ_WRITE_TOKEN
+vercel env pull .env.local --yes
+
+npm run db:push                     # create the tables
+npm run db:seed                     # first admin user + starter categories
+```
+
+`db:seed` reads `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME` if set, otherwise it
+creates `sales@mobikonnect.com` and prints a generated password **once**.
+
+Add the subdomain:
+
+```bash
+vercel domains add admin.mobikonnect.com
+```
+
+`mobikonnect.com` uses third-party nameservers (GoDaddy), so Vercel cannot create the
+record itself. Add this at the DNS provider:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `admin` | `76.76.21.21` |
+
+Vercel re-verifies automatically and issues TLS once the record propagates — check with
+`vercel domains inspect admin.mobikonnect.com`.
+
+### 3.2 What the CMS does
+
+Rich-text editing (Tiptap), auto-slug with live uniqueness checking, cover images and
+inline images via Vercel Blob, categories and tags, draft / scheduled / published states,
+scheduling that goes live on its own, an SEO panel with a live search-result preview,
+per-save revision history with restore, bulk publish/draft/delete, a media library, and
+multi-user accounts with `admin` / `editor` roles.
+
+### 3.3 Architecture notes
+
+- `app/` is split into two route groups: `(site)` keeps the marketing chrome
+  (Lenis, cursor, navbar, footer); `(admin)` renders a plain shell. **Route groups do
+  not change URLs** — every existing path is unchanged.
+- `middleware.ts` does host routing only: it maps `admin.` onto `/admin` and 404s
+  `/admin` on the public domain in production. **It performs no auth checks.**
+  Authorization lives in `lib/auth.ts` and is called by every admin page and every
+  server action — see `design_constraint.md` §8.
+- Post HTML is sanitized server-side (`lib/sanitize.ts`) before it is stored, because
+  the public page renders it with `dangerouslySetInnerHTML`.
+- Passwords use Node's built-in `crypto.scrypt`; sessions are opaque random tokens
+  stored as SHA-256 hashes in the `sessions` table, so sign-out revokes server-side.
+
+### 3.4 Scripts
+
+```bash
+npm run db:push      # push schema changes to the database
+npm run db:generate  # generate a SQL migration instead
+npm run db:studio    # browse the data
+npm run db:seed      # create the first admin user
+```
+
+---
+
+## 4. Brand palette quick reference
 
 ```
 #262626  ink     — frame / background

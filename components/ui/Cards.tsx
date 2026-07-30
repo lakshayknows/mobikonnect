@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
+import { formatPostDate, isoDate } from "@/lib/blog";
 import type { CaseStudy } from "@/lib/content";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -52,12 +53,14 @@ export function PillarCard({
         <span className={cn("display text-sm", isCoral ? "text-coral" : "text-blue")}>
           {no}
         </span>
-        <ArrowUpRight
-          className={cn(
-            "h-5 w-5 transition-all duration-300 group-hover:rotate-45",
-            isCoral ? "text-coral" : "text-blue",
-          )}
-        />
+        {href && (
+          <ArrowUpRight
+            className={cn(
+              "h-5 w-5 transition-all duration-300 group-hover:rotate-45",
+              isCoral ? "text-coral" : "text-blue",
+            )}
+          />
+        )}
       </div>
       <div className="relative">
         <h3 className="display text-xl leading-tight">{title}</h3>
@@ -148,6 +151,123 @@ export function CaseCard({ study, index = 0 }: { study: CaseStudy; index?: numbe
                 <div className="mt-1 text-xs text-cream-dim">{m.label}</div>
               </div>
             ))}
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+/** Summary shape a BlogCard needs — a structural subset of a posts row. */
+export type BlogCardPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  coverImageUrl: string | null;
+  coverImageAlt: string | null;
+  publishedAt: Date | string | null;
+  readingMinutes: number;
+  accent: "blue" | "coral";
+  category?: { name: string; slug: string } | null;
+  author?: { name: string } | null;
+};
+
+/**
+ * Linked blog card — same anatomy as CaseCard (tinted panel, corner glow,
+ * rotating arrow) with the metrics row swapped for date + reading time.
+ */
+export function BlogCard({
+  post,
+  index = 0,
+  featured = false,
+}: {
+  post: BlogCardPost;
+  index?: number;
+  featured?: boolean;
+}) {
+  const isCoral = post.accent === "coral";
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      transition={{ duration: 0.8, delay: (index % 3) * 0.08, ease }}
+      whileHover={{ y: -6 }}
+      className="h-full"
+    >
+      <Link
+        href={`/blog/${post.slug}`}
+        data-cursor="hover"
+        className={cn(
+          "group relative flex h-full flex-col justify-between overflow-hidden rounded-frame border p-8 transition-colors duration-500 sm:p-10",
+          featured ? "min-h-[380px]" : "min-h-[320px]",
+          isCoral
+            ? "border-coral/25 bg-coral/[0.07] hover:border-coral/60"
+            : "border-blue/25 bg-blue/[0.07] hover:border-blue/60",
+        )}
+      >
+        <div
+          className={cn(
+            "pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full opacity-40 blur-3xl transition-opacity duration-500 group-hover:opacity-100",
+            isCoral ? "bg-coral/20" : "bg-blue/20",
+          )}
+        />
+
+        {post.coverImageUrl && (
+          <div className="relative -mx-8 -mt-8 mb-7 aspect-[16/8] overflow-hidden sm:-mx-10 sm:-mt-10">
+            {/* eslint-disable-next-line @next/next/no-img-element -- remote Blob URL, sized by CSS */}
+            <img
+              src={post.coverImageUrl}
+              alt={post.coverImageAlt ?? ""}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent" />
+          </div>
+        )}
+
+        <div className="relative flex items-start justify-between gap-4">
+          {post.category ? (
+            <span
+              className={cn(
+                "rounded-pill border px-3 py-1 text-xs",
+                isCoral ? "border-coral/40 text-coral" : "border-blue/40 text-blue",
+              )}
+            >
+              {post.category.name}
+            </span>
+          ) : (
+            <span />
+          )}
+          <ArrowUpRight
+            className={cn(
+              "h-6 w-6 shrink-0 transition-all duration-300 group-hover:rotate-45",
+              isCoral ? "text-coral" : "text-blue",
+            )}
+          />
+        </div>
+
+        <div className="relative mt-6">
+          <h3 className={cn("display leading-tight", featured ? "text-3xl sm:text-5xl" : "text-2xl sm:text-3xl")}>
+            {post.title}
+          </h3>
+          {post.excerpt && (
+            <p className={cn("mt-4 text-cream-dim", featured ? "max-w-2xl" : "max-w-md text-sm")}>
+              {post.excerpt}
+            </p>
+          )}
+          <div className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-cream-line pt-5 text-xs text-cream-faint">
+            {post.publishedAt && (
+              <time dateTime={isoDate(post.publishedAt)}>{formatPostDate(post.publishedAt)}</time>
+            )}
+            {post.publishedAt && <span aria-hidden>·</span>}
+            <span>{post.readingMinutes} min read</span>
+            {post.author?.name && (
+              <>
+                <span aria-hidden>·</span>
+                <span>{post.author.name}</span>
+              </>
+            )}
           </div>
         </div>
       </Link>

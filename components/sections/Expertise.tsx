@@ -70,7 +70,9 @@ export default function Expertise() {
                 <span className="display text-sm text-cream-faint transition-colors duration-300 group-hover:text-cream">
                   {e.no}
                 </span>
-                <ArrowUpRight className="h-5 w-5 text-cream-faint transition-all duration-300 group-hover:rotate-45 group-hover:text-cream" />
+                {href && (
+                  <ArrowUpRight className="h-5 w-5 text-cream-faint transition-all duration-300 group-hover:rotate-45 group-hover:text-cream" />
+                )}
               </div>
               <div className="relative">
                 <h3 className="display text-xl leading-tight transition-colors duration-300 group-hover:text-cream">

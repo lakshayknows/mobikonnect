@@ -112,6 +112,7 @@ function parsePostForm(formData: FormData) {
     categoryId: String(formData.get("categoryId") ?? "").trim() || null,
     seoTitle: sanitizeText(String(formData.get("seoTitle") ?? "")).slice(0, 200) || null,
     seoDescription: sanitizeText(String(formData.get("seoDescription") ?? "")).slice(0, 400) || null,
+    seoKeywords: sanitizeText(String(formData.get("seoKeywords") ?? "")).slice(0, 300) || null,
     ogImageUrl: String(formData.get("ogImageUrl") ?? "").trim() || null,
     featured: formData.get("featured") === "on" || formData.get("featured") === "true",
     accent: (String(formData.get("accent") ?? "blue") === "coral" ? "coral" : "blue") as "blue" | "coral",

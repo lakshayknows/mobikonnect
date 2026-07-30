@@ -121,6 +121,7 @@ export const posts = pgTable(
     readingMinutes: integer("reading_minutes").notNull().default(1),
     seoTitle: text("seo_title"),
     seoDescription: text("seo_description"),
+    seoKeywords: text("seo_keywords"),
     ogImageUrl: text("og_image_url"),
     featured: boolean("featured").notNull().default(false),
     accent: postAccent("accent").notNull().default("blue"),

@@ -50,6 +50,7 @@ export type EditorPost = {
   categoryId: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
+  seoKeywords: string | null;
   ogImageUrl: string | null;
   featured: boolean;
   accent: "blue" | "coral";
@@ -87,6 +88,7 @@ export function PostEditor({
   const [coverImageAlt, setCoverImageAlt] = useState(post?.coverImageAlt ?? "");
   const [seoTitle, setSeoTitle] = useState(post?.seoTitle ?? "");
   const [seoDescription, setSeoDescription] = useState(post?.seoDescription ?? "");
+  const [seoKeywords, setSeoKeywords] = useState(post?.seoKeywords ?? "");
   const [selectedTags, setSelectedTags] = useState<string[]>(post?.tagIds ?? []);
 
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -299,6 +301,21 @@ export function PostEditor({
                   onChange={(e) => setSeoDescription(e.target.value)}
                   placeholder={effectiveExcerpt || "Defaults to the excerpt"}
                   maxLength={400}
+                />
+              </Field>
+
+              <Field
+                label="Meta keywords"
+                htmlFor="seoKeywords"
+                hint="Comma-separated keywords for search engines (e.g. experiential marketing, customer loyalty, brand engagement)."
+              >
+                <Input
+                  id="seoKeywords"
+                  name="seoKeywords"
+                  value={seoKeywords}
+                  onChange={(e) => setSeoKeywords(e.target.value)}
+                  placeholder="e.g. experiential marketing, customer engagement"
+                  maxLength={300}
                 />
               </Field>
 

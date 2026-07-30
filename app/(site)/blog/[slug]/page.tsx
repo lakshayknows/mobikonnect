@@ -47,10 +47,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const title = post.seoTitle || post.title;
   const description = post.seoDescription || post.excerpt;
   const image = post.ogImageUrl || post.coverImageUrl || undefined;
+  const keywords = post.seoKeywords ? post.seoKeywords.split(",").map((k) => k.trim()).filter(Boolean) : undefined;
 
   return {
     title,
     description,
+    keywords,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       type: "article",
@@ -103,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `https://${site.domain}/blog/${post.slug}` },
     articleSection: post.category?.name,
-    keywords: postTags.map((t) => t.name).join(", ") || undefined,
+    keywords: post.seoKeywords || postTags.map((t) => t.name).join(", ") || undefined,
   };
 
   return (

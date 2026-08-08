@@ -72,3 +72,16 @@ export function toDateTimeLocal(date: Date | string | null | undefined): string 
 }
 
 export const POSTS_PER_PAGE = 9;
+
+/**
+ * Whether a case-study hero should render as <video> or <img>.
+ *
+ * Prefers the stored kind; falls back to the extension for rows seeded before
+ * the column existed. Vercel Blob appends a random suffix to uploads, which is
+ * why the kind is stored rather than sniffed at render time.
+ */
+export function isVideoMedia(url?: string | null, kind?: "image" | "video" | null): boolean {
+  if (kind) return kind === "video";
+  if (!url) return false;
+  return /\.(mp4|webm|mov)(\?|$)/i.test(url);
+}

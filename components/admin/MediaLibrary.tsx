@@ -6,7 +6,13 @@ import { Check, Copy, Loader2, Trash2, Upload } from "lucide-react";
 import { deleteMediaAction, uploadMediaAction } from "@/app/(admin)/admin/actions";
 import { Button, EmptyState, FormError } from "@/components/admin/ui";
 
-type Blob = { url: string; pathname: string; size: number; uploadedAt: string };
+type Blob = {
+  url: string;
+  pathname: string;
+  size: number;
+  uploadedAt: string;
+  kind: "image" | "video";
+};
 
 const formatSize = (bytes: number) =>
   bytes > 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.round(bytes / 1024)} kB`;
@@ -51,7 +57,7 @@ export function MediaLibrary({ blobs }: { blobs: Blob[] }) {
         <input
           ref={fileInput}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+          accept="image/jpeg,image/png,image/webp,image/gif,image/avif,video/mp4,video/webm"
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -61,9 +67,11 @@ export function MediaLibrary({ blobs }: { blobs: Blob[] }) {
         />
         <Button type="button" disabled={uploading} onClick={() => fileInput.current?.click()}>
           {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-          {uploading ? "Uploading…" : "Upload image"}
+          {uploading ? "Uploading…" : "Upload media"}
         </Button>
-        <p className="text-xs text-cream-faint">JPEG, PNG, WebP, GIF or AVIF · up to 10 MB</p>
+        <p className="text-xs text-cream-faint">
+          JPEG, PNG, WebP, GIF or AVIF up to 10 MB · MP4 or WebM up to 50 MB
+        </p>
       </div>
 
       {blobs.length === 0 ? (
@@ -75,13 +83,25 @@ export function MediaLibrary({ blobs }: { blobs: Blob[] }) {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {blobs.map((b) => (
             <div key={b.url} className="overflow-hidden rounded-card border border-cream-line bg-ink-soft/30">
-              {/* eslint-disable-next-line @next/next/no-img-element -- remote Blob URL */}
-              <img
-                src={b.url}
-                alt={b.pathname}
-                loading="lazy"
-                className="aspect-[16/10] w-full bg-ink-deep object-cover"
-              />
+              {b.kind === "video" ? (
+                <video
+                  src={b.url}
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  preload="metadata"
+                  className="aspect-[16/10] w-full bg-ink-deep object-cover"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element -- remote Blob URL
+                <img
+                  src={b.url}
+                  alt={b.pathname}
+                  loading="lazy"
+                  className="aspect-[16/10] w-full bg-ink-deep object-cover"
+                />
+              )}
               <div className="p-4">
                 <p className="truncate text-xs text-cream" title={b.pathname}>
                   {b.pathname.replace(/^blog\//, "")}

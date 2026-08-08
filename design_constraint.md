@@ -90,7 +90,31 @@ New pages should be: `PageHeader` + composed existing patterns + a closing
 `Contact` section. Don't design a new section type to solve a problem one of
 the above already solves.
 
-## 6a. Blog surfaces reuse the case-study language
+## 6. Case studies are database-driven — the markup must not change
+
+`/CaseStudies` and `/CaseStudies/[slug]` now read from the `case_studies` table and are
+edited in the admin portal. The **rendered markup was kept byte-identical** during that
+move — verified by diffing the served HTML of the index, three detail pages and the
+homepage before and after.
+
+If you touch these pages, keep it that way:
+
+- The card is still `CaseCard` in [components/ui/Cards.tsx](components/ui/Cards.tsx);
+  its prop type is a structural subset of a DB row (`CaseCardStudy`), not the whole row.
+- `challenge` / `objective` / `solution` are **plain text** rendered as `<p>{body}</p>`.
+  Do not turn them into rich text — nothing on a case study touches
+  `dangerouslySetInnerHTML`, and that is worth keeping.
+- The hero branches on the stored `mediaKind`, not the file extension, because Vercel
+  Blob appends a random suffix to uploads. Use `isVideoMedia()` from `lib/blog.ts`.
+- `accent` stays a per-row `blue` / `coral` value. The seeded 20 alternate; new entries
+  choose in the editor.
+- The `caseStudies` array in [lib/content.ts](lib/content.ts) is **seed data only**.
+  Editing it does not change the site.
+- `components/sections/Work.tsx` is a client component and takes `studies` as a prop —
+  it cannot import the data itself. The homepage fetches and passes the first six, which
+  is why the homepage is ISR rather than fully static.
+
+## 7. Blog surfaces reuse the case-study language
 
 The blog (`/blog`, `/blog/[slug]`) was deliberately built from existing
 patterns rather than a new visual system:
@@ -107,14 +131,14 @@ patterns rather than a new visual system:
 - Each post carries an `accent` of `blue` or `coral`, chosen in the editor, so
   the grid keeps the site's two-colour alternation.
 
-## 6b. Placeholder media is expected, not a bug
+## 8. Placeholder media is expected, not a bug
 
 Case-study hero media, client logos, and interactive demo sections are
 intentionally placeholders (gradient panels, sample metrics) until real
 assets are supplied. Don't "fix" these by inventing fake-real content — flag
 them as pending asset integration instead.
 
-## 7. Admin surface — same tokens, denser scale, no motion chrome
+## 9. Admin surface — same tokens, denser scale, no motion chrome
 
 The blog CMS at `admin.mobikonnect.com` (`app/(admin)/`) is the first
 non-marketing surface in this codebase. It is a **data-entry UI**, so it follows
@@ -148,7 +172,7 @@ AdminCard, StatusBadge, EmptyState…) before adding a new admin primitive.
 `PostBody` component, so authors compose in the exact type styles the published
 article uses. Keep those two in sync.
 
-## 8. Authorization lives in the data layer, never in middleware
+## 10. Authorization lives in the data layer, never in middleware
 
 `middleware.ts` does host routing only — it maps `admin.mobikonnect.com` onto
 the `/admin` tree and 404s `/admin` on the public domain. It performs **no auth

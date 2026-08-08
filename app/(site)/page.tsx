@@ -29,8 +29,26 @@ import HowWeWork from "@/components/sections/HowWeWork";
 import WhyBrands from "@/components/sections/WhyBrands";
 import Work from "@/components/sections/Work";
 import Clients from "@/components/sections/Clients";
+import { listPublishedCaseStudies } from "@/lib/db/queries";
+import { isDbConfigured } from "@/lib/db";
 
-export default function Home() {
+/**
+ * The "Selected work" grid reads case studies from the database, so the page is
+ * ISR rather than fully static. Publishing from the admin revalidates it.
+ */
+export const revalidate = 300;
+
+export default async function Home() {
+  let studies: Awaited<ReturnType<typeof listPublishedCaseStudies>> = [];
+
+  if (isDbConfigured()) {
+    try {
+      studies = await listPublishedCaseStudies(6);
+    } catch (error) {
+      console.error("[home] failed to load case studies:", error);
+    }
+  }
+
   return (
     <>
       <Hero />
@@ -40,7 +58,7 @@ export default function Home() {
       <Technology />
       <HowWeWork />
       <WhyBrands />
-      <Work />
+      <Work studies={studies} />
       <Clients />
     </>
   );

@@ -309,33 +309,54 @@ export async function deleteTagAction(formData: FormData) {
 
 /* ───────────────────────────────── Media ──────────────────────────────────── */
 
-const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+// Not exported: a "use server" file may only export async functions. The client
+// components keep their own copy of the accept string.
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+/** Case-study heroes are campaign films, so video is allowed with a larger cap. */
+const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm"];
 
-export async function uploadMediaAction(formData: FormData): Promise<{ url?: string; error?: string }> {
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 50 * 1024 * 1024;
+
+export type UploadResult = { url?: string; kind?: "image" | "video"; error?: string };
+
+export async function uploadMediaAction(formData: FormData): Promise<UploadResult> {
   await requireApiUser();
 
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) return { error: "Choose a file to upload." };
-  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    return { error: "Only JPEG, PNG, WebP, GIF or AVIF images are allowed." };
+
+  const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
+  const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
+  if (!isImage && !isVideo) {
+    return { error: "Allowed: JPEG, PNG, WebP, GIF, AVIF images or MP4 / WebM video." };
   }
-  if (file.size > MAX_UPLOAD_BYTES) return { error: "Images must be 10 MB or smaller." };
+
+  const limit = isVideo ? MAX_VIDEO_BYTES : MAX_IMAGE_BYTES;
+  if (file.size > limit) {
+    return { error: isVideo ? "Video must be 50 MB or smaller." : "Images must be 10 MB or smaller." };
+  }
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return { error: "Blob storage is not configured yet. Run `vercel integration add blob`." };
   }
 
-  const safeName = slugify(file.name.replace(/\.[^.]+$/, "")) || "image";
-  const ext = (file.name.split(".").pop() ?? "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+  // Folder only groups the library; `folder` comes from the calling screen.
+  const folder = String(formData.get("folder") ?? "blog").replace(/[^a-z0-9-]/gi, "") || "blog";
+  const safeName = slugify(file.name.replace(/\.[^.]+$/, "")) || (isVideo ? "video" : "image");
+  const ext = (file.name.split(".").pop() ?? (isVideo ? "mp4" : "jpg"))
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
 
   try {
-    const blob = await put(`blog/${safeName}.${ext}`, file, {
+    const blob = await put(`${folder}/${safeName}.${ext}`, file, {
       access: "public",
       addRandomSuffix: true,
       contentType: file.type,
     });
     revalidatePath("/admin/media");
-    return { url: blob.url };
+    // Kind is returned so it can be stored, rather than sniffed from the URL
+    // later — Blob appends a random suffix to the pathname.
+    return { url: blob.url, kind: isVideo ? "video" : "image" };
   } catch (error) {
     console.error("[media] upload failed:", error);
     return { error: "Upload failed. Please try again." };
@@ -346,7 +367,8 @@ export async function listMediaAction() {
   await requireApiUser();
   if (!process.env.BLOB_READ_WRITE_TOKEN) return { blobs: [] };
   try {
-    const { blobs } = await list({ prefix: "blog/", limit: 100 });
+    // No prefix — one library shows blog and case-study uploads together.
+    const { blobs } = await list({ limit: 100 });
     return {
       blobs: blobs
         .map((b) => ({
@@ -354,6 +376,7 @@ export async function listMediaAction() {
           pathname: b.pathname,
           size: b.size,
           uploadedAt: b.uploadedAt.toISOString(),
+          kind: /\.(mp4|webm|mov)$/i.test(b.pathname) ? ("video" as const) : ("image" as const),
         }))
         .sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt)),
     };
@@ -454,4 +477,190 @@ export async function deleteUserAction(formData: FormData) {
 /** Used by the editor's preview pane. */
 export async function getCurrentUserAction() {
   return getSessionUser();
+}
+
+/* ────────────────────────────── Case studies ──────────────────────────────── */
+
+/**
+ * Refresh every surface a case study appears on. Note the route is the
+ * lowercase folder `/case-studies` even though the public URL is `/CaseStudies`
+ * — next.config.mjs rewrites between them, and revalidatePath takes the route.
+ */
+function revalidateCaseStudies(slug?: string) {
+  revalidatePath("/case-studies");
+  if (slug) revalidatePath(`/case-studies/${slug}`);
+  revalidatePath("/"); // the homepage "Selected work" grid
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/admin/case-studies");
+  revalidatePath("/admin");
+}
+
+/** Repeatable fields post one entry per row; blanks are dropped. */
+function readList(formData: FormData, name: string): string[] {
+  return formData
+    .getAll(name)
+    .map((v) => sanitizeText(String(v)))
+    .filter(Boolean);
+}
+
+function parseCaseStudyForm(formData: FormData) {
+  // Metric rows post as parallel arrays; pair them up and drop half-filled rows.
+  const metricValues = formData.getAll("metricValue").map((v) => sanitizeText(String(v)));
+  const metricLabels = formData.getAll("metricLabel").map((v) => sanitizeText(String(v)));
+  const metrics = metricValues
+    .map((value, i) => ({ value, label: metricLabels[i] ?? "" }))
+    .filter((m) => m.value && m.label);
+
+  const sortOrderRaw = Number(formData.get("sortOrder"));
+  const kindRaw = String(formData.get("mediaKind") ?? "");
+
+  return {
+    brand: sanitizeText(String(formData.get("brand") ?? "")).slice(0, 120),
+    title: sanitizeText(String(formData.get("title") ?? "")).slice(0, 200),
+    category: sanitizeText(String(formData.get("category") ?? "")).slice(0, 120),
+    summary: sanitizeText(String(formData.get("summary") ?? "")).slice(0, 600),
+    challenge: sanitizeText(String(formData.get("challenge") ?? "")).slice(0, 1200),
+    objective: sanitizeText(String(formData.get("objective") ?? "")).slice(0, 1200),
+    solution: sanitizeText(String(formData.get("solution") ?? "")).slice(0, 1200),
+    techUsed: readList(formData, "techUsed").slice(0, 12),
+    results: readList(formData, "results").slice(0, 12),
+    metrics: metrics.slice(0, 4),
+    accent: (String(formData.get("accent") ?? "blue") === "coral" ? "coral" : "blue") as
+      | "blue"
+      | "coral",
+    mediaUrl: String(formData.get("mediaUrl") ?? "").trim() || null,
+    mediaKind: kindRaw === "video" ? ("video" as const) : kindRaw === "image" ? ("image" as const) : null,
+    status: (String(formData.get("status") ?? "draft") === "published" ? "published" : "draft") as
+      | "draft"
+      | "published",
+    sortOrder: Number.isFinite(sortOrderRaw) ? Math.trunc(sortOrderRaw) : 0,
+    seoTitle: sanitizeText(String(formData.get("seoTitle") ?? "")).slice(0, 200) || null,
+    seoDescription: sanitizeText(String(formData.get("seoDescription") ?? "")).slice(0, 400) || null,
+    seoKeywords: sanitizeText(String(formData.get("seoKeywords") ?? "")).slice(0, 300) || null,
+    ogImageUrl: String(formData.get("ogImageUrl") ?? "").trim() || null,
+  };
+}
+
+export async function saveCaseStudyAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const user = await requireApiUser();
+  const id = String(formData.get("id") ?? "").trim();
+  const values = parseCaseStudyForm(formData);
+
+  if (!values.brand) return { error: "Brand is required." };
+  if (!values.title) return { error: "Title is required." };
+  if (!values.category) return { error: "Category is required." };
+  if (!values.summary) return { error: "Summary is required — it is the card copy." };
+
+  const requestedSlug = slugify(String(formData.get("slug") ?? "") || values.title);
+  const slug = await q.uniqueCaseStudySlug(requestedSlug, id || undefined);
+
+  let savedSlug = slug;
+  let savedId = id;
+
+  if (id) {
+    const existing = await q.getCaseStudyById(id);
+    if (!existing) return { error: "That case study no longer exists." };
+
+    // Snapshot the previous version before overwriting it.
+    await q.saveCaseStudyRevision({
+      caseStudyId: id,
+      title: existing.title,
+      snapshot: existing,
+      authorId: user.id,
+    });
+
+    const updated = await q.updateCaseStudy(id, { ...values, slug });
+    savedSlug = updated.slug;
+    if (existing.slug !== updated.slug) revalidatePath(`/case-studies/${existing.slug}`);
+  } else {
+    const sortOrder = values.sortOrder || (await q.nextCaseStudySortOrder());
+    const created = await q.createCaseStudy({ ...values, sortOrder, slug, authorId: user.id });
+    savedId = created.id;
+    savedSlug = created.slug;
+  }
+
+  revalidateCaseStudies(savedSlug);
+
+  if (!id) redirect(`/admin/case-studies/${savedId}?saved=1`);
+  return { success: "Saved." };
+}
+
+export async function deleteCaseStudyAction(formData: FormData) {
+  await requireApiUser();
+  const id = String(formData.get("id") ?? "");
+  if (!id) return;
+
+  const deleted = await q.deleteCaseStudy(id);
+  revalidateCaseStudies(deleted?.slug);
+  redirect("/admin/case-studies");
+}
+
+export async function bulkCaseStudyAction(formData: FormData) {
+  await requireApiUser();
+  const ids = formData.getAll("ids").map(String).filter(Boolean);
+  const operation = String(formData.get("operation") ?? "");
+  if (ids.length === 0) return;
+
+  if (operation === "delete") {
+    const rows = await q.deleteCaseStudies(ids);
+    rows.forEach((r) => revalidatePath(`/case-studies/${r.slug}`));
+  } else if (operation === "publish" || operation === "draft") {
+    for (const id of ids) {
+      const study = await q.getCaseStudyById(id);
+      if (!study) continue;
+      await q.updateCaseStudy(id, { status: operation === "publish" ? "published" : "draft" });
+      revalidatePath(`/case-studies/${study.slug}`);
+    }
+  }
+
+  revalidateCaseStudies();
+}
+
+/** Live availability check for the slug field. */
+export async function checkCaseStudySlugAction(slug: string, exceptId?: string) {
+  await requireApiUser();
+  const normalized = slugify(slug);
+  if (!normalized) return { slug: "", available: false };
+  return { slug: normalized, available: !(await q.caseStudySlugTaken(normalized, exceptId)) };
+}
+
+export async function restoreCaseStudyRevisionAction(formData: FormData) {
+  const user = await requireApiUser();
+  const revisionId = String(formData.get("revisionId") ?? "");
+  const caseStudyId = String(formData.get("caseStudyId") ?? "");
+  if (!revisionId || !caseStudyId) return;
+
+  const [revision, current] = await Promise.all([
+    q.getCaseStudyRevision(revisionId),
+    q.getCaseStudyById(caseStudyId),
+  ]);
+  if (!revision || !current) return;
+
+  // The current state becomes a revision too, so a restore is itself undoable.
+  await q.saveCaseStudyRevision({
+    caseStudyId,
+    title: current.title,
+    snapshot: current,
+    authorId: user.id,
+  });
+
+  const snap = revision.snapshot as Partial<typeof current>;
+  await q.updateCaseStudy(caseStudyId, {
+    brand: snap.brand ?? current.brand,
+    title: snap.title ?? current.title,
+    category: snap.category ?? current.category,
+    summary: snap.summary ?? current.summary,
+    challenge: snap.challenge ?? current.challenge,
+    objective: snap.objective ?? current.objective,
+    solution: snap.solution ?? current.solution,
+    techUsed: snap.techUsed ?? current.techUsed,
+    results: snap.results ?? current.results,
+    metrics: snap.metrics ?? current.metrics,
+  });
+
+  revalidateCaseStudies(current.slug);
+  redirect(`/admin/case-studies/${caseStudyId}?restored=1`);
 }

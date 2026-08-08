@@ -4,23 +4,70 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, Check } from "lucide-react";
 import { TagCloud } from "@/components/ui/Cards";
 import { Reveal } from "@/components/ui/Reveal";
-import { caseStudies } from "@/lib/content";
+import { getCaseStudyBySlug, listPublishedCaseStudySlugs } from "@/lib/db/queries";
+import { isDbConfigured } from "@/lib/db";
+import { isVideoMedia } from "@/lib/blog";
 
-export function generateStaticParams() {
-  return caseStudies.map((c) => ({ slug: c.slug }));
+/** Rebuild at most once a minute; publishing from the admin revalidates on demand. */
+export const revalidate = 60;
+/** Case studies published after the last build still render on first request. */
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  if (!isDbConfigured()) return [];
+  try {
+    const rows = await listPublishedCaseStudySlugs();
+    return rows.map((r) => ({ slug: r.slug }));
+  } catch {
+    return [];
+  }
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const study = caseStudies.find((c) => c.slug === params.slug);
+async function loadStudy(slug: string) {
+  if (!isDbConfigured()) return undefined;
+  try {
+    return await getCaseStudyBySlug(slug);
+  } catch (error) {
+    console.error("[case-studies] failed to load study:", error);
+    return undefined;
+  }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const study = await loadStudy(params.slug);
   if (!study) return { title: "Case Study" };
-  return {
-    title: `${study.brand} — ${study.title}`,
-    description: study.summary,
-  };
+
+  const title = study.seoTitle || `${study.brand} — ${study.title}`;
+  const description = study.seoDescription || study.summary;
+
+  // Only attach optional keys when they carry a value. Declaring `keywords` or
+  // `openGraph` as undefined does not inherit from the root layout — it clears
+  // the parent's tags, which silently drops the site-wide OG block.
+  const metadata: Metadata = { title, description };
+
+  if (study.seoKeywords) {
+    metadata.keywords = study.seoKeywords;
+  }
+  if (study.ogImageUrl) {
+    metadata.openGraph = {
+      title,
+      description,
+      url: `/CaseStudies/${study.slug}`,
+      siteName: "Mobikonnect",
+      type: "article",
+      images: [study.ogImageUrl],
+    };
+  }
+
+  return metadata;
 }
 
-export default function CaseStudyPage({ params }: { params: { slug: string } }) {
-  const study = caseStudies.find((c) => c.slug === params.slug);
+export default async function CaseStudyPage({ params }: { params: { slug: string } }) {
+  const study = await loadStudy(params.slug);
   if (!study) notFound();
 
   const blocks = [
@@ -51,11 +98,11 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
 
       {/* Hero media — real campaign asset when available, placeholder otherwise */}
       <section className="gutter pb-16">
-        {study.media ? (
+        {study.mediaUrl ? (
           <div className="frame relative aspect-[16/7] overflow-hidden bg-ink-soft">
-            {study.media.endsWith(".mp4") ? (
+            {isVideoMedia(study.mediaUrl, study.mediaKind) ? (
               <video
-                src={study.media}
+                src={study.mediaUrl}
                 autoPlay
                 loop
                 muted
@@ -66,7 +113,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
             ) : (
               // eslint-disable-next-line @next/next/no-img-element -- animated GIF, next/image would freeze it
               <img
-                src={study.media}
+                src={study.mediaUrl}
                 alt={`${study.brand} — ${study.title} campaign showcase`}
                 className="h-full w-full object-cover"
               />

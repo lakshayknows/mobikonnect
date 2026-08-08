@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { FileText, Plus, Clock, CheckCircle2, PenLine } from "lucide-react";
-import { getPostCounts, listRecentPosts } from "@/lib/db/queries";
+import { Briefcase, FileText, Plus, Clock, CheckCircle2, PenLine } from "lucide-react";
+import { getCaseStudyCounts, getPostCounts, listRecentPosts } from "@/lib/db/queries";
 import { formatPostDate } from "@/lib/blog";
 import { AdminCard, Button, EmptyState, SectionTitle, StatusBadge } from "@/components/admin/ui";
 
@@ -8,16 +8,17 @@ export const metadata = { title: "Dashboard" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const [counts, recent] = await Promise.all([
+  const [counts, caseCounts, recent] = await Promise.all([
     getPostCounts().catch(() => ({ draft: 0, scheduled: 0, published: 0, total: 0 })),
+    getCaseStudyCounts().catch(() => ({ draft: 0, published: 0, total: 0 })),
     listRecentPosts(6).catch(() => []),
   ]);
 
   const tiles = [
-    { label: "Published", value: counts.published, icon: CheckCircle2, href: "/admin/posts?status=published" },
+    { label: "Published posts", value: counts.published, icon: CheckCircle2, href: "/admin/posts?status=published" },
     { label: "Drafts", value: counts.draft, icon: PenLine, href: "/admin/posts?status=draft" },
     { label: "Scheduled", value: counts.scheduled, icon: Clock, href: "/admin/posts?status=scheduled" },
-    { label: "All posts", value: counts.total, icon: FileText, href: "/admin/posts" },
+    { label: "Case studies", value: caseCounts.published, icon: Briefcase, href: "/admin/case-studies" },
   ];
 
   return (

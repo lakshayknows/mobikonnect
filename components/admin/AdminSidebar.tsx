@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Briefcase,
   ExternalLink,
   FileText,
   FolderTree,
@@ -24,6 +25,7 @@ import { cn } from "@/lib/cn";
 const links = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/posts", label: "Posts", icon: FileText },
+  { href: "/admin/case-studies", label: "Case Studies", icon: Briefcase },
   { href: "/admin/media", label: "Media", icon: ImageIcon },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/tags", label: "Tags", icon: Tags },

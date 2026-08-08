@@ -386,7 +386,18 @@ export const benefits: Benefit[] = [
   },
 ];
 
-/* ───────────────────────── Case studies ───────────────────────── */
+/* ───────────────────────── Case studies ─────────────────────────
+ *
+ * ⚠ SEED DATA ONLY — editing this array does NOT change the website.
+ *
+ * Case studies are served from the `case_studies` table and edited in the admin
+ * portal at admin.mobikonnect.com/case-studies. This array is kept solely as the
+ * input to `npm run db:seed:case-studies`, which inserts any slug that is not
+ * already in the database (it never overwrites an edit made in the admin).
+ *
+ * To change a live case study, edit it in the admin. To add one, use the admin —
+ * or add it here and re-run the seed.
+ */
 
 export type CaseStudy = {
   slug: string;

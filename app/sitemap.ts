@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-import { caseStudies } from "@/lib/content";
-import { listPublishedSlugs } from "@/lib/db/queries";
+import { listPublishedCaseStudySlugs, listPublishedSlugs } from "@/lib/db/queries";
 import { isDbConfigured } from "@/lib/db";
 
 const base = "https://mobikonnect.com";
@@ -34,12 +33,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === "" ? 1 : 0.7,
   }));
 
-  const studies: MetadataRoute.Sitemap = caseStudies.map((c) => ({
-    url: `${base}/CaseStudies/${c.slug}`,
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  // Published case studies only — drafts are excluded by the query.
+  let studies: MetadataRoute.Sitemap = [];
+  if (isDbConfigured()) {
+    try {
+      const rows = await listPublishedCaseStudySlugs();
+      studies = rows.map((c) => ({
+        url: `${base}/CaseStudies/${c.slug}`,
+        lastModified: c.updatedAt,
+        changeFrequency: "monthly",
+        priority: 0.6,
+      }));
+    } catch (error) {
+      console.error("[sitemap] failed to load case studies:", error);
+    }
+  }
 
   // Published posts only — drafts and not-yet-due scheduled posts are excluded
   // by listPublishedSlugs.

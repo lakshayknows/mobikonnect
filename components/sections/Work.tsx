@@ -3,10 +3,13 @@
 import { ArrowUpRight } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Reveal } from "@/components/ui/Reveal";
-import { CaseCard } from "@/components/ui/Cards";
-import { work } from "@/lib/content";
+import { CaseCard, type CaseCardStudy } from "@/components/ui/Cards";
 
-export default function Work() {
+/**
+ * Case studies now come from the database, which a client component cannot
+ * read — the homepage fetches them and passes the first six in.
+ */
+export default function Work({ studies }: { studies: CaseCardStudy[] }) {
   return (
     <section id="work" className="gutter py-14 sm:py-20">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -25,7 +28,7 @@ export default function Work() {
       </div>
 
       <div className="mt-16 grid gap-5 lg:grid-cols-2">
-        {work.slice(0, 6).map((c, i) => (
+        {studies.map((c, i) => (
           <CaseCard key={c.slug} study={c} index={i} />
         ))}
       </div>

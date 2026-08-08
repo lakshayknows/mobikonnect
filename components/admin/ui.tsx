@@ -10,7 +10,7 @@ import { cn } from "@/lib/cn";
  *
  * Same tokens as the marketing site (ink / cream / coral, Montserrat + Karla,
  * rounded-card, cream-line hairlines) but a denser scale and no motion chrome —
- * this is a data-entry surface, not a landing page. See design_constraint.md §7.
+ * this is a data-entry surface, not a landing page. See design_constraint.md §9.
  */
 
 /* ─────────────────────────────── Buttons ──────────────────────────────────── */

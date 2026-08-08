@@ -6,7 +6,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
 import { formatPostDate, isoDate } from "@/lib/blog";
-import type { CaseStudy } from "@/lib/content";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -97,8 +96,19 @@ export function PillarCard({
   );
 }
 
+/** Summary shape a CaseCard needs — a structural subset of a case_studies row. */
+export type CaseCardStudy = {
+  slug: string;
+  brand: string;
+  title: string;
+  category: string;
+  summary: string;
+  accent: "blue" | "coral";
+  metrics: { value: string; label: string }[];
+};
+
 /** Linked case-study card — mirrors the homepage Work card, but navigates to the detail page. */
-export function CaseCard({ study, index = 0 }: { study: CaseStudy; index?: number }) {
+export function CaseCard({ study, index = 0 }: { study: CaseCardStudy; index?: number }) {
   const isCoral = study.accent === "coral";
   return (
     <motion.div

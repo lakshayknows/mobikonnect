@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { CaseCard } from "@/components/ui/Cards";
-import { caseStudies } from "@/lib/content";
+import { listPublishedCaseStudies } from "@/lib/db/queries";
+import { isDbConfigured } from "@/lib/db";
 
 export const metadata: Metadata = {
   title: "Case Studies",
@@ -9,7 +10,20 @@ export const metadata: Metadata = {
     "Campaigns that became conversations — gamified promotions, app-led loyalty, missed-call sampling and voice engagement for India's biggest brands.",
 };
 
-export default function CaseStudiesPage() {
+/** Rebuild at most once a minute; publishing from the admin revalidates on demand. */
+export const revalidate = 60;
+
+export default async function CaseStudiesPage() {
+  let caseStudies: Awaited<ReturnType<typeof listPublishedCaseStudies>> = [];
+
+  if (isDbConfigured()) {
+    try {
+      caseStudies = await listPublishedCaseStudies();
+    } catch (error) {
+      console.error("[case-studies] failed to load:", error);
+    }
+  }
+
   return (
     <>
       <PageHeader

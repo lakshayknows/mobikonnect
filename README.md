@@ -118,6 +118,8 @@ the marketing team can publish without a deploy.
 | Blog index | `/blog` | Category + tag filters, pagination, featured post |
 | Post | `/blog/[slug]` | ISR (`revalidate = 60`) + on-demand revalidation on publish |
 | RSS | `/blog/rss.xml` | 50 most recent published posts |
+| Case studies | `/CaseStudies` | Ordered by display order; homepage shows the first six |
+| Case study | `/CaseStudies/[slug]` | ISR (`revalidate = 60`) |
 | Admin | `admin.mobikonnect.com` | `/admin` in local dev |
 
 ### 3.1 One-time setup
@@ -132,7 +134,12 @@ vercel env pull .env.local --yes
 
 npm run db:push                     # create the tables
 npm run db:seed                     # first admin user + starter categories
+npm run db:seed:case-studies        # import the 20 existing case studies
 ```
+
+`db:seed:case-studies` reads the array in `lib/content.ts` and inserts any slug not
+already present. It is idempotent and never overwrites an edit made in the admin, so
+it is safe to re-run.
 
 `db:seed` reads `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME` if set, otherwise it
 creates `sales@mobikonnect.com` and prints a generated password **once**.
@@ -155,11 +162,23 @@ Vercel re-verifies automatically and issues TLS once the record propagates — c
 
 ### 3.2 What the CMS does
 
-Rich-text editing (Tiptap), auto-slug with live uniqueness checking, cover images and
-inline images via Vercel Blob, categories and tags, draft / scheduled / published states,
-scheduling that goes live on its own, an SEO panel with a live search-result preview,
-per-save revision history with restore, bulk publish/draft/delete, a media library, and
-multi-user accounts with `admin` / `editor` roles.
+**Posts** — rich-text editing (Tiptap), auto-slug with live uniqueness checking, cover
+and inline images via Vercel Blob, categories and tags, draft / scheduled / published
+states, scheduling that goes live on its own, an SEO panel with a live search-result
+preview, per-save revision history with restore, and bulk publish/draft/delete.
+
+**Case studies** — the same shell, with the fields the case-study template actually
+uses: brand, campaign title, category, summary, challenge / objective / solution,
+repeatable technology and results lists, paired value+label metrics, blue/coral card
+accent, hero image *or* campaign video, draft/published, and a display order that also
+decides the homepage six. Body fields are plain text, not rich text, because the
+template renders them as plain paragraphs.
+
+Shared across both: a media library, and multi-user accounts with `admin` / `editor`
+roles.
+
+> **Case studies are database-driven.** The array in `lib/content.ts` is seed data only
+> — editing it does not change the site. Edit in the admin instead.
 
 ### 3.3 Architecture notes
 
@@ -169,7 +188,7 @@ multi-user accounts with `admin` / `editor` roles.
 - `middleware.ts` does host routing only: it maps `admin.` onto `/admin` and 404s
   `/admin` on the public domain in production. **It performs no auth checks.**
   Authorization lives in `lib/auth.ts` and is called by every admin page and every
-  server action — see `design_constraint.md` §8.
+  server action — see `design_constraint.md` §10.
 - Post HTML is sanitized server-side (`lib/sanitize.ts`) before it is stored, because
   the public page renders it with `dangerouslySetInnerHTML`.
 - Passwords use Node's built-in `crypto.scrypt`; sessions are opaque random tokens
@@ -178,11 +197,20 @@ multi-user accounts with `admin` / `editor` roles.
 ### 3.4 Scripts
 
 ```bash
-npm run db:push      # push schema changes to the database
-npm run db:generate  # generate a SQL migration instead
-npm run db:studio    # browse the data
-npm run db:seed      # create the first admin user
+npm run db:push              # push schema changes to the database
+npm run db:generate          # generate a SQL migration instead
+npm run db:studio            # browse the data
+npm run db:seed              # create the first admin user
+npm run db:seed:case-studies # import case studies from lib/content.ts
 ```
+
+`db:push` prompts for confirmation and needs a TTY; in a non-interactive shell add
+`--force` (`npx dotenv -e .env.local -- npx drizzle-kit push --force`). Check the
+printed statements first — `--force` also applies destructive ones.
+
+**Do not run `npm run build` while `npm run dev` is running.** They share `.next/`, and
+the production build overwrites the dev server's static assets, which makes every page
+load unstyled until you restart dev.
 
 ---
 

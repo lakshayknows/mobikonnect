@@ -1,9 +1,9 @@
 /**
- * Blog CMS schema.
+ * CMS schema — blog posts and case studies.
  *
- * The marketing site's copy still lives in `lib/content.ts` — this covers only
- * the blog, which is authored through the admin portal rather than shipped by a
- * developer.
+ * The rest of the marketing site's copy still lives in `lib/content.ts`. These
+ * two content types are authored through the admin portal instead, because they
+ * change often enough that shipping a deploy for each edit is the wrong shape.
  */
 
 import { relations } from "drizzle-orm";
@@ -23,8 +23,19 @@ import {
 
 export const userRole = pgEnum("user_role", ["admin", "editor"]);
 export const postStatus = pgEnum("post_status", ["draft", "scheduled", "published"]);
-/** Mirrors the blue/coral alternation the site uses for cards and panels. */
+/**
+ * The site-wide blue/coral alternation used by cards and panels. Named
+ * `post_accent` for historical reasons — case studies share it, since it is the
+ * brand palette rather than anything blog-specific.
+ */
 export const postAccent = pgEnum("post_accent", ["blue", "coral"]);
+/** Case studies publish or don't — no scheduling, unlike posts. */
+export const caseStudyStatus = pgEnum("case_study_status", ["draft", "published"]);
+/**
+ * Stored explicitly rather than sniffed from the file extension: Vercel Blob
+ * appends a random suffix to uploads, so extension matching is not reliable.
+ */
+export const mediaKind = pgEnum("media_kind", ["image", "video"]);
 
 /* ───────────────────────────── Users & sessions ───────────────────────────── */
 
@@ -174,6 +185,77 @@ export const postRevisions = pgTable(
   }),
 );
 
+/* ──────────────────────────────── Case studies ────────────────────────────── */
+
+/**
+ * Mirrors the `CaseStudy` type in lib/content.ts one-for-one, so the public
+ * pages render identically whether a row came from the seed or the editor.
+ *
+ * challenge/objective/solution are plain text, not HTML — the detail page
+ * renders them as `<p>{body}</p>`, so there is no rich text and nothing on a
+ * case study is ever passed to dangerouslySetInnerHTML.
+ */
+export const caseStudies = pgTable(
+  "case_studies",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    slug: text("slug").notNull(),
+    brand: text("brand").notNull(),
+    title: text("title").notNull(),
+    /** Free text ("Gamified Consumer Promotion"), deliberately not the blog's categories table. */
+    category: text("category").notNull(),
+    summary: text("summary").notNull(),
+    challenge: text("challenge").notNull().default(""),
+    objective: text("objective").notNull().default(""),
+    solution: text("solution").notNull().default(""),
+    techUsed: jsonb("tech_used").$type<string[]>().notNull().default([]),
+    results: jsonb("results").$type<string[]>().notNull().default([]),
+    metrics: jsonb("metrics").$type<{ value: string; label: string }[]>().notNull().default([]),
+    accent: postAccent("accent").notNull().default("blue"),
+    /** Campaign film or still. Empty means the brand-gradient placeholder renders. */
+    mediaUrl: text("media_url"),
+    mediaKind: mediaKind("media_kind"),
+    status: caseStudyStatus("status").notNull().default("draft"),
+    /** Ascending. Seeded in tens so new entries can slot between existing ones. */
+    sortOrder: integer("sort_order").notNull().default(0),
+    /** Optional overrides; blank falls back to "{brand} — {title}" and the summary. */
+    seoTitle: text("seo_title"),
+    seoDescription: text("seo_description"),
+    seoKeywords: text("seo_keywords"),
+    ogImageUrl: text("og_image_url"),
+    authorId: uuid("author_id").references(() => adminUsers.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => ({
+    slugIdx: uniqueIndex("case_studies_slug_idx").on(t.slug),
+    /** The only ordering the public pages use. */
+    listIdx: index("case_studies_status_order_idx").on(t.status, t.sortOrder),
+  }),
+);
+
+/** Snapshot written on every save, so an editor can roll a case study back. */
+export const caseStudyRevisions = pgTable(
+  "case_study_revisions",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    caseStudyId: uuid("case_study_id")
+      .notNull()
+      .references(() => caseStudies.id, { onDelete: "cascade" }),
+    /** Whole-row snapshot of the editable fields, kept loose so the shape can evolve. */
+    snapshot: jsonb("snapshot").notNull(),
+    title: text("title").notNull(),
+    authorId: uuid("author_id").references(() => adminUsers.id, { onDelete: "set null" }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    caseStudyIdx: index("case_study_revisions_case_study_idx").on(t.caseStudyId, t.createdAt),
+  }),
+);
+
 /* ─────────────────────────────── Relations ────────────────────────────────── */
 
 export const adminUsersRelations = relations(adminUsers, ({ many }) => ({
@@ -210,6 +292,19 @@ export const postRevisionsRelations = relations(postRevisions, ({ one }) => ({
   author: one(adminUsers, { fields: [postRevisions.authorId], references: [adminUsers.id] }),
 }));
 
+export const caseStudiesRelations = relations(caseStudies, ({ one, many }) => ({
+  author: one(adminUsers, { fields: [caseStudies.authorId], references: [adminUsers.id] }),
+  revisions: many(caseStudyRevisions),
+}));
+
+export const caseStudyRevisionsRelations = relations(caseStudyRevisions, ({ one }) => ({
+  caseStudy: one(caseStudies, {
+    fields: [caseStudyRevisions.caseStudyId],
+    references: [caseStudies.id],
+  }),
+  author: one(adminUsers, { fields: [caseStudyRevisions.authorId], references: [adminUsers.id] }),
+}));
+
 /* ─────────────────────────────── Inferred types ───────────────────────────── */
 
 export type AdminUser = typeof adminUsers.$inferSelect;
@@ -222,3 +317,9 @@ export type PostRevision = typeof postRevisions.$inferSelect;
 export type PostStatus = (typeof postStatus.enumValues)[number];
 export type PostAccent = (typeof postAccent.enumValues)[number];
 export type UserRole = (typeof userRole.enumValues)[number];
+
+export type CaseStudyRow = typeof caseStudies.$inferSelect;
+export type NewCaseStudyRow = typeof caseStudies.$inferInsert;
+export type CaseStudyRevision = typeof caseStudyRevisions.$inferSelect;
+export type CaseStudyStatus = (typeof caseStudyStatus.enumValues)[number];
+export type MediaKind = (typeof mediaKind.enumValues)[number];

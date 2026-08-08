@@ -2,11 +2,15 @@ import { and, asc, count, desc, eq, gt, ilike, inArray, lte, ne, or, sql } from 
 import { getDb } from "./index";
 import {
   adminUsers,
+  caseStudies,
+  caseStudyRevisions,
   categories,
   postRevisions,
   posts,
   postTags,
   tags,
+  type CaseStudyStatus,
+  type NewCaseStudyRow,
   type NewPost,
   type PostStatus,
 } from "./schema";
@@ -435,4 +439,197 @@ export async function countAdmins() {
     .from(adminUsers)
     .where(and(eq(adminUsers.role, "admin"), eq(adminUsers.isActive, true)));
   return value;
+}
+
+/* ────────────────────────────── Case studies ──────────────────────────────── */
+
+/**
+ * Case studies have no scheduling — published means live. Ordering is always
+ * `sortOrder` ascending, which the seed set to today's exact array order.
+ */
+const caseStudyLive = () => eq(caseStudies.status, "published");
+
+export async function listPublishedCaseStudies(limit?: number) {
+  const db = getDb();
+  return db
+    .select()
+    .from(caseStudies)
+    .where(caseStudyLive())
+    .orderBy(asc(caseStudies.sortOrder), asc(caseStudies.createdAt))
+    .limit(limit ?? 500);
+}
+
+export async function getCaseStudyBySlug(slug: string) {
+  const db = getDb();
+  return db.query.caseStudies.findFirst({
+    where: and(eq(caseStudies.slug, slug), caseStudyLive()),
+  });
+}
+
+/** Drives generateStaticParams and the sitemap. */
+export async function listPublishedCaseStudySlugs() {
+  const db = getDb();
+  return db
+    .select({ slug: caseStudies.slug, updatedAt: caseStudies.updatedAt })
+    .from(caseStudies)
+    .where(caseStudyLive())
+    .orderBy(asc(caseStudies.sortOrder));
+}
+
+/** Distinct category strings, for the editor's datalist. */
+export async function listCaseStudyCategories() {
+  const db = getDb();
+  const rows = await db
+    .selectDistinct({ category: caseStudies.category })
+    .from(caseStudies)
+    .orderBy(asc(caseStudies.category));
+  return rows.map((r) => r.category).filter(Boolean);
+}
+
+export async function listCaseStudiesForAdmin(
+  opts: { search?: string; status?: CaseStudyStatus; page?: number; perPage?: number } = {},
+) {
+  const db = getDb();
+  const page = Math.max(1, opts.page ?? 1);
+  const perPage = opts.perPage ?? 25;
+
+  const where = and(
+    opts.search
+      ? or(
+          ilike(caseStudies.title, `%${opts.search}%`),
+          ilike(caseStudies.brand, `%${opts.search}%`),
+          ilike(caseStudies.slug, `%${opts.search}%`),
+        )
+      : undefined,
+    opts.status ? eq(caseStudies.status, opts.status) : undefined,
+  );
+
+  const [rows, [{ value: total }]] = await Promise.all([
+    db
+      .select()
+      .from(caseStudies)
+      .where(where)
+      .orderBy(asc(caseStudies.sortOrder), asc(caseStudies.createdAt))
+      .limit(perPage)
+      .offset((page - 1) * perPage),
+    db.select({ value: count() }).from(caseStudies).where(where),
+  ]);
+
+  return { caseStudies: rows, total, page, perPage, totalPages: Math.ceil(total / perPage) };
+}
+
+export async function getCaseStudyById(id: string) {
+  const db = getDb();
+  return db.query.caseStudies.findFirst({ where: eq(caseStudies.id, id) });
+}
+
+export async function getCaseStudyCounts() {
+  const db = getDb();
+  const rows = await db
+    .select({ status: caseStudies.status, value: count() })
+    .from(caseStudies)
+    .groupBy(caseStudies.status);
+  const byStatus = Object.fromEntries(rows.map((r) => [r.status, r.value]));
+  return {
+    draft: byStatus.draft ?? 0,
+    published: byStatus.published ?? 0,
+    total: rows.reduce((sum, r) => sum + r.value, 0),
+  };
+}
+
+export async function caseStudySlugTaken(slug: string, exceptId?: string) {
+  const db = getDb();
+  const row = await db.query.caseStudies.findFirst({
+    where: exceptId
+      ? and(eq(caseStudies.slug, slug), ne(caseStudies.id, exceptId))
+      : eq(caseStudies.slug, slug),
+    columns: { id: true },
+  });
+  return Boolean(row);
+}
+
+export async function uniqueCaseStudySlug(base: string, exceptId?: string) {
+  let candidate = base || "case-study";
+  let n = 2;
+  while (await caseStudySlugTaken(candidate, exceptId)) {
+    candidate = `${base}-${n++}`;
+  }
+  return candidate;
+}
+
+/** Next free slot at the end of the list, in tens. */
+export async function nextCaseStudySortOrder() {
+  const db = getDb();
+  const [row] = await db
+    .select({ max: sql<number | null>`max(${caseStudies.sortOrder})` })
+    .from(caseStudies);
+  return (row?.max ?? 0) + 10;
+}
+
+export async function createCaseStudy(values: NewCaseStudyRow) {
+  const db = getDb();
+  const [row] = await db.insert(caseStudies).values(values).returning();
+  return row;
+}
+
+export async function updateCaseStudy(id: string, values: Partial<NewCaseStudyRow>) {
+  const db = getDb();
+  const [row] = await db.update(caseStudies).set(values).where(eq(caseStudies.id, id)).returning();
+  return row;
+}
+
+export async function deleteCaseStudy(id: string) {
+  const db = getDb();
+  const [row] = await db
+    .delete(caseStudies)
+    .where(eq(caseStudies.id, id))
+    .returning({ slug: caseStudies.slug });
+  return row;
+}
+
+export async function deleteCaseStudies(ids: string[]) {
+  const db = getDb();
+  if (ids.length === 0) return [];
+  return db
+    .delete(caseStudies)
+    .where(inArray(caseStudies.id, ids))
+    .returning({ slug: caseStudies.slug });
+}
+
+/* ─────────────────────── Case study revisions ─────────────────────────────── */
+
+export async function saveCaseStudyRevision(values: {
+  caseStudyId: string;
+  title: string;
+  snapshot: unknown;
+  authorId?: string | null;
+}) {
+  const db = getDb();
+  await db.insert(caseStudyRevisions).values(values as typeof caseStudyRevisions.$inferInsert);
+  // Keep the 20 most recent snapshots per case study.
+  await db.execute(sql`
+    delete from case_study_revisions
+    where case_study_id = ${values.caseStudyId}
+      and id not in (
+        select id from case_study_revisions
+        where case_study_id = ${values.caseStudyId}
+        order by created_at desc
+        limit 20
+      )
+  `);
+}
+
+export async function listCaseStudyRevisions(caseStudyId: string) {
+  const db = getDb();
+  return db.query.caseStudyRevisions.findMany({
+    where: eq(caseStudyRevisions.caseStudyId, caseStudyId),
+    with: { author: { columns: { id: true, name: true } } },
+    orderBy: [desc(caseStudyRevisions.createdAt)],
+    limit: 20,
+  });
+}
+
+export async function getCaseStudyRevision(id: string) {
+  const db = getDb();
+  return db.query.caseStudyRevisions.findFirst({ where: eq(caseStudyRevisions.id, id) });
 }

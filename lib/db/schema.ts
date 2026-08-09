@@ -81,6 +81,33 @@ export const sessions = pgTable(
   }),
 );
 
+/**
+ * One-time codes for the forgot-password flow.
+ *
+ * Only the SHA-256 of the code is stored — the plaintext exists solely in the
+ * email, exactly like `sessions.id`. Rows are kept after use so the throttle can
+ * count recent requests; `consumedAt` marks a code spent.
+ */
+export const passwordResetOtps = pgTable(
+  "password_reset_otps",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => adminUsers.id, { onDelete: "cascade" }),
+    codeHash: text("code_hash").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    attempts: integer("attempts").notNull().default(0),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+    requestIp: text("request_ip"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => ({
+    userIdx: index("password_reset_otps_user_idx").on(t.userId, t.createdAt),
+    expiresIdx: index("password_reset_otps_expires_idx").on(t.expiresAt),
+  }),
+);
+
 /* ─────────────────────────────── Taxonomy ─────────────────────────────────── */
 
 export const categories = pgTable(
@@ -267,6 +294,10 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(adminUsers, { fields: [sessions.userId], references: [adminUsers.id] }),
 }));
 
+export const passwordResetOtpsRelations = relations(passwordResetOtps, ({ one }) => ({
+  user: one(adminUsers, { fields: [passwordResetOtps.userId], references: [adminUsers.id] }),
+}));
+
 export const categoriesRelations = relations(categories, ({ many }) => ({
   posts: many(posts),
 }));
@@ -309,6 +340,7 @@ export const caseStudyRevisionsRelations = relations(caseStudyRevisions, ({ one 
 
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
+export type PasswordResetOtp = typeof passwordResetOtps.$inferSelect;
 export type Category = typeof categories.$inferSelect;
 export type Tag = typeof tags.$inferSelect;
 export type Post = typeof posts.$inferSelect;

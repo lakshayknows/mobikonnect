@@ -1,10 +1,23 @@
-import { createHash, randomBytes, scrypt as scryptCb, timingSafeEqual } from "node:crypto";
+import {
+  createHash,
+  randomBytes,
+  randomInt,
+  scrypt as scryptCb,
+  timingSafeEqual,
+} from "node:crypto";
 import { promisify } from "node:util";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { and, eq, lt, ne } from "drizzle-orm";
+import { and, desc, eq, gt, isNull, lt, ne, sql } from "drizzle-orm";
 import { getDb, isDbConfigured } from "./db";
-import { adminUsers, sessions, type AdminUser, type UserRole } from "./db/schema";
+import {
+  adminUsers,
+  passwordResetOtps,
+  sessions,
+  type AdminUser,
+  type UserRole,
+} from "./db/schema";
+import { isMailConfigured, sendOtpEmail } from "./mailer";
 
 const scrypt = promisify(scryptCb) as (
   password: string | Buffer,
@@ -229,6 +242,171 @@ export async function attemptLogin(
   void pruneExpiredSessions();
 
   return { ok: true, user };
+}
+
+/* ──────────────────── Forgot password — one-time codes ────────────────────── */
+
+const OTP_LENGTH = 6;
+const OTP_TTL_MINUTES = 10;
+const OTP_MAX_ATTEMPTS = 5;
+/** Minimum gap between sends for one account. */
+const OTP_RESEND_COOLDOWN_SECONDS = 60;
+/** Ceiling on sends per account within the window below. */
+const OTP_MAX_PER_WINDOW = 3;
+const OTP_WINDOW_MINUTES = 15;
+
+export const PASSWORD_MIN_LENGTH = 10;
+export const OTP_EXPIRY_MINUTES = OTP_TTL_MINUTES;
+
+/**
+ * Cryptographically secure 6-digit code. `randomInt` (not `Math.random`) and
+ * zero-padded, so "007431" stays six characters.
+ */
+function generateOtp(): string {
+  return String(randomInt(0, 10 ** OTP_LENGTH)).padStart(OTP_LENGTH, "0");
+}
+
+const hashOtp = (code: string) => createHash("sha256").update(code).digest("hex");
+
+/** Digits only — strips the spaces people paste in from the email. */
+export const normaliseOtp = (input: string) => (input ?? "").replace(/\D/g, "");
+
+/**
+ * Sends a reset code.
+ *
+ * Always resolves the same way regardless of whether the account exists, is
+ * disabled, or is being throttled — the caller shows one fixed message, so the
+ * form cannot be used to discover which addresses are real.
+ */
+export async function requestPasswordReset(email: string, requestIp?: string | null) {
+  if (!isDbConfigured()) return;
+
+  const db = getDb();
+  const user = await db.query.adminUsers.findFirst({
+    where: eq(adminUsers.email, email.trim().toLowerCase()),
+  });
+  if (!user || !user.isActive) return;
+
+  const now = Date.now();
+
+  // Throttle: a short cooldown between sends, plus a ceiling per window. Both
+  // are silent — a throttled request looks identical to a delivered one.
+  const [recent] = await db
+    .select({ lastAt: sql<Date | null>`max(${passwordResetOtps.createdAt})`, count: sql<number>`count(*)::int` })
+    .from(passwordResetOtps)
+    .where(
+      and(
+        eq(passwordResetOtps.userId, user.id),
+        gt(passwordResetOtps.createdAt, new Date(now - OTP_WINDOW_MINUTES * 60_000)),
+      ),
+    );
+
+  if (recent?.lastAt && now - new Date(recent.lastAt).getTime() < OTP_RESEND_COOLDOWN_SECONDS * 1000) {
+    return;
+  }
+  if ((recent?.count ?? 0) >= OTP_MAX_PER_WINDOW) return;
+
+  // Only the newest code should ever work.
+  await db
+    .update(passwordResetOtps)
+    .set({ consumedAt: new Date() })
+    .where(and(eq(passwordResetOtps.userId, user.id), isNull(passwordResetOtps.consumedAt)));
+
+  const code = generateOtp();
+  await db.insert(passwordResetOtps).values({
+    userId: user.id,
+    codeHash: hashOtp(code),
+    expiresAt: new Date(now + OTP_TTL_MINUTES * 60_000),
+    requestIp: requestIp?.slice(0, 64) ?? null,
+  });
+
+  if (!isMailConfigured()) {
+    // Loud in the server log, silent to the caller — still no enumeration.
+    console.error("[auth] password reset requested but SMTP is not configured");
+    return;
+  }
+
+  try {
+    await sendOtpEmail({ to: user.email, code, expiresMinutes: OTP_TTL_MINUTES });
+  } catch (error) {
+    // Never surface transport detail to the form.
+    console.error("[auth] failed to send reset code:", error);
+  }
+}
+
+export type VerifyResetResult = { ok: true } | { ok: false; error: string };
+
+/**
+ * Checks a code and, if it holds, sets the new password.
+ *
+ * Also clears any lockout — someone recovering by email should not still be
+ * shut out by failed password attempts — and revokes every existing session.
+ */
+export async function verifyPasswordResetAndSet(
+  email: string,
+  code: string,
+  newPassword: string,
+): Promise<VerifyResetResult> {
+  if (!isDbConfigured()) return { ok: false, error: "Password reset is unavailable right now." };
+
+  const db = getDb();
+  const invalid = { ok: false as const, error: "That code is incorrect or has expired." };
+
+  if (newPassword.length < PASSWORD_MIN_LENGTH) {
+    return { ok: false, error: `Password must be at least ${PASSWORD_MIN_LENGTH} characters.` };
+  }
+
+  const user = await db.query.adminUsers.findFirst({
+    where: eq(adminUsers.email, email.trim().toLowerCase()),
+  });
+  if (!user || !user.isActive) return invalid;
+
+  const otp = await db.query.passwordResetOtps.findFirst({
+    where: and(
+      eq(passwordResetOtps.userId, user.id),
+      isNull(passwordResetOtps.consumedAt),
+      gt(passwordResetOtps.expiresAt, new Date()),
+    ),
+    orderBy: [desc(passwordResetOtps.createdAt)],
+  });
+  if (!otp) return invalid;
+
+  // Count the attempt before comparing, so a wrong guess always costs something.
+  const attempts = otp.attempts + 1;
+  if (attempts >= OTP_MAX_ATTEMPTS) {
+    await db
+      .update(passwordResetOtps)
+      .set({ attempts, consumedAt: new Date() })
+      .where(eq(passwordResetOtps.id, otp.id));
+    return { ok: false, error: "Too many incorrect codes. Request a new one." };
+  }
+  await db
+    .update(passwordResetOtps)
+    .set({ attempts })
+    .where(eq(passwordResetOtps.id, otp.id));
+
+  const expected = Buffer.from(otp.codeHash, "hex");
+  const actual = Buffer.from(hashOtp(normaliseOtp(code)), "hex");
+  if (expected.length !== actual.length || !timingSafeEqual(expected, actual)) return invalid;
+
+  await db
+    .update(adminUsers)
+    .set({
+      passwordHash: await hashPassword(newPassword),
+      failedAttempts: 0,
+      lockedUntil: null,
+    })
+    .where(eq(adminUsers.id, user.id));
+
+  await db
+    .update(passwordResetOtps)
+    .set({ consumedAt: new Date() })
+    .where(eq(passwordResetOtps.id, otp.id));
+
+  // A password change invalidates every session, including any the attacker holds.
+  await db.delete(sessions).where(eq(sessions.userId, user.id));
+
+  return { ok: true };
 }
 
 /** Sign a user's devices out — used after a password change or role revocation. */

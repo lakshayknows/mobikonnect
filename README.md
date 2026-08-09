@@ -205,13 +205,48 @@ npm run db:seed:case-studies # import case studies from lib/content.ts
 npm run admin:reset -- <email>  # reset a password, clear a lockout
 ```
 
-`admin:reset` is the recovery path when someone is locked out or has forgotten their
-password — there is no self-service reset. It clears the lockout, signs that account out
-everywhere, and prints a generated password once (or set `ADMIN_PASSWORD` to choose it).
-If the email does not exist it creates the account as an admin.
+`admin:reset` is the break-glass recovery path for when email itself is unavailable. It
+clears the lockout, signs that account out everywhere, and prints a generated password
+once (or set `ADMIN_PASSWORD` to choose it). If the email does not exist it creates the
+account as an admin.
 
 Sign-in is rate limited: five wrong passwords locks the account for 15 minutes. Serving
 the lockout clears the counter, so the next window starts fresh.
+
+### 3.5 Forgot password (email OTP)
+
+**Forgot password?** on the sign-in page emails a 6-digit code, which is exchanged for a
+new password. This is the everyday recovery path; `admin:reset` is the fallback.
+
+```
+/admin/login  →  /admin/forgot  →  /admin/forgot/verify  →  /admin/login?reset=1
+                  enter email       code + new password
+```
+
+Mail goes out over Gmail SMTP from `ak@mobikonnect.com`; the code goes to whichever
+admin asked for it. Configured by two env vars, already set on Vercel:
+
+| Variable | Value |
+| --- | --- |
+| `SMTP_USER` | `ak@mobikonnect.com` |
+| `SMTP_APP_PASSWORD` | Google **app password**, not the account password |
+
+`SMTP_HOST` / `SMTP_PORT` are optional overrides (default `smtp.gmail.com:465`) if you
+ever move off Gmail.
+
+The app password requires 2-Step Verification on that Google account. Generate or revoke
+one at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) —
+if it is ever revoked, the flow fails closed and `admin:reset` still works.
+
+Guarantees worth knowing before changing any of it:
+
+- Only the **SHA-256 of the code** is stored, never the code — same approach as sessions.
+- 6 digits from `crypto.randomInt`, valid 10 minutes, usable once.
+- 5 wrong codes burns the code; requesting a new one is the only way forward.
+- Throttled per account: 60 s between sends, 3 per 15 minutes.
+- **The response never varies with whether an account exists** — this form must not
+  become a way to discover valid admin addresses. Keep it that way.
+- A successful reset clears any lockout and revokes every existing session.
 
 `db:push` prompts for confirmation and needs a TTY; in a non-interactive shell add
 `--force` (`npx dotenv -e .env.local -- npx drizzle-kit push --force`). Check the

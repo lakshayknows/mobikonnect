@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Sign in" };
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { next?: string };
+  searchParams: { next?: string; reset?: string };
 }) {
   if (await getSessionUser()) redirect(searchParams.next || "/admin");
 
@@ -24,7 +24,7 @@ export default async function LoginPage({
         </div>
 
         {isDbConfigured() ? (
-          <LoginForm next={searchParams.next} />
+          <LoginForm next={searchParams.next} justReset={searchParams.reset === "1"} />
         ) : (
           <div className="rounded-card border border-coral/40 bg-coral/10 p-6 text-sm text-coral">
             <p className="font-medium">Database not configured</p>

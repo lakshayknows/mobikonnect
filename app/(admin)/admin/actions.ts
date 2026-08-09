@@ -9,9 +9,12 @@ import {
   destroySession,
   getSessionUser,
   hashPassword,
+  normaliseOtp,
+  requestPasswordReset,
   requireApiUser,
   revokeUserSessions,
   verifyPassword,
+  verifyPasswordResetAndSet,
 } from "@/lib/auth";
 import { excerptFrom, readingMinutes, slugify } from "@/lib/blog";
 import { sanitizeHtml, sanitizeText } from "@/lib/sanitize";
@@ -54,6 +57,62 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
 export async function logoutAction() {
   await destroySession();
   redirect("/admin/login");
+}
+
+/**
+ * Sends a reset code. The response is deliberately identical whether or not the
+ * address belongs to an account — this form must not reveal who has one.
+ */
+export async function requestPasswordResetAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    return { error: "Enter a valid email address." };
+  }
+
+  const headerList = headers();
+  const ip =
+    headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? headerList.get("x-real-ip");
+
+  await requestPasswordReset(email, ip);
+
+  redirect(`/admin/forgot/verify?email=${encodeURIComponent(email)}&sent=1`);
+}
+
+/** Resend from the verify screen — same action, same cooldown, stays on the page. */
+export async function resendPasswordResetAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const email = String(formData.get("email") ?? "").trim();
+  if (!email) return { error: "Missing email address." };
+
+  const headerList = headers();
+  const ip =
+    headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? headerList.get("x-real-ip");
+
+  await requestPasswordReset(email, ip);
+  return { success: "If that account exists, another code is on its way." };
+}
+
+export async function verifyPasswordResetAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const email = String(formData.get("email") ?? "").trim();
+  const code = normaliseOtp(String(formData.get("code") ?? ""));
+  const password = String(formData.get("password") ?? "");
+  const confirm = String(formData.get("confirmPassword") ?? "");
+
+  if (code.length !== 6) return { error: "Enter the 6-digit code from the email." };
+  if (password !== confirm) return { error: "The two passwords do not match." };
+
+  const result = await verifyPasswordResetAndSet(email, code, password);
+  if (!result.ok) return { error: result.error };
+
+  redirect("/admin/login?reset=1");
 }
 
 export async function changeOwnPasswordAction(

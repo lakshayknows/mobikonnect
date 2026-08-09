@@ -202,7 +202,16 @@ npm run db:generate          # generate a SQL migration instead
 npm run db:studio            # browse the data
 npm run db:seed              # create the first admin user
 npm run db:seed:case-studies # import case studies from lib/content.ts
+npm run admin:reset -- <email>  # reset a password, clear a lockout
 ```
+
+`admin:reset` is the recovery path when someone is locked out or has forgotten their
+password — there is no self-service reset. It clears the lockout, signs that account out
+everywhere, and prints a generated password once (or set `ADMIN_PASSWORD` to choose it).
+If the email does not exist it creates the account as an admin.
+
+Sign-in is rate limited: five wrong passwords locks the account for 15 minutes. Serving
+the lockout clears the counter, so the next window starts fresh.
 
 `db:push` prompts for confirmation and needs a TTY; in a non-interactive shell add
 `--force` (`npx dotenv -e .env.local -- npx drizzle-kit push --force`). Check the

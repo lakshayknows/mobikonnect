@@ -176,32 +176,48 @@ export async function attemptLogin(
   // password is wrong — don't let the form enumerate accounts.
   if (!user || !user.isActive) return generic;
 
-  if (user.lockedUntil && user.lockedUntil.getTime() > Date.now()) {
-    const mins = Math.ceil((user.lockedUntil.getTime() - Date.now()) / 60_000);
-    return { ok: false, error: `Too many attempts. Try again in ${mins} minute${mins === 1 ? "" : "s"}.`, retryAfterMinutes: mins };
+  const lockedUntilMs = user.lockedUntil?.getTime() ?? 0;
+
+  if (lockedUntilMs > Date.now()) {
+    const mins = Math.ceil((lockedUntilMs - Date.now()) / 60_000);
+    return {
+      ok: false,
+      error: `Too many attempts. Try again in ${mins} minute${mins === 1 ? "" : "s"}.`,
+      retryAfterMinutes: mins,
+    };
   }
 
+  // Serving the lockout clears the debt. Without this the counter stays at
+  // MAX_FAILED_ATTEMPTS forever, so the first wrong password after a lockout
+  // expires trips the limit again immediately — a permanent lockout after one
+  // attempt.
+  const priorFailures = lockedUntilMs > 0 ? 0 : user.failedAttempts;
+
   if (!(await verifyPassword(password, user.passwordHash))) {
-    const attempts = user.failedAttempts + 1;
+    const attempts = priorFailures + 1;
+    const locked = attempts >= MAX_FAILED_ATTEMPTS;
     await db
       .update(adminUsers)
       .set({
-        failedAttempts: attempts,
-        lockedUntil:
-          attempts >= MAX_FAILED_ATTEMPTS
-            ? new Date(Date.now() + LOCKOUT_MINUTES * 60_000)
-            : null,
+        // Reset the counter as the lock is applied, so the next window starts clean.
+        failedAttempts: locked ? 0 : attempts,
+        lockedUntil: locked ? new Date(Date.now() + LOCKOUT_MINUTES * 60_000) : null,
       })
       .where(eq(adminUsers.id, user.id));
 
-    if (attempts >= MAX_FAILED_ATTEMPTS) {
+    if (locked) {
       return {
         ok: false,
         error: `Too many attempts. Try again in ${LOCKOUT_MINUTES} minutes.`,
         retryAfterMinutes: LOCKOUT_MINUTES,
       };
     }
-    return generic;
+    return {
+      ok: false,
+      error: `Incorrect email or password. ${MAX_FAILED_ATTEMPTS - attempts} attempt${
+        MAX_FAILED_ATTEMPTS - attempts === 1 ? "" : "s"
+      } left before a ${LOCKOUT_MINUTES}-minute lockout.`,
+    };
   }
 
   await db

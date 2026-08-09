@@ -1,4 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer";
+import type SMTPTransport from "nodemailer/lib/smtp-transport";
 import { site } from "@/lib/content";
 
 /**
@@ -32,17 +33,36 @@ function getTransport(): Transporter {
   }
 
   const port = Number(process.env.SMTP_PORT ?? DEFAULT_PORT);
+  cached = buildTransport(port);
+  return cached;
+}
 
-  cached = nodemailer.createTransport({
+function buildTransport(port: number): Transporter {
+  const user = process.env.SMTP_USER!;
+  const pass = process.env.SMTP_APP_PASSWORD!;
+
+  const options: SMTPTransport.Options = {
     host: process.env.SMTP_HOST ?? DEFAULT_HOST,
     port,
     // 465 is implicit TLS; 587 upgrades via STARTTLS.
     secure: port === 465,
     auth: { user, pass: pass.replace(/\s+/g, "") },
-  });
+    // Non-pooled (the default) suits serverless, where there is no long-lived
+    // process. The timeouts stop a hung SMTP socket sitting there until the
+    // whole function times out.
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 20_000,
+  };
 
-  return cached;
+  return nodemailer.createTransport(options);
 }
+
+/** Connection-level failures worth retrying on the alternate Gmail port. */
+const isConnectionError = (error: unknown) => {
+  const code = (error as { code?: string })?.code ?? "";
+  return ["ETIMEDOUT", "ECONNREFUSED", "ESOCKET", "ECONNECTION", "EDNS"].includes(code);
+};
 
 /** Verifies the credentials against the server without sending anything. */
 export async function verifyMailConnection() {
@@ -142,11 +162,31 @@ export async function sendOtpEmail({
   code: string;
   expiresMinutes: number;
 }) {
-  await getTransport().sendMail({
+  const message = {
     from: fromHeader(),
     to,
     subject: `${prettyCode(code)} is your ${site.name} admin reset code`,
     text: otpText(code, expiresMinutes),
     html: otpHtml(code, expiresMinutes),
-  });
+  };
+
+  try {
+    return await getTransport().sendMail(message);
+  } catch (error) {
+    if (!isConnectionError(error)) throw error;
+
+    // Some hosts block one of Gmail's SMTP ports outbound. Fall back to the
+    // other (465 implicit TLS <-> 587 STARTTLS) before giving up.
+    const primary = Number(process.env.SMTP_PORT ?? DEFAULT_PORT);
+    const fallbackPort = primary === 465 ? 587 : 465;
+    console.warn(
+      `[mailer] SMTP port ${primary} unreachable (${(error as { code?: string })?.code}); retrying on ${fallbackPort}`,
+    );
+
+    const fallback = buildTransport(fallbackPort);
+    const info = await fallback.sendMail(message);
+    // The fallback worked — keep using it for the rest of this instance.
+    cached = fallback;
+    return info;
+  }
 }

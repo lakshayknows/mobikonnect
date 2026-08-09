@@ -76,7 +76,13 @@ export async function requestPasswordResetAction(
   const ip =
     headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? headerList.get("x-real-ip");
 
-  await requestPasswordReset(email, ip);
+  const outcome = await requestPasswordReset(email, ip);
+  if (outcome === "mail-unavailable") {
+    return {
+      error:
+        "We couldn't send the email just now. Please try again in a minute — if it keeps failing, contact your administrator.",
+    };
+  }
 
   redirect(`/admin/forgot/verify?email=${encodeURIComponent(email)}&sent=1`);
 }
@@ -93,7 +99,10 @@ export async function resendPasswordResetAction(
   const ip =
     headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ?? headerList.get("x-real-ip");
 
-  await requestPasswordReset(email, ip);
+  const outcome = await requestPasswordReset(email, ip);
+  if (outcome === "mail-unavailable") {
+    return { error: "We couldn't send the email just now. Please try again in a minute." };
+  }
   return { success: "If that account exists, another code is on its way." };
 }
 

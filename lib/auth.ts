@@ -278,14 +278,30 @@ export const normaliseOtp = (input: string) => (input ?? "").replace(/\D/g, "");
  * disabled, or is being throttled — the caller shows one fixed message, so the
  * form cannot be used to discover which addresses are real.
  */
-export async function requestPasswordReset(email: string, requestIp?: string | null) {
-  if (!isDbConfigured()) return;
+export type ResetRequestOutcome = "sent" | "mail-unavailable";
+
+export async function requestPasswordReset(
+  email: string,
+  requestIp?: string | null,
+): Promise<ResetRequestOutcome> {
+  if (!isDbConfigured()) return "mail-unavailable";
+
+  // Checked before the account lookup on purpose: a global "mail is down"
+  // answer is identical for every address, so it reveals nothing. Deciding
+  // this after the lookup would make the error itself an existence oracle.
+  if (!isMailConfigured()) {
+    console.error("[auth] password reset requested but SMTP_USER/SMTP_APP_PASSWORD are not set");
+    return "mail-unavailable";
+  }
 
   const db = getDb();
   const user = await db.query.adminUsers.findFirst({
     where: eq(adminUsers.email, email.trim().toLowerCase()),
   });
-  if (!user || !user.isActive) return;
+  // No account, or a disabled one: report success anyway. This is the branch
+  // that must stay silent — it is what keeps the form from confirming which
+  // addresses are real.
+  if (!user || !user.isActive) return "sent";
 
   const now = Date.now();
 
@@ -302,9 +318,9 @@ export async function requestPasswordReset(email: string, requestIp?: string | n
     );
 
   if (recent?.lastAt && now - new Date(recent.lastAt).getTime() < OTP_RESEND_COOLDOWN_SECONDS * 1000) {
-    return;
+    return "sent";
   }
-  if ((recent?.count ?? 0) >= OTP_MAX_PER_WINDOW) return;
+  if ((recent?.count ?? 0) >= OTP_MAX_PER_WINDOW) return "sent";
 
   // Only the newest code should ever work.
   await db
@@ -313,24 +329,35 @@ export async function requestPasswordReset(email: string, requestIp?: string | n
     .where(and(eq(passwordResetOtps.userId, user.id), isNull(passwordResetOtps.consumedAt)));
 
   const code = generateOtp();
-  await db.insert(passwordResetOtps).values({
-    userId: user.id,
-    codeHash: hashOtp(code),
-    expiresAt: new Date(now + OTP_TTL_MINUTES * 60_000),
-    requestIp: requestIp?.slice(0, 64) ?? null,
-  });
-
-  if (!isMailConfigured()) {
-    // Loud in the server log, silent to the caller — still no enumeration.
-    console.error("[auth] password reset requested but SMTP is not configured");
-    return;
-  }
+  const [row] = await db
+    .insert(passwordResetOtps)
+    .values({
+      userId: user.id,
+      codeHash: hashOtp(code),
+      expiresAt: new Date(now + OTP_TTL_MINUTES * 60_000),
+      requestIp: requestIp?.slice(0, 64) ?? null,
+    })
+    .returning({ id: passwordResetOtps.id });
 
   try {
-    await sendOtpEmail({ to: user.email, code, expiresMinutes: OTP_TTL_MINUTES });
+    const info = await sendOtpEmail({ to: user.email, code, expiresMinutes: OTP_TTL_MINUTES });
+    // Log the envelope result, never the code — this is what tells you whether
+    // the provider actually accepted the recipient.
+    console.log(
+      `[auth] reset code sent accepted=${JSON.stringify(info?.accepted ?? [])} rejected=${JSON.stringify(info?.rejected ?? [])} response=${info?.response ?? "-"}`,
+    );
+    return "sent";
   } catch (error) {
-    // Never surface transport detail to the form.
-    console.error("[auth] failed to send reset code:", error);
+    const e = error as { code?: string; responseCode?: number; message?: string };
+    console.error(
+      `[auth] failed to send reset code: code=${e?.code} responseCode=${e?.responseCode} message=${e?.message}`,
+    );
+    // The code can never be delivered, so don't leave a live one behind.
+    await db
+      .update(passwordResetOtps)
+      .set({ consumedAt: new Date() })
+      .where(eq(passwordResetOtps.id, row.id));
+    return "mail-unavailable";
   }
 }
 

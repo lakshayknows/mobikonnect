@@ -18,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 import { logoutAction } from "@/app/(admin)/admin/actions";
+import { publicUrl } from "@/lib/blog";
 import { Monogram } from "@/components/ui/Logo";
 import { RoleBadge } from "@/components/admin/ui";
 import { cn } from "@/lib/cn";
@@ -89,8 +90,9 @@ export function AdminSidebar({
         Settings
       </Link>
 
+      {/* Absolute: a relative /blog would resolve against the admin host. */}
       <a
-        href="/blog"
+        href={publicUrl("/blog")}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 rounded-lg px-3.5 py-2 text-sm text-cream-dim transition-colors hover:bg-ink-soft/60 hover:text-cream"

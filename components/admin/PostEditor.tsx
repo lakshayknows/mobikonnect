@@ -24,8 +24,19 @@ import {
   restoreRevisionAction,
   savePostAction,
 } from "@/app/(admin)/admin/actions";
-import { excerptFrom, readingMinutes, slugify, toDateTimeLocal } from "@/lib/blog";
+import { excerptFrom, publicUrl, readingMinutes, slugify, toDateTimeLocal } from "@/lib/blog";
 import { cn } from "@/lib/cn";
+
+/**
+ * Turns a `datetime-local` value into an absolute instant using the browser's
+ * timezone. Returns "" for a blank field so the action can tell "no date given"
+ * from a real one.
+ */
+function localToIso(local: string): string {
+  if (!local) return "";
+  const d = new Date(local); // parsed in the browser's timezone — that is the point
+  return Number.isNaN(d.getTime()) ? "" : d.toISOString();
+}
 
 type Category = { id: string; name: string };
 type Tag = { id: string; name: string };
@@ -148,6 +159,13 @@ export function PostEditor({
         {post && <input type="hidden" name="id" value={post.id} />}
         <input type="hidden" name="bodyHtml" value={body.html} />
         <input type="hidden" name="bodyJson" value={JSON.stringify(body.json ?? null)} />
+        {/*
+          A datetime-local value carries no timezone, so the server would parse
+          "2026-08-10T13:16" in ITS timezone (UTC on Vercel) rather than yours —
+          silently shifting every save by your UTC offset and scheduling the post
+          into the future. Resolve it here, where the timezone is actually known.
+        */}
+        <input type="hidden" name="publishedAtIso" value={localToIso(publishedAt)} />
         <input type="hidden" name="coverImageUrl" value={coverImageUrl} />
         {selectedTags.map((id) => (
           <input key={id} type="hidden" name="tagIds" value={id} />
@@ -166,7 +184,7 @@ export function PostEditor({
           <div className="flex flex-wrap items-center gap-3">
             {post && status === "published" && (
               <a
-                href={`/blog/${post.slug}`}
+                href={publicUrl(`/blog/${post.slug}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-cream-dim transition-colors hover:text-cream"
@@ -352,7 +370,18 @@ export function PostEditor({
                 <Field
                   label={status === "scheduled" ? "Publish at" : "Publish date"}
                   htmlFor="publishedAt"
-                  hint={status === "published" && !publishedAt ? "Leave blank to publish now." : undefined}
+                  hint={
+                    status === "published" && !publishedAt
+                      ? "Leave blank to publish now."
+                      : undefined
+                  }
+                  // A published post dated in the future stays hidden until then.
+                  // Say so, rather than letting it look like the post vanished.
+                  error={
+                    status === "published" && publishedAt && new Date(publishedAt) > new Date()
+                      ? "This date is in the future, so the post stays hidden until then. Clear it to publish now, or use Scheduled."
+                      : undefined
+                  }
                   required={status === "scheduled"}
                 >
                   <Input

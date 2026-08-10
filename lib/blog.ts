@@ -74,6 +74,23 @@ export function toDateTimeLocal(date: Date | string | null | undefined): string 
 export const POSTS_PER_PAGE = 9;
 
 /**
+ * Absolute URL on the public site.
+ *
+ * The admin is served from admin.mobikonnect.com, where a relative "/blog" link
+ * resolves against the admin host and 404s — middleware maps that host onto the
+ * /admin tree. Any "view it live" link from the admin must therefore be absolute.
+ *
+ * Override with NEXT_PUBLIC_SITE_URL to point local dev at localhost.
+ */
+export const PUBLIC_SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.mobikonnect.com"
+).replace(/\/$/, "");
+
+export function publicUrl(path: string): string {
+  return `${PUBLIC_SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+/**
  * Whether a case-study hero should render as <video> or <img>.
  *
  * Prefers the stored kind; falls back to the extension for rows seeded before

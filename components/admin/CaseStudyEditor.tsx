@@ -23,7 +23,7 @@ import {
   restoreCaseStudyRevisionAction,
   saveCaseStudyAction,
 } from "@/app/(admin)/admin/actions";
-import { slugify } from "@/lib/blog";
+import { publicUrl, slugify } from "@/lib/blog";
 
 type Revision = {
   id: string;
@@ -132,7 +132,7 @@ export function CaseStudyEditor({
           <div className="flex flex-wrap items-center gap-3">
             {study && study.status === "published" && (
               <a
-                href={`/CaseStudies/${study.slug}`}
+                href={publicUrl(`/CaseStudies/${study.slug}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-cream-dim transition-colors hover:text-cream"

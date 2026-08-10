@@ -160,8 +160,15 @@ function parsePostForm(formData: FormData) {
   }
 
   const status = String(formData.get("status") ?? "draft") as "draft" | "scheduled" | "published";
-  const publishedAtRaw = String(formData.get("publishedAt") ?? "").trim();
-  let publishedAt: Date | null = publishedAtRaw ? new Date(publishedAtRaw) : null;
+
+  // Prefer the ISO instant the browser resolved for us. The raw datetime-local
+  // string is only a fallback (a client without JS): it carries no timezone, so
+  // parsing it here would use the SERVER's zone — UTC on Vercel — and shift the
+  // publish time by the author's offset on every save, hiding the post behind
+  // the `published_at <= now()` gate.
+  const isoRaw = String(formData.get("publishedAtIso") ?? "").trim();
+  const localRaw = String(formData.get("publishedAt") ?? "").trim();
+  let publishedAt: Date | null = isoRaw ? new Date(isoRaw) : localRaw ? new Date(localRaw) : null;
   if (publishedAt && Number.isNaN(publishedAt.getTime())) publishedAt = null;
   // Publishing without an explicit date means "now".
   if (status === "published" && !publishedAt) publishedAt = new Date();
